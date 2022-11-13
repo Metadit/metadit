@@ -4,9 +4,12 @@ import art from "../../../assets/images/homeart.svg";
 
 const Content = () => {
   return (
-    <div className="w-full max-w-[1400px] mx-auto flex flex-wrap justify-between my-[200px]">
+    <div
+      className="w-full px-10 max-w-[1400px] items-center mx-auto
+     flex flex-wrap justify-between my-[200px]"
+    >
       <div className="w-6/12">
-        <h2 className="text-[50px] text-white font-light w-full">
+        <h2 className="text-[40px] text-white font-light w-full">
           We like Reddit, so we decided to make a{" "}
           <span className="text-primary">Web3</span> version of it.
         </h2>

@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.orange["500"],
+        content: colors.zinc["500"],
       },
     },
   },

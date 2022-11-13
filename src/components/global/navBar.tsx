@@ -4,9 +4,9 @@ import Button from "./button";
 
 const NavBar = () => {
   return (
-    <nav className="h-[75px] bg-zinc-900 border-b border-b-zinc-800">
+    <nav className="h-[75px] border-b sticky border-b-zinc-800">
       <div
-        className="h-full w-full max-w-[1400px]
+        className="h-full w-full px-10 max-w-[1400px]
       mx-auto flex items-center justify-between"
       >
         <img src={logo} alt="logo" />
