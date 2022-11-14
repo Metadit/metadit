@@ -9,9 +9,9 @@ interface Props {
 const Button = ({ normal, children, className }: Props) => {
   return (
     <button
-      className={`w-auto h-[32px] ${
+      className={`w-auto h-[32px] gap-1 flex items-center justify-center ${
         normal && "bg-zinc-800 border border-zinc-700"
-      } text-white text-[13px] transition-all px-7 rounded-md hover:transition-all 
+      } text-white text-[12px] transition-all px-7 rounded-md hover:transition-all 
       hover:duration-200 hover:brightness-125 ${className}`}
     >
       {children}

@@ -15,11 +15,13 @@ const Footer = () => {
             <img src={logo} alt="logo" />
             <div className="flex gap-4 mt-5">
               <FontAwesomeIcon
-                className="text-content text-2xl"
+                className="text-content text-2xl transition-all duration-200
+                 hover:brightness-125 cursor-pointer"
                 icon={faGithub}
               />
               <FontAwesomeIcon
-                className="text-content text-2xl"
+                className="text-content text-2xl transition-all duration-200
+                 hover:brightness-125 cursor-pointer"
                 icon={faDiscord}
               />
             </div>
@@ -42,7 +44,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <div className="mt-20">
+        <div className="mt-24">
           <div className="w-full h-[1px] bg-zinc-800" />
           <p className="text-content text-center mt-6 text-sm">
             MetaDit @ 2022

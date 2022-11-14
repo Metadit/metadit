@@ -6,14 +6,14 @@ const Content = () => {
   return (
     <div
       className="w-full px-10 max-w-[1400px] items-center mx-auto
-     flex flex-wrap justify-between my-[200px]"
+     flex flex-wrap justify-between gap-10 flex-col-reverse my-[100px] lg:my-[200px] lg:flex-row lg:gap-0"
     >
-      <div className="w-6/12">
-        <h2 className="text-[40px] text-white font-light w-full">
+      <div className="w-full lg:w-6/12">
+        <h2 className="text-[30px] text-white font-light w-full lg:text-[40px]">
           We like Reddit, so we decided to make a{" "}
           <span className="text-primary">Web3</span> version of it.
         </h2>
-        <p className="text-[17px] text-zinc-500 my-4">
+        <p className="text-[17px] text-zinc-500 my-4 w-full">
           Yeah literally, you just login with your wallet of choice, like
           Metamask, and you can immediately start posting. Simple right?{" "}
         </p>
