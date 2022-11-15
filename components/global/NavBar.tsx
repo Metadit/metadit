@@ -7,6 +7,7 @@ import { faStar, faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import HiddenMenu from "./HiddenMenu";
 import Image from "next/image";
+import Link from "next/link";
 
 const NavBar = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -16,7 +17,9 @@ const NavBar = () => {
         className="h-full w-full px-10 max-w-[1400px]
       mx-auto flex items-center justify-between"
       >
-        <Image src={logo} alt="metadit-logo" />
+        <Link href="/">
+          <Image src={logo} alt="metadit-logo" />
+        </Link>
         <div className="lg:hidden">
           <Hamburger
             size={25}
