@@ -29,14 +29,18 @@ const NavBar = () => {
           />
         </div>
         <div className="gap-4 hidden lg:flex">
-          <Button normal={true}>
-            <FontAwesomeIcon icon={faStar} />
-            Github
-          </Button>
-          <Button normal={true}>
-            <FontAwesomeIcon icon={faDiscord} />
-            Our Discord
-          </Button>
+          <Link target="_blank" href="https://github.com/ameer2468/metadit">
+            <Button normal={true}>
+              <FontAwesomeIcon icon={faStar} />
+              Github
+            </Button>
+          </Link>
+          <Link target="_blank" href="https://discord.gg/r6HjT4JD5p">
+            <Button normal={true}>
+              <FontAwesomeIcon icon={faDiscord} />
+              Our Discord
+            </Button>
+          </Link>
           <Button className="bg-primary" normal={false}>
             <FontAwesomeIcon icon={faSignIn} />
             Login

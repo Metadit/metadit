@@ -3,6 +3,7 @@ import logo from "../../assets/images/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -15,33 +16,41 @@ const Footer = () => {
           <div>
             <Image src={logo} alt="metadit-logo" />
             <div className="flex gap-4 mt-5">
-              <FontAwesomeIcon
-                className="text-content text-2xl transition-all duration-200
+              <Link target="_blank" href="https://github.com/ameer2468/metadit">
+                <FontAwesomeIcon
+                  className="text-content text-2xl transition-all duration-200
                  hover:brightness-125 cursor-pointer"
-                icon={faGithub}
-              />
-              <FontAwesomeIcon
-                className="text-content text-2xl transition-all duration-200
+                  icon={faGithub}
+                />
+              </Link>
+              <Link target="_blank" href="https://discord.gg/r6HjT4JD5p">
+                <FontAwesomeIcon
+                  className="text-content text-2xl transition-all duration-200
                  hover:brightness-125 cursor-pointer"
-                icon={faDiscord}
-              />
+                  icon={faDiscord}
+                />
+              </Link>
             </div>
           </div>
           <div>
             <h2 className="text-white text-lg font-light">Community</h2>
             <ul>
-              <li
-                className="text-content text-sm mt-2
+              <Link target="_blank" href="https://github.com/ameer2468/metadit">
+                <li
+                  className="text-content text-sm mt-2
                          transition-all duration-200 hover:brightness-125 cursor-pointer"
-              >
-                Contribute
-              </li>
-              <li
-                className="text-content text-sm mt-2
+                >
+                  Contribute
+                </li>
+              </Link>
+              <Link target="_blank" href="https://discord.gg/r6HjT4JD5p">
+                <li
+                  className="text-content text-sm mt-2
                          transition-all duration-200 hover:brightness-125 cursor-pointer"
-              >
-                Discord
-              </li>
+                >
+                  Discord
+                </li>
+              </Link>
             </ul>
           </div>
         </div>

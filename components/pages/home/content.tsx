@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../../global/button";
 import art from "../../../assets/images/homeart.svg";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const Content = () => {
   return (
@@ -22,7 +23,17 @@ const Content = () => {
           Join now
         </Button>
       </div>
-      <Image src={art} alt="illustration" />
+      <motion.div
+        animate={{
+          y: [0, 10, 0],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 2.5,
+        }}
+      >
+        <Image src={art} alt="illustration" />
+      </motion.div>
     </div>
   );
 };
