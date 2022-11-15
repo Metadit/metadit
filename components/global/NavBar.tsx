@@ -29,7 +29,7 @@ const NavBar = () => {
           />
         </div>
         <div className="gap-4 hidden lg:flex">
-          <Link target="_blank" href="https://github.com/ameer2468/metadit">
+          <Link target="_blank" href="https://github.com/Metadit/metadit">
             <Button normal={true}>
               <FontAwesomeIcon icon={faStar} />
               Github

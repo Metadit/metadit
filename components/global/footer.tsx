@@ -16,7 +16,7 @@ const Footer = () => {
           <div>
             <Image src={logo} alt="metadit-logo" />
             <div className="flex gap-4 mt-5">
-              <Link target="_blank" href="https://github.com/ameer2468/metadit">
+              <Link target="_blank" href="https://github.com/Metadit/metadit">
                 <FontAwesomeIcon
                   className="text-content text-2xl transition-all duration-200
                  hover:brightness-125 cursor-pointer"
@@ -35,7 +35,7 @@ const Footer = () => {
           <div>
             <h2 className="text-white text-lg font-light">Community</h2>
             <ul>
-              <Link target="_blank" href="https://github.com/ameer2468/metadit">
+              <Link target="_blank" href="https://github.com/Metadit/metadit">
                 <li
                   className="text-content text-sm mt-2
                          transition-all duration-200 hover:brightness-125 cursor-pointer"
