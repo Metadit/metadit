@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../../global/button";
 import art from "../../../assets/images/homeart.svg";
+import Image from "next/image";
 
 const Content = () => {
   return (
@@ -21,7 +22,7 @@ const Content = () => {
           Join now
         </Button>
       </div>
-      <img src={art} alt="art" />
+      <Image src={art} alt="illustration" />
     </div>
   );
 };

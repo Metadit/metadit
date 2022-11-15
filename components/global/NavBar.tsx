@@ -5,7 +5,8 @@ import Hamburger from "hamburger-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-import HiddenMenu from "./hiddenMenu";
+import HiddenMenu from "./HiddenMenu";
+import Image from "next/image";
 
 const NavBar = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -15,7 +16,7 @@ const NavBar = () => {
         className="h-full w-full px-10 max-w-[1400px]
       mx-auto flex items-center justify-between"
       >
-        <img src={logo} alt="logo" />
+        <Image src={logo} alt="metadit-logo" />
         <div className="lg:hidden">
           <Hamburger
             size={25}

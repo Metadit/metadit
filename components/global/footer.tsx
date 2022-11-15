@@ -2,6 +2,7 @@ import React from "react";
 import logo from "../../assets/images/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -12,7 +13,7 @@ const Footer = () => {
       >
         <div className="flex justify-between flex-wrap">
           <div>
-            <img src={logo} alt="logo" />
+            <Image src={logo} alt="metadit-logo" />
             <div className="flex gap-4 mt-5">
               <FontAwesomeIcon
                 className="text-content text-2xl transition-all duration-200
