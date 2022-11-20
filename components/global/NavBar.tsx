@@ -12,7 +12,7 @@ import Link from "next/link";
 const NavBar = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
   return (
-    <nav className="h-[75px] border-b  border-b-zinc-800 sticky top-0 z-50 bg-zinc-900 bg-opacity-50 backdrop-blur">
+    <nav className="h-[75px] border-b border-b-zinc-800 sticky top-0 z-50 bg-zinc-900 bg-opacity-50 backdrop-blur">
       <div
         className="h-full w-full px-10 max-w-[1400px]
       mx-auto flex items-center justify-between"
@@ -36,15 +36,17 @@ const NavBar = () => {
             </Button>
           </Link>
           <Link target="_blank" href="https://discord.gg/r6HjT4JD5p">
-            <Button normal={true}>
+            <Button className="w-full" normal={true}>
               <FontAwesomeIcon icon={faDiscord} />
               Our Discord
             </Button>
           </Link>
-          <Button className="bg-primary" normal={false}>
-            <FontAwesomeIcon icon={faSignIn} />
-            Login
-          </Button>
+          <Link href={"/login"}>
+            <Button className="bg-primary" normal={false}>
+              <FontAwesomeIcon icon={faSignIn} />
+              Login
+            </Button>
+          </Link>
         </div>
       </div>
       {isOpen && <HiddenMenu />}

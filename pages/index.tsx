@@ -1,13 +1,14 @@
 import Content from "../components/pages/home/content";
-import Footer from "../components/global/footer";
+import Layout from "../components/global/Layout";
 
 const Home = () => {
   return (
     <>
       <Content />
-      <Footer />
     </>
   );
 };
 
 export default Home;
+
+Home.getLayout = (page: any) => <Layout>{page}</Layout>;

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 const Content = () => {
   return (
     <div
-      className="w-full px-10 max-w-[1400px] items-center mx-auto
+      className="w-full max-w-[1320px] items-center mx-auto
      flex flex-wrap justify-between gap-10 flex-col-reverse my-[100px] lg:my-[200px] lg:flex-row lg:gap-0"
     >
       <div className="w-full lg:w-6/12">

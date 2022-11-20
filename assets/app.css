@@ -10,3 +10,20 @@ html {
 body {
   font-family: "Poppins", sans-serif;
 }
+
+/*custom scrollbar*/
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #515151;
+  border-radius: 50rem;
+}
+
+::-webkit-scrollbar-track {
+  background: #2f2f2f;
+}
+

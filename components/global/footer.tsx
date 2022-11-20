@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="border-t border-t-zinc-800">
+    <footer className="border-t border-t-zinc-800 mt-20">
       <div
         className="py-20 px-10 w-full
        max-w-[1400px] items-center mx-auto"
