@@ -5,8 +5,11 @@ import { faSignIn, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
+import { useUser } from "../../src/contexts/User";
+import UserDropdown from "./UserDropdown";
 
 const HiddenMenu = () => {
+  const { user } = useUser();
   return (
     <div
       className="flex-col flex gap-2 p-5 w-full justify-center bg-zinc-800
@@ -24,12 +27,21 @@ const HiddenMenu = () => {
           Our Discord
         </Button>
       </Link>
-      <Link href={"/login"}>
-        <Button className="bg-primary w-full" normal={false}>
-          <FontAwesomeIcon icon={faSignIn} />
-          Login
-        </Button>
-      </Link>
+      {user?.address ? (
+        <>
+          <Button className="bg-primary" normal={false}>
+            + Create post
+          </Button>
+          <UserDropdown />
+        </>
+      ) : (
+        <Link href={"/login"}>
+          <Button className="bg-primary" normal={false}>
+            <FontAwesomeIcon icon={faSignIn} />
+            Login
+          </Button>
+        </Link>
+      )}
       <SearchBox className="mt-5" />
     </div>
   );

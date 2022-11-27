@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import logo from "../../assets/images/logo.svg";
 import Button from "./Button";
 import Hamburger from "hamburger-react";
@@ -11,12 +11,16 @@ import Link from "next/link";
 import SearchBox from "./SearchBox";
 import { useUser } from "../../src/contexts/User";
 import UserDropdown from "./UserDropdown";
+import { useDetectOutsideClick } from "../../src/hooks/useDetectOutsideClick";
 
 const NavBar = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
   const { user } = useUser();
+  const dropDownRef = useRef(null);
+  const [dropDown, toggleDropDown] = useDetectOutsideClick(dropDownRef, false);
   return (
     <nav
+      ref={dropDownRef}
       className="h-[75px] border-b border-b-zinc-800 sticky top-0 z-50
     bg-contentBg bg-opacity-50 backdrop-blur"
     >
@@ -25,7 +29,7 @@ const NavBar = () => {
       mx-auto flex items-center justify-between"
       >
         <div className="flex gap-6 w-full items-center max-w-[400px]">
-          <Link href="/">
+          <Link href={user?.address ? "/browse" : "/"}>
             <Image
               className="w-[100px] lg:w-[200px]"
               src={logo}
@@ -60,7 +64,10 @@ const NavBar = () => {
               <Button className="bg-primary" normal={false}>
                 + Create post
               </Button>
-              <UserDropdown />
+              <UserDropdown
+                toggleDropDown={toggleDropDown}
+                dropDown={dropDown as boolean}
+              />
             </>
           ) : (
             <Link href={"/login"}>
