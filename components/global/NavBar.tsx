@@ -9,9 +9,12 @@ import HiddenMenu from "./HiddenMenu";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
+import { useUser } from "../../src/contexts/User";
+import UserDropdown from "./UserDropdown";
 
 const NavBar = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
+  const { user } = useUser();
   return (
     <nav
       className="h-[75px] border-b border-b-zinc-800 sticky top-0 z-50
@@ -52,12 +55,21 @@ const NavBar = () => {
               Our Discord
             </Button>
           </Link>
-          <Link href={"/login"}>
-            <Button className="bg-primary" normal={false}>
-              <FontAwesomeIcon icon={faSignIn} />
-              Login
-            </Button>
-          </Link>
+          {user?.address ? (
+            <>
+              <Button className="bg-primary" normal={false}>
+                + Create post
+              </Button>
+              <UserDropdown />
+            </>
+          ) : (
+            <Link href={"/login"}>
+              <Button className="bg-primary" normal={false}>
+                <FontAwesomeIcon icon={faSignIn} />
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
       {isOpen && <HiddenMenu />}

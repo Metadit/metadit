@@ -1,9 +1,10 @@
 import Web3 from "web3";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/User";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState("");
+  const { setUser } = useContext(UserContext);
 
   const login = async () => {
     setLoading(true);
@@ -15,7 +16,8 @@ export const useLogin = () => {
         });
 
         const account = Web3.utils.toChecksumAddress(accounts[0]);
-        setAddress(account);
+        localStorage.setItem("metadit", JSON.stringify(account));
+        setUser({ address: account });
         window.location.replace("/browse");
       }
     } catch (error) {
@@ -25,12 +27,11 @@ export const useLogin = () => {
   };
 
   const logout = () => {
-    setAddress("");
+    setUser(null);
   };
 
   return {
     loading,
-    address,
     login,
     logout,
   };
