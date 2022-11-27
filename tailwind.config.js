@@ -12,6 +12,7 @@ module.exports = {
         primary: colors.orange["500"],
         content: colors.zinc["500"],
         contentBg: "#181818",
+        darkContent: "#151515",
       },
     },
   },

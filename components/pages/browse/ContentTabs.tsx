@@ -29,12 +29,14 @@ const ContentTabs = () => {
       className="w-full
       border border-zinc-800
       rounded-xl mx-auto px-10 bg-contentBg
+      mb-8
   flex gap-8 items-center py-5
     mt-8"
     >
       {tabOptions.map((tab, i) => {
         return (
           <p
+            key={i}
             onClick={() => tabHandler(i)}
             className={`text-md text-content font-bold cursor-pointer transition-all duration-200 ${
               activeTab === i ? "text-primary" : "text-zinc-500"

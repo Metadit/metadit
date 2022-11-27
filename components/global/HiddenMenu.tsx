@@ -1,9 +1,10 @@
 import React from "react";
-import Button from "./button";
+import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignIn, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
+import SearchBox from "./SearchBox";
 
 const HiddenMenu = () => {
   return (
@@ -29,6 +30,7 @@ const HiddenMenu = () => {
           Login
         </Button>
       </Link>
+      <SearchBox className="mt-5" />
     </div>
   );
 };

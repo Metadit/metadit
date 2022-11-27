@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from "../../assets/images/logo.svg";
-import Button from "./button";
+import Button from "./Button";
 import Hamburger from "hamburger-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faSignIn } from "@fortawesome/free-solid-svg-icons";
@@ -8,18 +8,29 @@ import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import HiddenMenu from "./HiddenMenu";
 import Image from "next/image";
 import Link from "next/link";
+import SearchBox from "./SearchBox";
 
 const NavBar = () => {
   const [isOpen, setOpen] = useState<boolean>(false);
   return (
-    <nav className="h-[75px] border-b border-b-zinc-800 sticky top-0 z-50 bg-zinc-900 bg-opacity-50 backdrop-blur">
+    <nav
+      className="h-[75px] border-b border-b-zinc-800 sticky top-0 z-50
+    bg-contentBg bg-opacity-50 backdrop-blur"
+    >
       <div
         className="h-full w-full px-10 max-w-[1400px]
       mx-auto flex items-center justify-between"
       >
-        <Link href="/">
-          <Image src={logo} alt="metadit-logo" />
-        </Link>
+        <div className="flex gap-6 w-full items-center max-w-[400px]">
+          <Link href="/">
+            <Image
+              className="w-[100px] lg:w-[200px]"
+              src={logo}
+              alt="metadit-logo"
+            />
+          </Link>
+          <SearchBox className="hidden lg:block" />
+        </div>
         <div className="lg:hidden">
           <Hamburger
             size={25}

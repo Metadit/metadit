@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../../global/button";
+import Button from "../../global/Button";
 import art from "../../../assets/images/homeart.svg";
 import Image from "next/image";
 import { motion } from "framer-motion";
