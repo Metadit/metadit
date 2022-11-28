@@ -26,8 +26,10 @@ const Index = () => {
         </h1>
         <Image className="my-5" src={meme} alt="meme" />
         <CommentCount count={322} />
-        <textarea
+        <div
           placeholder="What are your thoughts?"
+          contentEditable={true}
+          onInput={(e) => console.log(e.currentTarget.textContent)}
           className="mt-10 text-[14px] bg-darkContent text-white resize-none
           transition-all duration-200 border border-zinc-800 w-full
           rounded-md h-36 focus:outline-0 focus:border-primary p-5"
