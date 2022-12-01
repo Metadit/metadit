@@ -27,7 +27,7 @@
 <rect x="213" y="264" width="156" height="4" fill="#373737"/>
 <rect x="124" y="283" width="245" height="4" fill="#373737"/>
 <rect x="244" y="302" width="125" height="4" fill="#373737"/>
-<path d="M326 109C326 107.895 326.895 107 328 107H367C368.105 107 369 107.895 369 109V117C369 118.105 368.105 119 367 119H328C326.895 119 326 118.105 326 117V109Z" fill="#EA580C"/>
+<path d="M326 109C326 107.895 326.895 107 328 107H367C368.105 107 369 107.895 369 109V117C369 118.105 368.105 119 367 119H328C326.895 119 326 118.105 326 117V109Z" fill="#65A30D"/>
 <defs>
 <filter id="filter0_b_1_62" x="198" y="-72" width="313" height="280" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
