@@ -16,7 +16,8 @@ const Post = () => {
         <Vote count={200} />
       </div>
       <p className="text-sm text-content">
-        Posted by <span className="text-primary">Jager32</span> 12 hours ago
+        Posted by <span className="text-primary font-bold">Jager32</span> 12
+        hours ago
       </p>
       <Link href="/post/1">
         <h1 className="text-[20px] md:text-[30px] text-white mt-2">

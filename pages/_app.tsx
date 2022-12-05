@@ -4,6 +4,7 @@ import type { Page } from "../src/custom";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "../src/contexts/User";
+import "tippy.js/dist/tippy.css"; // optional
 
 type Props = AppProps & {
   Component: Page;

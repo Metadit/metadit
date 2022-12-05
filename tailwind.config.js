@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.lime["600"],
+        primary: colors.rose["600"],
         content: colors.zinc["500"],
         contentBg: "#181818",
         darkContent: "#151515",

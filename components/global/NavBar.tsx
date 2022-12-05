@@ -61,9 +61,11 @@ const NavBar = () => {
           </Link>
           {user?.address ? (
             <>
-              <Button className="bg-primary" normal={false}>
-                + Create post
-              </Button>
+              <Link href="/create">
+                <Button className="bg-primary" normal={false}>
+                  + Create post
+                </Button>
+              </Link>
               <UserDropdown
                 toggleDropDown={toggleDropDown}
                 dropDown={dropDown as boolean}
