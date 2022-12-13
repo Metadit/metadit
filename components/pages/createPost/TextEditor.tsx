@@ -1,4 +1,4 @@
-import React, { SetStateAction } from "react";
+import React, { SetStateAction, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -18,9 +18,10 @@ interface Options {
 
 interface Props {
   setActiveMarkdown: React.Dispatch<SetStateAction<string[]>>;
+  activeMarkdown: string[];
 }
 
-const TextEditor = ({ setActiveMarkdown }: Props) => {
+const TextEditor = ({ setActiveMarkdown, activeMarkdown }: Props) => {
   const [activeOptions, setActiveOptions] = React.useState<Options[]>([
     { action: "bold", icon: faBold, active: false },
     { action: "italic", icon: faItalic, active: false },
@@ -45,6 +46,19 @@ const TextEditor = ({ setActiveMarkdown }: Props) => {
       }, [] as string[])
     );
   };
+
+  const activeMarkdownHandler = () => {
+    const newActiveOptions = activeOptions.map((option) => {
+      option.active = activeMarkdown.includes(option.action);
+      return option;
+    });
+    setActiveOptions(newActiveOptions);
+  };
+
+  useEffect(() => {
+    activeMarkdownHandler();
+  }, [activeMarkdown]);
+
   return (
     <div
       className="w-full h-10 border-zinc-800 bg-darkContent rounded-tl
@@ -54,6 +68,10 @@ const TextEditor = ({ setActiveMarkdown }: Props) => {
         <Tippy key={index.toString()} content={action}>
           <FontAwesomeIcon
             onClick={() => activeHandler(action)}
+            onMouseDown={(event) => {
+              event.preventDefault();
+              document.execCommand(action, false);
+            }}
             className={`text-content transition-all duration-200
             hover:brightness-125 cursor-pointer hover:bg-contentBg focus:outline-0 ${
               active && "text-primary"

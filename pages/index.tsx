@@ -1,10 +1,10 @@
-import Content from "../components/pages/home/content";
+import Context from "../components/pages/home/Context";
 import Layout from "../components/global/Layout";
 
 const Home = () => {
   return (
     <>
-      <Content />
+      <Context />
     </>
   );
 };

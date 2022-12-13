@@ -23,15 +23,15 @@ const dropDownLinks = [
 ];
 
 interface Props {
-  toggleDropDown: React.Dispatch<SetStateAction<boolean>>;
-  dropDown: boolean;
+  toggleDropDown?: React.Dispatch<SetStateAction<boolean>>;
+  dropDown?: boolean;
 }
 
 const UserDropdown = ({ toggleDropDown, dropDown }: Props) => {
   const { user } = useUser();
   return (
     <div
-      onClick={() => toggleDropDown(!dropDown)}
+      onClick={() => (toggleDropDown ? toggleDropDown(!dropDown) : null)}
       className="text-white text-[12px] relative
       flex items-center justify-between gap-5 cursor-pointer
       transition-all w-auto px-5 py-2 lg:py-0 rounded-md hover:transition-all

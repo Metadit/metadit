@@ -14,7 +14,7 @@ interface Props {
   onBlur?: (e?: any) => void;
   onChange: (e?: any) => void;
   value: string;
-  name: string;
+  name?: string;
   placeholder?: string;
 }
 

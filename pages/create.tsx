@@ -1,23 +1,28 @@
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import React, { useEffect } from "react";
+import React from "react";
 import Input from "../components/global/Input";
 import Button from "../components/global/Button";
 import TextEditor from "../components/pages/createPost/TextEditor";
+import ContentEditable from "react-contenteditable";
 
 const Create = () => {
   const [postInfo, setPostInfo] = React.useState({
     title: "",
     content: "",
   });
-  const [activeMarkdown, setActiveMarkdown] = React.useState<any>([]);
+  const [activeMarkdown, setActiveMarkdown] = React.useState<string[]>([]);
+  const contentEditableRef = React.useRef<any>(null);
   const inputHandler = (e: React.ChangeEvent<any>) => {
     setPostInfo({
       ...postInfo,
-      [e.target.name || "content"]:
-        e.target.value || e.currentTarget.textContent,
+      [e.target.name || "content"]: e.target.value,
     });
   };
+
+  //TODO when clicking on content activate relevant tabs in editor
+  const textFocusHandler = (e: any) => {};
+
   return (
     <PageContainer>
       <h1 className="text-white text-[30px] font-bold">Create post</h1>
@@ -33,12 +38,21 @@ const Create = () => {
           onChange={(e) => inputHandler(e)}
           value={postInfo.title}
         />
-        <TextEditor setActiveMarkdown={setActiveMarkdown} />
-        <div
+        <TextEditor
+          activeMarkdown={activeMarkdown}
+          setActiveMarkdown={setActiveMarkdown}
+        />
+        <ContentEditable
           placeholder="What are your thoughts?"
-          contentEditable={true}
-          onInput={(e) => inputHandler(e)}
-          className="text-[14px] bg-darkContent text-white resize-none
+          ref={contentEditableRef}
+          html={postInfo.content}
+          tagName="pre"
+          onFocus={(e) => textFocusHandler(e)}
+          onBlur={() => {
+            setActiveMarkdown([]);
+          }}
+          onChange={inputHandler}
+          className="text-[14px] whitespace-pre-wrap w-full bg-darkContent text-white resize-none
           transition-all duration-200 border border-zinc-800 w-full
           h-80 focus:outline-0 focus:border-primary p-5 rounded-br rounded-bl"
         />

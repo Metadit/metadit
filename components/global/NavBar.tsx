@@ -3,7 +3,7 @@ import logo from "../../assets/images/logo.svg";
 import Button from "./Button";
 import Hamburger from "hamburger-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faSignIn } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faSignIn, faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import HiddenMenu from "./HiddenMenu";
 import Image from "next/image";
@@ -35,6 +35,15 @@ const NavBar = () => {
               src={logo}
               alt="metadit-logo"
             />
+          </Link>
+          <Link className="hidden lg:flex" href="/browse?tab=top">
+            <p
+              className="text-white transition-all duration-200
+             font-bold text-[13px] hover:text-primary flex items-center gap-1"
+            >
+              <FontAwesomeIcon icon={faGlobe} />
+              Browse
+            </p>
           </Link>
           <SearchBox className="hidden lg:block" />
         </div>
@@ -81,7 +90,7 @@ const NavBar = () => {
           )}
         </div>
       </div>
-      {isOpen && <HiddenMenu />}
+      {isOpen && <HiddenMenu closeMenu={() => setOpen(!isOpen)} />}
     </nav>
   );
 };

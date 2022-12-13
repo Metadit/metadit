@@ -4,7 +4,7 @@ import art from "../../../assets/images/homeart.svg";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const Content = () => {
+const Context = () => {
   return (
     <div
       className="w-full max-w-[1320px] items-center mx-auto
@@ -38,4 +38,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default Context;

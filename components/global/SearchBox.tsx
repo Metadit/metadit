@@ -12,11 +12,11 @@ const SearchBox = ({ className }: Props) => {
   return (
     <div
       className={`w-full transition-all duration-200 relative bg-darkContent border
-          border-zinc-800 rounded-md p-1.5 px-3 ${
+          border-zinc-800 rounded-md px-3 ${
             active && "border-primary"
           } ${className}`}
     >
-      <div className="absolute right-4">
+      <div className="absolute mt-1 left-0 right-4 ml-auto w-fit">
         <FontAwesomeIcon className="text-content text-sm" icon={faSearch} />
       </div>
       <Input
