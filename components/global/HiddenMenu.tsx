@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,7 +11,6 @@ import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
 import { useUser } from "../../src/contexts/User";
-import { useDetectOutsideClick } from "../../src/hooks/useDetectOutsideClick";
 
 interface Props {
   closeMenu: () => void;

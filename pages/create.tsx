@@ -20,7 +20,7 @@ const Create = () => {
     });
   };
 
-  //TODO when clicking on content activate relevant tabs in editor
+  // TODO when clicking on content activate relevant tabs in editor
   const textFocusHandler = (e: any) => {};
 
   return (

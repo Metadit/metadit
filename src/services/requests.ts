@@ -9,7 +9,7 @@ export const getRequest = async (path: string, params?: {}) => {
 };
 
 export const getAuthenticatedRequest = async (path: string, params?: {}) => {
-  const { token } = JSON.parse(localStorage.getItem("metadit") as any);
+  const { token } = JSON.parse(localStorage.getItem("metadit") as string);
   const { data } = await axios.get(`${API_URL}/${path}`, {
     headers: {
       Authorization: token,

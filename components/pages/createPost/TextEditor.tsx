@@ -47,18 +47,6 @@ const TextEditor = ({ setActiveMarkdown, activeMarkdown }: Props) => {
     );
   };
 
-  const activeMarkdownHandler = useCallback(() => {
-    const newActiveOptions = activeOptions.map((option) => {
-      option.active = activeMarkdown.includes(option.action);
-      return option;
-    });
-    setActiveOptions(newActiveOptions);
-  }, [activeMarkdown, activeOptions]);
-
-  useEffect(() => {
-    activeMarkdownHandler();
-  }, [activeMarkdown, activeMarkdownHandler]);
-
   return (
     <div
       className="w-full h-10 border-zinc-800 bg-darkContent rounded-tl
