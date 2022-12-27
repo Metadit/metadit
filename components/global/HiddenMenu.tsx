@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useRef } from "react";
 import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignIn, faStar, faGlobe } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSignIn,
+  faStar,
+  faGlobe,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
 import { useUser } from "../../src/contexts/User";
-import UserDropdown from "./UserDropdown";
+import { useDetectOutsideClick } from "../../src/hooks/useDetectOutsideClick";
 
 interface Props {
   closeMenu: () => void;
@@ -17,7 +22,7 @@ const HiddenMenu = ({ closeMenu }: Props) => {
   return (
     <div
       className="flex-col flex gap-2 p-5 w-full justify-center bg-zinc-800
-           bg-opacity-50 backdrop-blur border-b  border-b-zinc-800"
+           bg-opacity-50 backdrop-blur border-b border-b-zinc-800"
     >
       <Link onClick={closeMenu} href="/browse?tab=top">
         <Button className="w-full" normal={true}>
@@ -45,13 +50,20 @@ const HiddenMenu = ({ closeMenu }: Props) => {
           Our Discord
         </Button>
       </Link>
-      {user?.address ? (
-        <Link onClick={closeMenu} href="/create">
-          <Button className="bg-primary w-full mb-2" normal={false}>
-            + Create post
-          </Button>
-          <UserDropdown />
-        </Link>
+      {user?.wallet_address ? (
+        <>
+          <Link onClick={closeMenu} href="/profile">
+            <Button normal={true} className="bg-primary w-full">
+              <FontAwesomeIcon icon={faUser} />
+              Profile
+            </Button>
+          </Link>
+          <Link onClick={closeMenu} href="/create">
+            <Button className="bg-primary w-full" normal={false}>
+              + Create post
+            </Button>
+          </Link>
+        </>
       ) : (
         <Link onClick={closeMenu} href={"/login"}>
           <Button className="bg-primary" normal={false}>

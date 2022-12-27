@@ -3,7 +3,7 @@ export interface IUserLocalStorage {
   wallet_address: string;
 }
 
-export interface ITokenDecoded {
+export interface IUserAuthTokenDecoded {
   exp: number;
   iat: number;
   wallet_address: string;

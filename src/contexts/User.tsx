@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ITokenDecoded, IUserLocalStorage } from "../types/user";
+import { IUserAuthTokenDecoded, IUserLocalStorage } from "../types/user";
 import jwt_decode from "jwt-decode";
 import Loading from "../../components/global/Loading";
 interface Props {
@@ -31,11 +31,11 @@ export const UserProvider = ({ children }: Props) => {
       const userLocalStorage: IUserLocalStorage = JSON.parse(
         localStorage.getItem("metadit") as string
       );
-      const decodeToken: ITokenDecoded =
+      const userAuthToken: IUserAuthTokenDecoded =
         userLocalStorage && jwt_decode(userLocalStorage.token);
-      if (decodeToken) {
+      if (userAuthToken) {
         const now = new Date().getTime();
-        const exp = decodeToken.exp * 1000;
+        const exp = userAuthToken.exp * 1000;
         const didTokenExpire = now > exp;
         if (didTokenExpire) {
           localStorage.removeItem("metadit");
@@ -43,7 +43,7 @@ export const UserProvider = ({ children }: Props) => {
         }
       }
       const userData = userLocalStorage
-        ? { ...userLocalStorage, address: decodeToken.wallet_address }
+        ? { ...userLocalStorage, wallet_address: userAuthToken.wallet_address }
         : null;
       setUser(userData);
       setLoading(false);

@@ -25,28 +25,31 @@ const dropDownLinks = [
 interface Props {
   toggleDropDown?: React.Dispatch<SetStateAction<boolean>>;
   dropDown?: boolean;
+  className?: string;
 }
 
-const UserDropdown = ({ toggleDropDown, dropDown }: Props) => {
+const UserDropdown = ({ toggleDropDown, dropDown, className }: Props) => {
   const { user } = useUser();
   return (
     <div
       onClick={() => (toggleDropDown ? toggleDropDown(!dropDown) : null)}
-      className="text-white text-[12px] relative
-      flex items-center justify-between gap-5 cursor-pointer
-      transition-all w-auto px-5 py-2 lg:py-0 rounded-md hover:transition-all
-      hover:duration-200 hover:brightness-125 bg-zinc-800 border border-zinc-700"
+      className={`text-white text-[12px] relative
+        flex items-center justify-between gap-1 cursor-pointer
+        transition-all w-auto px-5 py-2 lg:py-0 rounded-md hover:transition-all
+        hover:duration-200 hover:brightness-125 bg-zinc-800 border border-zinc-700 ${className}`}
     >
       {dropDown && <Dropdown links={dropDownLinks} />}
-      <div className="flex items-center">
+      <div className="flex items-center overflow-hidden">
         <Avatar
           className="mr-2 align-top"
           name="Jager32"
           size="20"
           round={true}
         />
-        {user?.address && (
-          <p className="text-[13px]">{user?.address.substring(0, 5)}...</p>
+        {user?.wallet_address && (
+          <p className="text-[13px] w-full max-w-[300px] lg:max-w-[60px] overflow-hidden text-ellipsis">
+            {user?.wallet_address}
+          </p>
         )}
       </div>
       <motion.div
@@ -55,7 +58,7 @@ const UserDropdown = ({ toggleDropDown, dropDown }: Props) => {
         }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
       >
-        <FontAwesomeIcon className="mr-2" icon={faCaretDown} />
+        <FontAwesomeIcon icon={faCaretDown} />
       </motion.div>
     </div>
   );

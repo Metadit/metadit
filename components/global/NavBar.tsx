@@ -28,7 +28,7 @@ const NavBar = () => {
         className="h-full w-full px-10 max-w-[1400px]
       mx-auto flex items-center justify-between"
       >
-        <div className="flex gap-6 w-full items-center max-w-[400px]">
+        <div className="flex gap-6 w-full items-center md:max-w-[400px] xl:max-w-[450px]">
           <Link href={user?.wallet_address ? "/browse?tab=top" : "/"}>
             <Image
               className="w-[100px] lg:w-[200px]"
