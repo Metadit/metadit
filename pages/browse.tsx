@@ -6,7 +6,7 @@ import PageContainer from "../components/global/PageContainer";
 
 const Browse = () => {
   return (
-    <PageContainer>
+    <PageContainer pageTitle="Browse Metadit">
       <ContentTabs />
       <div className="flex flex-col gap-5">
         {Array.from({ length: 6 }).map((_, i) => (

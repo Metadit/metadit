@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faRocket,
@@ -35,7 +35,7 @@ const ContentTabs = () => {
     setActiveTab(index);
     navigate.replace("/browse?tab=" + tab.name.toLowerCase());
   };
-  const paramsHandler = () => {
+  const paramsHandler = useCallback(() => {
     if (getTabParams === "hot") {
       setActiveTab(Tabs.Hot);
     } else if (getTabParams === "new") {
@@ -43,10 +43,10 @@ const ContentTabs = () => {
     } else {
       setActiveTab(Tabs.Top);
     }
-  };
+  }, [getTabParams]);
   useEffect(() => {
     paramsHandler();
-  }, [getTabParams]);
+  }, [getTabParams, paramsHandler]);
 
   return (
     <div

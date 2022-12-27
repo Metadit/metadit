@@ -45,7 +45,9 @@ const UserDropdown = ({ toggleDropDown, dropDown }: Props) => {
           size="20"
           round={true}
         />
-        <p className="text-[13px]">{user?.address.substring(0, 5)}...</p>
+        {user?.address && (
+          <p className="text-[13px]">{user?.address.substring(0, 5)}...</p>
+        )}
       </div>
       <motion.div
         animate={{

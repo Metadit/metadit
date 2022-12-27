@@ -26,6 +26,7 @@
     "eslint-config-next": "13.0.3",
     "framer-motion": "^7.6.6",
     "hamburger-react": "^2.5.0",
+    "jwt-decode": "^3.1.2",
     "next": "13.0.3",
     "prettier": "^2.7.1",
     "react": "18.2.0",
@@ -33,13 +34,14 @@
     "react-contenteditable": "^3.3.6",
     "react-custom-scrollbars-2": "^4.5.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.0",
     "react-html-parser": "^2.0.2",
     "react-query": "^3.39.2",
     "sanitize-html": "^2.8.0",
     "spinners-react": "^1.0.7",
     "tippy.js": "^6.3.7",
     "typescript": "4.8.4",
-    "web3": "^1.8.1"
+    "web3": "1.7.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

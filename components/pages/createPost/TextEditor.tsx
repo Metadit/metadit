@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect } from "react";
+import React, { SetStateAction, useCallback, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -47,17 +47,17 @@ const TextEditor = ({ setActiveMarkdown, activeMarkdown }: Props) => {
     );
   };
 
-  const activeMarkdownHandler = () => {
+  const activeMarkdownHandler = useCallback(() => {
     const newActiveOptions = activeOptions.map((option) => {
       option.active = activeMarkdown.includes(option.action);
       return option;
     });
     setActiveOptions(newActiveOptions);
-  };
+  }, [activeMarkdown, activeOptions]);
 
   useEffect(() => {
     activeMarkdownHandler();
-  }, [activeMarkdown]);
+  }, [activeMarkdown, activeMarkdownHandler]);
 
   return (
     <div

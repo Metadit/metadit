@@ -1,19 +1,19 @@
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import React from "react";
+import React, { useState, useRef, ChangeEvent } from "react";
 import Input from "../components/global/Input";
 import Button from "../components/global/Button";
 import TextEditor from "../components/pages/createPost/TextEditor";
 import ContentEditable from "react-contenteditable";
 
 const Create = () => {
-  const [postInfo, setPostInfo] = React.useState({
+  const [postInfo, setPostInfo] = useState({
     title: "",
     content: "",
   });
-  const [activeMarkdown, setActiveMarkdown] = React.useState<string[]>([]);
-  const contentEditableRef = React.useRef<any>(null);
-  const inputHandler = (e: React.ChangeEvent<any>) => {
+  const [activeMarkdown, setActiveMarkdown] = useState<string[]>([]);
+  const contentEditableRef = useRef<any>(null);
+  const inputHandler = (e: ChangeEvent<any>) => {
     setPostInfo({
       ...postInfo,
       [e.target.name || "content"]: e.target.value,
@@ -24,7 +24,7 @@ const Create = () => {
   const textFocusHandler = (e: any) => {};
 
   return (
-    <PageContainer>
+    <PageContainer pageTitle="Create Post">
       <h1 className="text-white text-[30px] font-bold">Create post</h1>
       <div
         className="mt-10 border border-zinc-800 bg-contentBg

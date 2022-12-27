@@ -1,7 +1,7 @@
 import { getRequest } from "../requests";
 
 interface ISign {
-  address: string;
+  wallet_address: string;
 }
 export const signUserWallet = async (params: ISign) => {
   return await getRequest("auth/sign", {
@@ -10,7 +10,7 @@ export const signUserWallet = async (params: ISign) => {
 };
 
 interface IAuthenticate {
-  address: string;
+  wallet_address: string;
   signature: string;
 }
 export const authenticateUser = async (params: IAuthenticate) => {

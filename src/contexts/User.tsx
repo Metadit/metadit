@@ -5,13 +5,15 @@ import React, {
   useEffect,
   useState,
 } from "react";
-
+import { ITokenDecoded, IUserLocalStorage } from "../types/user";
+import jwt_decode from "jwt-decode";
+import Loading from "../../components/global/Loading";
 interface Props {
   children: React.ReactNode;
 }
 
 export const UserContext = createContext<{
-  user: null | { address: string };
+  user: null | IUserLocalStorage;
   setUser: React.Dispatch<SetStateAction<any>>;
   loading: boolean | null;
 }>({
@@ -22,15 +24,26 @@ export const UserContext = createContext<{
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }: Props) => {
-  const [user, setUser] = useState<{ address: string } | null>(null);
+  const [user, setUser] = useState<IUserLocalStorage | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     if (loading) {
-      const userLocalStorage = JSON.parse(
+      const userLocalStorage: IUserLocalStorage = JSON.parse(
         localStorage.getItem("metadit") as string
       );
+      const decodeToken: ITokenDecoded =
+        userLocalStorage && jwt_decode(userLocalStorage.token);
+      if (decodeToken) {
+        const now = new Date().getTime();
+        const exp = decodeToken.exp * 1000;
+        const didTokenExpire = now > exp;
+        if (didTokenExpire) {
+          localStorage.removeItem("metadit");
+          setUser(null);
+        }
+      }
       const userData = userLocalStorage
-        ? { address: userLocalStorage.address }
+        ? { ...userLocalStorage, address: decodeToken.wallet_address }
         : null;
       setUser(userData);
       setLoading(false);
@@ -38,7 +51,13 @@ export const UserProvider = ({ children }: Props) => {
   }, [loading]);
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
-      {children}
+      {loading ? (
+        <div className="w-full h-full absolute flex items-center justify-center">
+          <Loading size={45} />
+        </div>
+      ) : (
+        children
+      )}
     </UserContext.Provider>
   );
 };

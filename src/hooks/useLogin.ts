@@ -16,24 +16,24 @@ export const useLogin = () => {
           method: "eth_requestAccounts",
         });
 
-        const address = Web3.utils.toChecksumAddress(accounts[0]);
-        const { signature } = await signUserWallet({ address: address });
+        const wallet_address = Web3.utils.toChecksumAddress(accounts[0]);
+        const { signature } = await signUserWallet({ wallet_address });
         const { token } = await authenticateUser({
-          address,
+          wallet_address,
           signature,
         });
         localStorage.setItem(
           "metadit",
           JSON.stringify({
             token,
-            address,
+            wallet_address,
           })
         );
-        setUser({ address });
-        window.location.replace("/browse");
+        setUser({ wallet_address });
+        window.location.replace("/browse?tab=top");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      throw new Error(error);
     }
     setLoading(false);
   };

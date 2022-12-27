@@ -18,7 +18,7 @@ const NotFoundPage = () => {
       />
       <h1 className="text-white text-[30px]">Oops sorry...you hit 404</h1>
       <p className="text-content">
-        You're at the lost district, let's get you out.
+        You&apos;re at the lost district, let&apos;s get you out.
       </p>
       <Link href={"/"}>
         <Button normal={false} className="bg-primary mt-5">

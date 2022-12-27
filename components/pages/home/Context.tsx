@@ -3,6 +3,7 @@ import Button from "../../global/Button";
 import art from "../../../assets/images/homeart.svg";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const Context = () => {
   return (
@@ -19,9 +20,11 @@ const Context = () => {
           Yeah literally, you just login with your wallet of choice, like
           Metamask, and you can immediately start posting. Simple right?{" "}
         </p>
-        <Button className="bg-primary mt-5" normal={false}>
-          Join now
-        </Button>
+        <Link href="/login">
+          <Button className="bg-primary mt-5" normal={false}>
+            Join now
+          </Button>
+        </Link>
       </div>
       <motion.div
         animate={{
