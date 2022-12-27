@@ -8,7 +8,7 @@ interface Props {
 
 const Loading = ({ size, color }: Props) => {
   return (
-    <div className="flex justify-center w-full">
+    <div className="w-full h-full absolute flex justify-center items-center">
       <CircularProgress sx={{ color: color || "white" }} size={size || 25} />
     </div>
   );

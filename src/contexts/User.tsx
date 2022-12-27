@@ -42,9 +42,7 @@ export const UserProvider = ({ children }: Props) => {
           setUser(null);
         }
       }
-      const userData = userLocalStorage
-        ? { ...userLocalStorage, wallet_address: userAuthToken.wallet_address }
-        : null;
+      const userData = userLocalStorage ? userLocalStorage : null;
       setUser(userData);
       setLoading(false);
     }

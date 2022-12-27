@@ -1,5 +1,9 @@
 export interface IUserLocalStorage {
   token: string;
+  id: number;
+  date: string;
+  display_name: string | null;
+  message: string;
   wallet_address: string;
 }
 
