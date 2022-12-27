@@ -8,7 +8,7 @@ interface Props {
 
 const Vote = ({ count }: Props) => {
   return (
-    <div className="flex flex-col gap-2 absolute left-[-20px]">
+    <div className="flex flex-col gap-2 absolute left-[-20px] ml-2">
       <div
         className="bg-contentBg w-[35px] border border-zinc-700
       h-[35px] flex items-center justify-center rounded-md transition-all
