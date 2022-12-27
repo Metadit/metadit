@@ -26,8 +26,13 @@ export const UserProvider = ({ children }: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     if (loading) {
-      const userStore = JSON.parse(localStorage.getItem("metadit") as string);
-      setUser({ address: userStore });
+      const userLocalStorage = JSON.parse(
+        localStorage.getItem("metadit") as string
+      );
+      const userData = userLocalStorage
+        ? { address: userLocalStorage.address }
+        : null;
+      setUser(userData);
       setLoading(false);
     }
   }, [loading]);

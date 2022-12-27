@@ -29,7 +29,7 @@ const NavBar = () => {
       mx-auto flex items-center justify-between"
       >
         <div className="flex gap-6 w-full items-center max-w-[400px]">
-          <Link href={user?.address ? "/browse" : "/"}>
+          <Link href={user?.address ? "/browse?tab=top" : "/"}>
             <Image
               className="w-[100px] lg:w-[200px]"
               src={logo}
@@ -68,7 +68,7 @@ const NavBar = () => {
               Our Discord
             </Button>
           </Link>
-          {user?.address ? (
+          {user ? (
             <>
               <Link href="/create">
                 <Button className="bg-primary" normal={false}>

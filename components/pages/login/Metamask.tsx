@@ -17,7 +17,7 @@ const Metamask = () => {
         hover:brightness-110 cursor-pointer focus:outline-none focus:scale-90`}
     >
       {loading ? (
-        <Loading />
+        <Loading size={25} />
       ) : (
         <>
           <Image width={20} src={metamask} alt="metamask" />

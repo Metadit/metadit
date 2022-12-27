@@ -1,20 +1,15 @@
 import React from "react";
-import { SpinnerCircular } from "spinners-react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface Props {
   size?: number;
+  color?: string;
 }
 
-const Loading = ({ size }: Props) => {
+const Loading = ({ size, color }: Props) => {
   return (
     <div className="flex justify-center w-full">
-      <SpinnerCircular
-        size={size || 30}
-        thickness={100}
-        speed={150}
-        color="white"
-        secondaryColor="transparent"
-      />
+      <CircularProgress sx={{ color: "white" }} size={size || 25} />
     </div>
   );
 };
