@@ -37,6 +37,7 @@
     "react-hot-toast": "^2.4.0",
     "react-html-parser": "^2.0.2",
     "react-query": "^3.39.2",
+    "react-quill": "^2.0.0",
     "sanitize-html": "^2.8.0",
     "spinners-react": "^1.0.7",
     "tippy.js": "^6.3.7",

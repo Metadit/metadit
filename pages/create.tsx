@@ -1,27 +1,36 @@
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import React, { useState, useRef, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Input from "../components/global/Input";
 import Button from "../components/global/Button";
-import TextEditor from "../components/pages/createPost/TextEditor";
-import ContentEditable from "react-contenteditable";
+import dynamic from "next/dynamic";
+const QuillNoSSRWrapper = dynamic(import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+});
 
 const Create = () => {
-  const [postInfo, setPostInfo] = useState({
-    title: "",
-    content: "",
-  });
-  const [activeMarkdown, setActiveMarkdown] = useState<string[]>([]);
-  const contentEditableRef = useRef<any>(null);
-  const inputHandler = (e: ChangeEvent<any>) => {
-    setPostInfo({
-      ...postInfo,
-      [e.target.name || "content"]: e.target.value,
-    });
+  const [postTitle, setPostTitle] = useState("");
+  const [content, setContent] = useState("");
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }, { header: "3" }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
   };
-
-  // TODO when clicking on content activate relevant tabs in editor
-  const textFocusHandler = (e: any) => {};
+  useEffect(() => {
+    if (content === "<p><br></p>") {
+      setContent("");
+    }
+  }, [content]);
 
   return (
     <PageContainer pageTitle="Create Post">
@@ -35,32 +44,20 @@ const Create = () => {
           type="text"
           name="title"
           placeholder={"Title"}
-          onChange={(e) => inputHandler(e)}
-          value={postInfo.title}
+          onChange={(e) => setPostTitle(e.target.value)}
+          value={postTitle}
         />
-        <TextEditor
-          activeMarkdown={activeMarkdown}
-          setActiveMarkdown={setActiveMarkdown}
-        />
-        <ContentEditable
-          placeholder="What are your thoughts?"
-          ref={contentEditableRef}
-          html={postInfo.content}
-          tagName="pre"
-          onFocus={(e) => textFocusHandler(e)}
-          onBlur={() => {
-            setActiveMarkdown([]);
-          }}
-          onChange={inputHandler}
-          className="text-[14px] whitespace-pre-wrap w-full bg-darkContent text-white resize-none
-          transition-all duration-200 border border-zinc-800 w-full
-          h-80 focus:outline-0 focus:border-primary p-5 rounded-br rounded-bl"
+        <QuillNoSSRWrapper
+          modules={modules}
+          onChange={setContent}
+          style={{ marginTop: 20 }}
+          theme="snow"
         />
         <Button
           normal={false}
           disabled={true}
           className={`mt-10 bg-primary w-full max-w-[100px] mx-auto ${
-            postInfo.content.length < 1 && "bg-content cursor-not-allowed"
+            content.length < 1 && "bg-content cursor-not-allowed"
           }`}
         >
           Create
