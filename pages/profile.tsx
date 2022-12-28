@@ -10,23 +10,32 @@ import {
   userThreadsService,
 } from "../src/services/profile";
 import { UserContext } from "../src/contexts/User";
+import toast from "react-hot-toast";
 
 const Profile = () => {
   const { user } = useContext(UserContext);
-  const {
-    data: activity,
-    isLoading: activityLoading,
-    error: activityError,
-  } = useQuery("userActivity", () => {
-    return userActivityService(user?.id as number);
-  });
-  const {
-    data: threads,
-    isLoading: threadsLoading,
-    error: threadsError,
-  } = useQuery("userThreads", () => {
-    return userThreadsService(user?.id as number);
-  });
+  const { data: activity, isLoading: activityLoading } = useQuery(
+    "userActivity",
+    () => {
+      userActivityService(user?.id as number).catch(() =>
+        toast.error("Error fetching user activity")
+      );
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+  const { data: threads, isLoading: threadsLoading } = useQuery(
+    "userThreads",
+    () => {
+      userThreadsService(user?.id as number).catch(() =>
+        toast.error("Error fetching user threads")
+      );
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
   return (
     <PageContainer>
       <div

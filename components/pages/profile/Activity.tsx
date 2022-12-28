@@ -12,7 +12,7 @@ const Activity = ({ data, activityLoading }: Props) => {
       <h2 className="text-white font-bold text-lg mb-5">Activity</h2>
       <div className="overflow-hidden h-[300px] overflow-y-scroll pr-2 relative">
         {activityLoading ? (
-          <Loading size={40} />
+          <Loading size={30} />
         ) : (
           Array.from({ length: 6 }).map((_, i) => <ActivityRecord key={i} />)
         )}

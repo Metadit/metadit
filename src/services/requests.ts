@@ -14,7 +14,9 @@ export const getAuthenticatedRequest = async (path: string, params?: {}) => {
     headers: {
       Authorization: token,
     },
-    ...params,
+    params: {
+      ...params,
+    },
   });
   return data;
 };

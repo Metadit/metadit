@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: Props) {
   const getLayout = Component.getLayout ?? ((page: any) => page);
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
+      <Toaster position="top-right" />
       <UserProvider>{getLayout(<Component {...pageProps} />)}</UserProvider>
     </QueryClientProvider>
   );

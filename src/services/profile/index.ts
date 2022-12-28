@@ -1,14 +1,13 @@
-import axios from "axios";
 import { getAuthenticatedRequest } from "../requests";
 
-export const userActivityService = async (user_id: number) => {
+export const userActivityService = async (userId: number) => {
   return await getAuthenticatedRequest("user/activity", {
-    user_id,
+    userId,
   });
 };
 
-export const userThreadsService = async (user_id: number) => {
+export const userThreadsService = async (userId: number) => {
   return await getAuthenticatedRequest("user/threads", {
-    user_id,
+    userId,
   });
 };
