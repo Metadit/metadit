@@ -1,15 +1,15 @@
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState } from "react";
 import Input from "../components/global/Input";
 import Button from "../components/global/Button";
-import dynamic from "next/dynamic";
-const QuillNoSSRWrapper = dynamic(import("react-quill"), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
-});
+import { useThread } from "../src/hooks/useThread";
+import Loading from "../components/global/Loading";
 
 const Create = () => {
+  const ReactQuill =
+    typeof window === "object" ? require("react-quill") : () => false;
+  const { createLoading, createThread } = useThread();
   const [postTitle, setPostTitle] = useState("");
   const [content, setContent] = useState("");
   const modules = {
@@ -26,11 +26,9 @@ const Create = () => {
       matchVisual: false,
     },
   };
-  useEffect(() => {
-    if (content === "<p><br></p>") {
-      setContent("");
-    }
-  }, [content]);
+  const submitHandler = async () => {
+    await createThread(postTitle, content);
+  };
 
   return (
     <PageContainer pageTitle="Create Post">
@@ -47,20 +45,27 @@ const Create = () => {
           onChange={(e) => setPostTitle(e.target.value)}
           value={postTitle}
         />
-        <QuillNoSSRWrapper
+        <ReactQuill
           modules={modules}
-          onChange={setContent}
+          onChange={(e: React.SetStateAction<string>) => {
+            if (e === "<p><br></p>") {
+              setContent("");
+            } else {
+              setContent(e);
+            }
+          }}
           style={{ marginTop: 20 }}
           theme="snow"
         />
         <Button
+          onClick={submitHandler}
           normal={false}
-          disabled={true}
+          disabled={postTitle === "" || content === "" || createLoading}
           className={`mt-10 bg-primary w-full max-w-[100px] mx-auto ${
             content.length < 1 && "bg-content cursor-not-allowed"
           }`}
         >
-          Create
+          {createLoading ? <Loading size={15} /> : "Create"}
         </Button>
       </div>
     </PageContainer>

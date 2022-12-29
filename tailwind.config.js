@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {DefaultColors} */
 const colors = require("tailwindcss/colors");
 module.exports = {
   content: [
@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.rose["600"],
+        primary: colors.sky["600"],
         content: colors.zinc["500"],
         contentBg: "#181818",
         darkContent: "#151515",

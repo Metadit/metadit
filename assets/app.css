@@ -42,6 +42,10 @@ body {
   border-bottom: 0!important;
   border-radius: 5px 5px 0 0!important;
 }
+.ql-editor {
+  min-height: 200px;
+  font-family: "Poppins", sans-serif;
+}
 button.ql-underline.ql-active .ql-fill {
   stroke: #E11D48!important;
   fill: #E11D48!important;

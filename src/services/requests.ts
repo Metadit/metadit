@@ -20,3 +20,13 @@ export const getAuthenticatedRequest = async (path: string, params?: {}) => {
   });
   return data;
 };
+
+export const postAuthenticatedRequest = async (path: string, body: {}) => {
+  const { token } = JSON.parse(localStorage.getItem("metadit") as string);
+  const { data } = await axios.post(`${API_URL}/${path}`, body, {
+    headers: {
+      Authorization: token,
+    },
+  });
+  return data;
+};
