@@ -14,12 +14,9 @@ const Create = () => {
   const [content, setContent] = useState("");
   const modules = {
     toolbar: [
-      [{ header: "1" }, { header: "2" }, { header: "3" }],
-      [{ size: [] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
       [{ list: "ordered" }, { list: "bullet" }],
       ["link", "image"],
-      ["clean"],
     ],
     clipboard: {
       // toggle to add extra line breaks when pasting HTML:

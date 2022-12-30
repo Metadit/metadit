@@ -25,6 +25,7 @@ export default function App({ Component, pageProps }: Props) {
             background: "#181818",
             color: "#fff",
             border: "1px solid #282828",
+            fontSize: "13px",
           },
         }}
       />

@@ -1,14 +1,17 @@
 import React from "react";
 import Button from "../../global/Button";
+import { IUserThreads } from "../../../src/services/profile";
+import parse from "html-react-parser";
 
-const ThreadCard = () => {
+interface Props {
+  thread: IUserThreads;
+}
+const ThreadCard = ({ thread }: Props) => {
   return (
     <div className="w-full border  rounded rounded-xl border-zinc-800 p-4 text-center">
-      <h1 className="text-white font-bold text-[20px]">Title</h1>
+      <h1 className="text-white font-bold text-[18px]">{thread.threadtitle}</h1>
       <p className="text-content text-sm my-2 leading-6">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad animi culpa
-        doloribus eaque exercitationem in laboriosam libero, minima molestias
-        mollitia nostrum sequi.
+        {parse(thread.threadcontent)}
       </p>
       <Button normal={false} className="bg-primary w-[30%] mx-auto mt-5">
         View

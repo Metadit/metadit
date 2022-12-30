@@ -14,11 +14,11 @@ export const useLogin = () => {
 
   const walletAuthHandler = async (wallet_address: string) => {
     try {
-      const { signature } = await signUserWalletService({ wallet_address });
-      const { token } = await authenticateUserService({
+      const { signature } = await signUserWalletService(wallet_address);
+      const { token } = await authenticateUserService(
         wallet_address,
-        signature,
-      });
+        signature
+      );
       localStorage.setItem(
         "metadit",
         JSON.stringify({

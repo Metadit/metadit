@@ -1,6 +1,10 @@
 import React from "react";
+import { IUserActivity } from "../../../src/services/profile";
 
-const ActivityRecord = () => {
+interface Props {
+  data: IUserActivity | undefined;
+}
+const ActivityRecord = ({ data }: Props) => {
   return (
     <div className="w-full mx-auto rounded p-4 bg-darkContent border border-zinc-800 mb-2">
       <p className="text-white text-sm text-center">

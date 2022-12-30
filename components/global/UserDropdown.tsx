@@ -9,18 +9,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const logoutHandler = () => {
   localStorage.removeItem("metadit");
   window.location.replace("/");
 };
-
-const dropDownLinks = [
-  { icon: faUser, text: "Profile", href: "/profile" },
-  { icon: faCog, text: "Settings", href: "/settings" },
-  { icon: faSignOut, text: "Logout", href: "/", onClick: logoutHandler },
-];
 
 interface Props {
   toggleDropDown?: React.Dispatch<SetStateAction<boolean>>;
@@ -30,6 +24,11 @@ interface Props {
 
 const UserDropdown = ({ toggleDropDown, dropDown, className }: Props) => {
   const { user } = useUser();
+  const dropDownLinks = [
+    { icon: faUser, text: "Profile", href: `/profile/${user?.id}` },
+    { icon: faCog, text: "Settings", href: "/settings" },
+    { icon: faSignOut, text: "Logout", href: "/", onClick: logoutHandler },
+  ];
   return (
     <div
       onClick={() => (toggleDropDown ? toggleDropDown(!dropDown) : null)}
@@ -38,7 +37,9 @@ const UserDropdown = ({ toggleDropDown, dropDown, className }: Props) => {
         transition-all w-auto px-5 py-2 lg:py-0 rounded-md hover:transition-all
         hover:duration-200 hover:brightness-125 bg-zinc-800 border border-zinc-700 ${className}`}
     >
-      {dropDown && <Dropdown links={dropDownLinks} />}
+      <AnimatePresence>
+        {dropDown && <Dropdown links={dropDownLinks} />}
+      </AnimatePresence>
       <div className="flex items-center overflow-hidden">
         <Avatar
           className="mr-2 align-top"

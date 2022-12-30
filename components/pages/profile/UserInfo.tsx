@@ -5,14 +5,18 @@ import Tippy from "@tippyjs/react";
 
 interface Props {
   icon: IconDefinition;
-  info: string;
+  info: string | undefined;
   children?: React.ReactNode;
   name: string;
+  onClick?: () => void;
 }
 
-const UserInfo = ({ icon, info, children, name }: Props) => {
+const UserInfo = ({ icon, info, children, name, onClick }: Props) => {
   return (
-    <div className="w-[80%] mx-auto rounded bg-darkContent border border-zinc-800 mb-2">
+    <div
+      onClick={onClick}
+      className="w-[80%] mx-auto rounded bg-darkContent border border-zinc-800 mb-2"
+    >
       <div className="flex flex-wrap justify-between py-3 px-4">
         <Tippy content={name}>
           <div className="flex items-center gap-2 w-full max-w-[80%] md:max-w-[90%]">

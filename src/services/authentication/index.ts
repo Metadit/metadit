@@ -1,20 +1,17 @@
 import { getRequest } from "../requests";
 
-interface ISign {
-  wallet_address: string;
-}
-export const signUserWalletService = async (params: ISign) => {
+export const signUserWalletService = async (wallet_address: string) => {
   return await getRequest("auth/sign", {
-    params,
+    wallet_address,
   });
 };
 
-interface IAuthenticate {
-  wallet_address: string;
-  signature: string;
-}
-export const authenticateUserService = async (params: IAuthenticate) => {
+export const authenticateUserService = async (
+  wallet_address: string,
+  signature: string
+) => {
   return await getRequest("auth/authenticate", {
-    params,
+    wallet_address,
+    signature,
   });
 };

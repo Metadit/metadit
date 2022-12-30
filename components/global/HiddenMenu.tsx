@@ -51,7 +51,7 @@ const HiddenMenu = ({ closeMenu }: Props) => {
       </Link>
       {user?.wallet_address ? (
         <>
-          <Link onClick={closeMenu} href="/profile">
+          <Link onClick={closeMenu} href="/profile/[id]/index">
             <Button normal={true} className="bg-primary w-full">
               <FontAwesomeIcon icon={faUser} />
               Profile

@@ -1,11 +1,15 @@
 import React from "react";
-import Image from "next/image";
-import meme from "../../../assets/images/meme.png";
+import parse from "html-react-parser";
 import CommentCount from "./CommentCount";
 import Vote from "./Vote";
 import Link from "next/link";
+import { IThread } from "../../../src/services/threads";
+import moment from "moment";
 
-const Post = () => {
+interface Props {
+  data: IThread;
+}
+const Post = ({ data }: Props) => {
   return (
     <div
       className="w-full
@@ -13,19 +17,24 @@ const Post = () => {
       rounded-xl h-auto px-10 py-5 relative"
     >
       <div>
-        <Vote count={200} />
+        <Vote count={data.vote_count} />
       </div>
-      <p className="text-sm text-content">
-        Posted by <span className="text-primary font-bold">Jager32</span> 12
-        hours ago
-      </p>
-      <Link href="/post/1">
-        <h1 className="text-[20px] md:text-[30px] text-white mt-2">
-          Saw a guy walking the other day and this is what happened
-        </h1>
-        <Image className="my-5" src={meme} alt="meme" />
+      <Link className="w-full" href={`/post/${data.id}`}>
+        <p className="text-[12px] text-content">
+          Posted by{" "}
+          <Link href={`/profile/${data.userid}`}>
+            <span className="text-primary transition-all duration-200 font-bold hover:opacity-80">
+              {data.user_wallet.substring(0, 10) + "..."}
+            </span>{" "}
+          </Link>
+          {moment(data.datepublished).fromNow()}
+        </p>
+        <p className="text-white text-[20px] mt-2">{data.threadtitle}</p>
+        <div className="text-white text-[14px] opacity-60 mt-2 my-10">
+          {parse(data.threadcontent)}
+        </div>
       </Link>
-      <CommentCount count={322} />
+      <CommentCount count={data.comment_count} />
     </div>
   );
 };

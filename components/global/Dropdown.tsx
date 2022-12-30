@@ -1,6 +1,7 @@
 import React from "react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface Props {
   links: { icon: IconProp; text: string; href: string; onClick?: () => void }[];
@@ -8,7 +9,10 @@ interface Props {
 
 const Dropdown = ({ links }: Props) => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
       className="absolute w-full p-2
     bg-contentBg border border-zinc-800 left-0
     text-[13px] top-9 rounded-md text-center
@@ -24,7 +28,7 @@ const Dropdown = ({ links }: Props) => {
           <a href={link.href}>{link.text}</a>
         </div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 

@@ -3,7 +3,9 @@ import axios from "axios";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const getRequest = async (path: string, params?: {}) => {
   const { data } = await axios.get(`${API_URL}/${path}`, {
-    ...params,
+    params: {
+      ...params,
+    },
   });
   return data;
 };
