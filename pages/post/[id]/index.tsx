@@ -21,7 +21,11 @@ const Index = () => {
   });
   const threadData = data as unknown as IThread;
   return (
-    <PageContainer>
+    <PageContainer
+      pageTitle={`${
+        isLoading || isFetching ? "Metadit Thread" : threadData?.threadtitle
+      }`}
+    >
       <div
         className="w-full
       border border-zinc-800 bg-contentBg

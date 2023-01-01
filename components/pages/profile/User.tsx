@@ -33,7 +33,9 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
   return (
     <>
       <Head>
-        <title>Jager32 profile</title>
+        <title>{`${
+          !data ? "User" : data?.wallet_address.substring(0, 10)
+        } profile`}</title>
       </Head>
       <div
         className={`rounded-lg w-full bg-darkContent 
