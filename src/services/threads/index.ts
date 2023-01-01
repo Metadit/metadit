@@ -21,7 +21,9 @@ export interface IThread {
   datepublished: string;
 }
 
-export const createThreadService = async (body: IThreadCreate) => {
+export const createThreadService = async (
+  body: IThreadCreate
+): Promise<{ id: number }> => {
   return await postAuthenticatedRequest("threads/create", body);
 };
 

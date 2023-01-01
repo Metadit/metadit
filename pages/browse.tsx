@@ -27,7 +27,7 @@ const Browse = () => {
       <ContentTabs />
       <div className="flex flex-col gap-5 relative">
         {isLoading || isFetching ? (
-          <div className="mt-5">
+          <div className="mt-32">
             <Loading size={30} />
           </div>
         ) : (

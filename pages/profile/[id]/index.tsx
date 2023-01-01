@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import User from "../../../components/pages/profile/User";
@@ -10,34 +10,46 @@ import {
   IUserProfile,
   IUserThreads,
 } from "../../../src/services/profile";
+import UserNotFound from "./userNotFound";
 
 const Index = () => {
   const userIdParams = window.location.pathname.split("/")[2];
   const { activity, threads, userProfile } = useProfile(Number(userIdParams));
+
+  useEffect(() => {
+    if (isNaN(Number(userIdParams))) {
+      window.location.href = "/404";
+    }
+  }, [userIdParams]);
+
   return (
     <PageContainer>
-      <div
-        className="w-full h-auto p-6 bg-contentBg
+      {userProfile.data && Object.keys(userProfile.data as {}).length === 0 ? (
+        <UserNotFound />
+      ) : (
+        <div
+          className="w-full h-auto p-6 bg-contentBg
        border border-zinc-800 rounded mt-5"
-      >
-        <div className="flex flex-wrap gap-4">
-          <User
-            profileLoading={userProfile.isLoading}
-            isFetching={userProfile.isFetching}
-            data={userProfile.data as unknown as IUserProfile}
-          />
-          <Activity
-            activityLoading={activity.isLoading}
-            isFetching={activity.isFetching}
-            data={activity.data as unknown as IUserActivity[]}
-          />
-          <Threads
-            threadsLoading={threads.isLoading}
-            isFetching={threads.isFetching}
-            data={threads.data as unknown as IUserThreads[]}
-          />
+        >
+          <div className="flex flex-wrap gap-4">
+            <User
+              profileLoading={userProfile.isLoading}
+              isFetching={userProfile.isFetching}
+              data={userProfile.data as unknown as IUserProfile}
+            />
+            <Activity
+              activityLoading={activity.isLoading}
+              isFetching={activity.isFetching}
+              data={activity.data as unknown as IUserActivity[]}
+            />
+            <Threads
+              threadsLoading={threads.isLoading}
+              isFetching={threads.isFetching}
+              data={threads.data as unknown as IUserThreads[]}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </PageContainer>
   );
 };

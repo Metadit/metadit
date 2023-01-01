@@ -13,11 +13,12 @@ export const useThread = () => {
     try {
       setCreateLoading(true);
       if (user) {
-        await createThreadService({
+        const { id } = await createThreadService({
           userId: user.id,
           threadTitle,
           threadContent,
         });
+        return id;
       }
     } catch {
       toast.error("Error creating thread");

@@ -23,7 +23,10 @@ const Post = ({ data }: Props) => {
         <p className="text-[12px] text-content">
           Posted by{" "}
           <Link href={`/profile/${data.userid}`}>
-            <span className="text-primary transition-all duration-200 font-bold hover:opacity-80">
+            <span
+              className="text-primary transition-all duration-200
+            font-bold hover:opacity-80"
+            >
               {data.user_wallet.substring(0, 10) + "..."}
             </span>{" "}
           </Link>

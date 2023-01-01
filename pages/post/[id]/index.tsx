@@ -9,6 +9,8 @@ import { getThreadService, IThread } from "../../../src/services/threads";
 import toast from "react-hot-toast";
 import parse from "html-react-parser";
 import Loading from "../../../components/global/Loading";
+import moment from "moment";
+import Link from "next/link";
 
 const Index = () => {
   const threadIdParams = window.location.pathname.split("/")[2];
@@ -30,11 +32,19 @@ const Index = () => {
         ) : (
           <>
             <div>
-              <Vote count={200} />
+              <Vote count={threadData?.vote_count} />
             </div>
             <p className="text-sm text-content">
-              Posted by <span className="text-primary font-bold">Jager32</span>{" "}
-              12 hours ago
+              Posted by{" "}
+              <Link
+                className="transition-all duration-200 hover:opacity-80"
+                href={`/profile/${threadData?.userid}`}
+              >
+                <span className="text-primary font-bold">
+                  {threadData?.user_wallet.substring(0, 10) + "..."}
+                </span>{" "}
+              </Link>
+              {moment(threadData?.datepublished).fromNow()}
             </p>
             <h1 className="text-[20px] md:text-[30px] text-white mt-2">
               {threadData?.threadtitle}

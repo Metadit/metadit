@@ -5,11 +5,13 @@ import Input from "../components/global/Input";
 import Button from "../components/global/Button";
 import { useThread } from "../src/hooks/useThread";
 import Loading from "../components/global/Loading";
+import { useRouter } from "next/router";
 
 const Create = () => {
   const ReactQuill =
     typeof window === "object" ? require("react-quill") : () => false;
   const { createLoading, createThread } = useThread();
+  const router = useRouter();
   const [postTitle, setPostTitle] = useState("");
   const [content, setContent] = useState("");
   const modules = {
@@ -24,7 +26,8 @@ const Create = () => {
     },
   };
   const submitHandler = async () => {
-    await createThread(postTitle, content);
+    const threadId = await createThread(postTitle, content);
+    await router.push(`/post/${threadId}`);
   };
 
   return (

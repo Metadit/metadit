@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../../global/Button";
 import { IUserThreads } from "../../../src/services/profile";
 import parse from "html-react-parser";
+import Link from "next/link";
 
 interface Props {
   thread: IUserThreads;
@@ -13,9 +14,11 @@ const ThreadCard = ({ thread }: Props) => {
       <p className="text-content text-sm my-2 leading-6">
         {parse(thread.threadcontent)}
       </p>
-      <Button normal={false} className="bg-primary w-[30%] mx-auto mt-5">
-        View
-      </Button>
+      <Link href={`/post/${thread.id}`}>
+        <Button normal={false} className="bg-primary w-[30%] mx-auto mt-5">
+          View
+        </Button>
+      </Link>
     </div>
   );
 };
