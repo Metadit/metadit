@@ -31,7 +31,7 @@ const Browse = () => {
             <Loading size={30} />
           </div>
         ) : (
-          data?.map((post: IThread) => <Post data={post} key={post.id} />)
+          data?.map((post: IThread) => <Post data={post} key={post.threadid} />)
         )}
       </div>
     </PageContainer>

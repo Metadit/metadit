@@ -19,7 +19,7 @@ const Post = ({ data }: Props) => {
       <div>
         <Vote count={data.vote_count} />
       </div>
-      <Link className="w-full" href={`/post/${data.id}`}>
+      <div className="w-full">
         <p className="text-[12px] text-content">
           Posted by{" "}
           <Link href={`/profile/${data.userid}`}>
@@ -32,11 +32,13 @@ const Post = ({ data }: Props) => {
           </Link>
           {moment(data.datepublished).fromNow()}
         </p>
-        <p className="text-white text-[20px] mt-2">{data.threadtitle}</p>
-        <div className="text-white text-[14px] opacity-60 mt-2 my-10">
-          {parse(data.threadcontent)}
-        </div>
-      </Link>
+        <Link href={`/post/${data.threadid}`}>
+          <p className="text-white text-[20px] mt-2">{data.threadtitle}</p>
+          <div className="text-white text-[14px] opacity-60 mt-2 my-10">
+            {parse(data.threadcontent)}
+          </div>
+        </Link>
+      </div>
       <CommentCount count={data.comment_count} />
     </div>
   );

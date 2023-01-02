@@ -32,7 +32,7 @@ const Threads = ({ data, threadsLoading, isFetching }: Props) => {
             <Loading size={30} />
           ) : (
             data?.map((thread) => (
-              <ThreadCard thread={thread} key={thread.id} />
+              <ThreadCard thread={thread} key={thread.threadid} />
             ))
           )}
         </div>

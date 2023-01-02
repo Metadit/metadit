@@ -11,7 +11,7 @@ export interface IThreadCreate {
 }
 
 export interface IThread {
-  id: number;
+  threadid: number;
   userid: number;
   comment_count: number;
   vote_count: number;
@@ -28,7 +28,7 @@ export const createThreadService = async (
 };
 
 export const getThreadService = async (threadId: number): Promise<IThread> => {
-  return await getAuthenticatedRequest("threads/thread", { threadId });
+  return await getRequest("threads/thread", { threadId });
 };
 
 export const getThreadsService = async (): Promise<IThread[]> => {

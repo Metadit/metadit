@@ -35,7 +35,7 @@ export const userProfileService = async (
 };
 
 export interface IUserThreads {
-  id: number;
+  threadid: number;
   userid: number;
   threadtitle: string;
   threadcontent: string;
