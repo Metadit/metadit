@@ -2,12 +2,10 @@ import { getAuthenticatedRequest, getRequest } from "../requests";
 import { IUserLocalStorage } from "../../types/user";
 
 export interface IUserActivity {
-  id: number;
   userid: number;
   threadid: number;
-  commenttitle: string;
   commentcontent: string;
-  datepublished: string;
+  threadtitle: string;
 }
 
 export const userActivityService = async (

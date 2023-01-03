@@ -15,9 +15,9 @@ const ThreadCard = ({ thread }: Props) => {
           <h1 className="text-white font-bold text-[18px]">
             {thread.threadtitle}
           </h1>
-          <p className="text-content text-sm my-2 leading-6">
+          <div className="text-content text-sm my-2 leading-6">
             {parse(thread.threadcontent)}
-          </p>
+          </div>
         </div>
         <Link href={`/post/${thread.threadid}`}>
           <Button normal={false} className="bg-primary w-[30%] mx-auto mt-5">
