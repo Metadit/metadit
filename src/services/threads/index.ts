@@ -1,8 +1,4 @@
-import {
-  getAuthenticatedRequest,
-  getRequest,
-  postAuthenticatedRequest,
-} from "../requests";
+import { getRequest, postAuthenticatedRequest } from "../requests";
 
 export interface IThreadCreate {
   userId: number;
@@ -12,6 +8,7 @@ export interface IThreadCreate {
 
 export interface IThread {
   threadid: number;
+  did_user_vote: string;
   userid: number;
   comment_count: number;
   vote_count: number;
@@ -19,6 +16,12 @@ export interface IThread {
   threadtitle: string;
   threadcontent: string;
   datepublished: string;
+}
+
+export interface IVote {
+  threadId: number;
+  userId: number;
+  direction: string | "up" | "down" | null;
 }
 
 export const createThreadService = async (
@@ -31,6 +34,15 @@ export const getThreadService = async (threadId: number): Promise<IThread> => {
   return await getRequest("threads/thread", { threadId });
 };
 
-export const getThreadsService = async (): Promise<IThread[]> => {
-  return await getRequest("threads/threads");
+export const postVoteService = async (
+  args: IVote
+): Promise<Omit<IVote, "user_wallet">> => {
+  return await postAuthenticatedRequest("threads/vote", args);
+};
+export const getThreadsService = async (
+  userid?: number
+): Promise<IThread[]> => {
+  return await getRequest("threads/threads", {
+    userid,
+  });
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import ContentTabs from "../components/pages/browse/ContentTabs";
 import Post from "../components/pages/browse/Post";
 import Layout from "../components/global/Layout";
@@ -7,12 +7,14 @@ import { useQuery } from "react-query";
 import { getThreadsService, IThread } from "../src/services/threads";
 import toast from "react-hot-toast";
 import Loading from "../components/global/Loading";
+import { useUser } from "../src/contexts/User";
 
 const Browse = () => {
+  const { user } = useUser();
   const { data, isLoading, isFetching } = useQuery(
     "threads",
     async () => {
-      return await getThreadsService().catch(() => {
+      return await getThreadsService(user?.id).catch(() => {
         toast.error("Error fetching posts");
       });
     },

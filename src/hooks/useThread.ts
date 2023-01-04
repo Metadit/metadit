@@ -1,11 +1,26 @@
-import { createThreadService, IThreadCreate } from "../services/threads";
+import {
+  createThreadService,
+  IThreadCreate,
+  IVote,
+  postVoteService,
+} from "../services/threads";
 import { useContext, useState } from "react";
 import { UserContext } from "../contexts/User";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 export const useThread = () => {
   const { user } = useContext(UserContext);
   const [createLoading, setCreateLoading] = useState(false);
+  const router = useRouter();
+  const voteHandler = async (args: IVote) => {
+    if (!user) {
+      router.push("/login").then(() => {
+        toast.error("You must be logged in to vote");
+      });
+    }
+    await postVoteService(args);
+  };
   const createThread = async (
     threadTitle: IThreadCreate["threadTitle"],
     threadContent: IThreadCreate["threadContent"]
@@ -30,5 +45,6 @@ export const useThread = () => {
   return {
     createThread,
     createLoading,
+    voteHandler,
   };
 };

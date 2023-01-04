@@ -21,6 +21,7 @@ export default function App({ Component, pageProps }: Props) {
       <Toaster
         position="top-right"
         toastOptions={{
+          position: "top-center",
           style: {
             background: "#181818",
             color: "#fff",

@@ -17,7 +17,7 @@ const Post = ({ data }: Props) => {
       rounded-xl h-auto px-10 py-5 relative"
     >
       <div>
-        <Vote count={data.vote_count} />
+        <Vote thread={data} count={data.vote_count} />
       </div>
       <div className="w-full">
         <p className="text-[12px] text-content">
