@@ -31,7 +31,7 @@ const Activity = ({ data, activityLoading, isFetching }: Props) => {
         overflow-y-scroll pr-2 relative"
         >
           {data?.map((activity) => (
-            <ActivityRecord data={activity} key={activity.id} />
+            <ActivityRecord data={activity} key={activity.threadid} />
           ))}
         </div>
       )}

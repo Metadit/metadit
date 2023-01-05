@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import Vote from "../../../components/pages/browse/Vote";
@@ -11,19 +11,39 @@ import parse from "html-react-parser";
 import Loading from "../../../components/global/Loading";
 import moment from "moment";
 import Link from "next/link";
+import { voteCountUpdater } from "../../../src/helpers/vote";
+import { useUser } from "../../../src/contexts/User";
 
 const Index = () => {
+  const [post, setPost] = React.useState<IThread | null>(null);
+  const { user } = useUser();
   const threadIdParams = window.location.pathname.split("/")[2];
   const { data, isLoading, isFetching } = useQuery("post", async () => {
-    return await getThreadService(Number(threadIdParams)).catch(() =>
+    return await getThreadService(Number(threadIdParams), user?.id).catch(() =>
       toast.error("Error fetching thread")
     );
   });
-  const threadData = data as unknown as IThread;
+  const postData = data as unknown as IThread;
+  useEffect(() => {
+    if (postData) {
+      setPost({ ...postData, threadid: Number(threadIdParams) });
+    }
+  }, [postData, threadIdParams]);
+
+  const postVoteUpdater = (vote: number) => {
+    if (post) {
+      setPost({
+        ...post,
+        vote_count: voteCountUpdater(post.vote_count, vote, post.did_user_vote),
+        did_user_vote: post.did_user_vote === vote ? 0 : vote,
+      });
+    }
+  };
+
   return (
     <PageContainer
       pageTitle={`${
-        isLoading || isFetching ? "Metadit Thread" : threadData?.threadtitle
+        isLoading || isFetching ? "Metadit Thread" : post?.threadtitle
       }`}
     >
       <div
@@ -36,27 +56,35 @@ const Index = () => {
         ) : (
           <>
             <div>
-              <Vote count={threadData?.vote_count} />
+              <Vote
+                thread={post}
+                onVoteUpdate={(vote: number) => {
+                  postVoteUpdater(vote);
+                }}
+                count={post?.vote_count as number}
+              />
             </div>
             <p className="text-sm text-content">
               Posted by{" "}
               <Link
                 className="transition-all duration-200 hover:opacity-80"
-                href={`/profile/${threadData?.userid}`}
+                href={`/profile/${post?.userid}`}
               >
                 <span className="text-primary font-bold">
-                  {threadData?.user_wallet.substring(0, 10) + "..."}
+                  {post?.user_wallet.substring(0, 10) + "..."}
                 </span>{" "}
               </Link>
-              {moment(threadData?.datepublished).fromNow()}
+              {moment(post?.datepublished).fromNow()}
             </p>
             <h1 className="text-[20px] md:text-[30px] text-white mt-2">
-              {threadData?.threadtitle}
+              {post?.threadtitle}
             </h1>
-            <div className="text-white text-[14px] opacity-60 mt-2 my-5">
-              {parse(threadData.threadcontent)}
-            </div>
-            <CommentCount count={threadData?.comment_count} />
+            {post && (
+              <div className="text-white text-[14px] opacity-60 mt-2 my-5">
+                {parse(post.threadcontent)}
+              </div>
+            )}
+            <CommentCount count={post?.comment_count as number} />
             <div
               placeholder="What are your thoughts?"
               contentEditable={true}

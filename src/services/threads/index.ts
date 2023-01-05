@@ -38,8 +38,11 @@ export const createThreadService = async (
   return await postAuthenticatedRequest("threads/create", body);
 };
 
-export const getThreadService = async (threadId: number): Promise<IThread> => {
-  return await getRequest("threads/thread", { threadId });
+export const getThreadService = async (
+  threadId: number,
+  userId?: number
+): Promise<IThread> => {
+  return await getRequest("threads/thread", { threadId, userId });
 };
 
 export const postVoteService = async (
