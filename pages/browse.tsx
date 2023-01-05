@@ -1,13 +1,14 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import ContentTabs from "../components/pages/browse/ContentTabs";
 import Post from "../components/pages/browse/Post";
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { getThreadsService, IThread } from "../src/services/threads";
 import toast from "react-hot-toast";
 import Loading from "../components/global/Loading";
 import { useUser } from "../src/contexts/User";
+import { threadId } from "worker_threads";
 
 const Browse = () => {
   const { user } = useUser();
@@ -23,6 +24,12 @@ const Browse = () => {
       retry: 0,
     }
   );
+  const [threads, setThreads] = React.useState<IThread[]>([]);
+  useEffect(() => {
+    if (data) {
+      setThreads(data);
+    }
+  }, [data]);
 
   return (
     <PageContainer pageTitle="Browse Metadit">
@@ -33,7 +40,14 @@ const Browse = () => {
             <Loading size={30} />
           </div>
         ) : (
-          data?.map((post: IThread) => <Post data={post} key={post.threadid} />)
+          threads?.map((post: IThread) => (
+            <Post
+              threads={threads}
+              setThreads={setThreads}
+              data={post}
+              key={post.threadid}
+            />
+          ))
         )}
       </div>
     </PageContainer>

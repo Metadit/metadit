@@ -13,13 +13,24 @@ export const useThread = () => {
   const { user } = useContext(UserContext);
   const [createLoading, setCreateLoading] = useState(false);
   const router = useRouter();
-  const voteHandler = async (args: IVote) => {
+
+  const voteHandler = async (args: IVote, direction: string) => {
     if (!user) {
-      router.push("/login").then(() => {
+      return router.push("/login").then(() => {
         toast.error("You must be logged in to vote");
       });
     }
-    await postVoteService(args);
+    try {
+      await postVoteService({
+        userId: args.userId as number,
+        threadId: args.threadId as number,
+        currentUserVote: args.currentUserVote,
+        vote: args.vote,
+        direction: direction,
+      });
+    } catch (error) {
+      toast.error("Error voting");
+    }
   };
   const createThread = async (
     threadTitle: IThreadCreate["threadTitle"],

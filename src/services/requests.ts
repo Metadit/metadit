@@ -32,3 +32,16 @@ export const postAuthenticatedRequest = async (path: string, body: {}) => {
   });
   return data;
 };
+
+export const deleteAuthenticatedRequest = async (path: string, params: {}) => {
+  const { token } = JSON.parse(localStorage.getItem("metadit") as string);
+  const { data } = await axios.delete(`${API_URL}/${path}`, {
+    headers: {
+      Authorization: token,
+    },
+    params: {
+      ...params,
+    },
+  });
+  return data;
+};

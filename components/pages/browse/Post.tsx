@@ -5,11 +5,32 @@ import Vote from "./Vote";
 import Link from "next/link";
 import { IThread } from "../../../src/services/threads";
 import moment from "moment";
+import { voteCountUpdater } from "../../../src/helpers/vote";
 
 interface Props {
   data: IThread;
+  setThreads: React.Dispatch<React.SetStateAction<IThread[]>>;
+  threads: IThread[];
 }
-const Post = ({ data }: Props) => {
+const Post = ({ data, setThreads, threads }: Props) => {
+  const threadVoteUpdater = (vote: number) => {
+    const newThreads = threads.map((thread) => {
+      if (thread.threadid === data.threadid) {
+        return {
+          ...thread,
+          vote_count: voteCountUpdater(
+            thread.vote_count,
+            vote,
+            thread.did_user_vote
+          ),
+          did_user_vote: thread.did_user_vote === vote ? 0 : vote,
+        };
+      }
+      return thread;
+    });
+    setThreads(newThreads);
+  };
+
   return (
     <div
       className="w-full
@@ -17,7 +38,13 @@ const Post = ({ data }: Props) => {
       rounded-xl h-auto px-10 py-5 relative"
     >
       <div>
-        <Vote thread={data} count={data.vote_count} />
+        <Vote
+          onVoteUpdate={(vote: number) => {
+            threadVoteUpdater(vote);
+          }}
+          thread={data}
+          count={data.vote_count}
+        />
       </div>
       <div className="w-full">
         <p className="text-[12px] text-content">

@@ -5,10 +5,8 @@ import {
   userThreadsService,
 } from "../services/profile";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
 
 export const useProfile = (userId: number) => {
-  const router = useRouter();
   const {
     data: activity,
     isLoading: activityLoading,
