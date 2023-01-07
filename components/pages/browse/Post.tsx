@@ -6,6 +6,7 @@ import Link from "next/link";
 import { IThread } from "../../../src/services/threads";
 import moment from "moment";
 import { voteCountUpdater } from "../../../src/helpers/vote";
+import ReportModal from "../../modals/ReportModal";
 
 interface Props {
   data: IThread;

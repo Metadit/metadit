@@ -3,8 +3,10 @@ import Avatar from "react-avatar";
 import CommentVote from "./CommentVote";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply, faFlag } from "@fortawesome/free-solid-svg-icons";
+import { useModal } from "../../../src/contexts/Modal";
 
 const Comment = () => {
+  const { setActiveModal } = useModal();
   return (
     <div className="flex w-full">
       <div className="flex flex-wrap gap-2">
@@ -33,6 +35,9 @@ const Comment = () => {
               Reply
             </p>
             <p
+              onClick={() => {
+                setActiveModal("ReportModal");
+              }}
               className="text-content text-sm
             transition-all duration-200 cursor-pointer
              hover:text-primary"

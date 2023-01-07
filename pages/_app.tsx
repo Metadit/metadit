@@ -7,6 +7,8 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "../src/contexts/User";
 import { Toaster } from "react-hot-toast";
+import ModalManager from "../components/global/ModalManager";
+import { ModalProvider } from "../src/contexts/Modal";
 
 type Props = AppProps & {
   Component: Page;
@@ -30,7 +32,12 @@ export default function App({ Component, pageProps }: Props) {
           },
         }}
       />
-      <UserProvider>{getLayout(<Component {...pageProps} />)}</UserProvider>
+      <UserProvider>
+        <ModalProvider>
+          <ModalManager />
+          {getLayout(<Component {...pageProps} />)}
+        </ModalProvider>
+      </UserProvider>
     </QueryClientProvider>
   );
 }
