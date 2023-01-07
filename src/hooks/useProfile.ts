@@ -7,25 +7,13 @@ import {
 import toast from "react-hot-toast";
 
 export const useProfile = (userId: number) => {
-  const userProfileHandler = async () => {
-    const userProfile = await userProfileService(userId);
-    return userProfile;
-  };
-  const userActivityHandler = async () => {
-    const userActivity = await userActivityService(userId);
-    return userActivity;
-  };
-  const userThreadsHandler = async () => {
-    const userThreads = await userThreadsService(userId);
-    return userThreads;
-  };
   const {
     data: activity,
     isLoading: activityLoading,
     isFetching: activityIsFetching,
   } = useQuery({
     queryKey: ["userActivity"],
-    queryFn: userActivityHandler,
+    queryFn: () => userActivityService(userId),
     onError: () => {
       toast.error("Error fetching user activity");
     },
@@ -38,7 +26,7 @@ export const useProfile = (userId: number) => {
     isFetching: userProfileIsFetching,
   } = useQuery({
     queryKey: ["userProfile"],
-    queryFn: userProfileHandler,
+    queryFn: () => userProfileService(userId),
     onError: () => {
       toast.error("Error fetching user profile");
     },
@@ -51,7 +39,7 @@ export const useProfile = (userId: number) => {
     isFetching: threadsIsFetching,
   } = useQuery({
     queryKey: ["userThreads"],
-    queryFn: userThreadsHandler,
+    queryFn: () => userThreadsService(userId),
     onError: () => {
       toast.error("Error fetching user threads");
     },
