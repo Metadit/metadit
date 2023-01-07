@@ -32,6 +32,12 @@ export interface IVote {
   vote: number;
 }
 
+export interface IComment {
+  comment: string;
+  threadId: number;
+  userId: number;
+}
+
 export const createThreadService = async (
   body: IThreadCreate
 ): Promise<{ id: number }> => {
@@ -56,6 +62,12 @@ export const getThreadsService = async (
   return await getRequest("threads/threads", {
     userid,
   });
+};
+
+export const commentThreadService = async (
+  body: IComment
+): Promise<IComment> => {
+  return await postAuthenticatedRequest("threads/comment", body);
 };
 
 export const deleteVoteService = async (

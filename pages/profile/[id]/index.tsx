@@ -5,11 +5,6 @@ import User from "../../../components/pages/profile/User";
 import Activity from "../../../components/pages/profile/Activity";
 import Threads from "../../../components/pages/profile/Threads";
 import { useProfile } from "../../../src/hooks/useProfile";
-import {
-  IUserActivity,
-  IUserProfile,
-  IUserThreads,
-} from "../../../src/services/profile";
 import UserNotFound from "./userNotFound";
 
 const Index = () => {
@@ -35,17 +30,17 @@ const Index = () => {
             <User
               profileLoading={userProfile.isLoading}
               isFetching={userProfile.isFetching}
-              data={userProfile.data as unknown as IUserProfile}
+              data={userProfile.data}
             />
             <Activity
               activityLoading={activity.isLoading}
               isFetching={activity.isFetching}
-              data={activity.data as unknown as IUserActivity[]}
+              data={activity.data}
             />
             <Threads
               threadsLoading={threads.isLoading}
               isFetching={threads.isFetching}
-              data={threads.data as unknown as IUserThreads[]}
+              data={threads.data}
             />
           </div>
         </div>

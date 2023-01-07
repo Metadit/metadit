@@ -7,54 +7,57 @@ import {
 import toast from "react-hot-toast";
 
 export const useProfile = (userId: number) => {
+  const userProfileHandler = async () => {
+    const userProfile = await userProfileService(userId);
+    return userProfile;
+  };
+  const userActivityHandler = async () => {
+    const userActivity = await userActivityService(userId);
+    return userActivity;
+  };
+  const userThreadsHandler = async () => {
+    const userThreads = await userThreadsService(userId);
+    return userThreads;
+  };
   const {
     data: activity,
     isLoading: activityLoading,
     isFetching: activityIsFetching,
-  } = useQuery(
-    "userActivity",
-    async () => {
-      return await userActivityService(userId).catch(() =>
-        toast.error("Error fetching user activity")
-      );
+  } = useQuery({
+    queryKey: ["userActivity"],
+    queryFn: userActivityHandler,
+    onError: () => {
+      toast.error("Error fetching user activity");
     },
-    {
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
   const {
     data: profile,
     isLoading: userProfileLoading,
     isFetching: userProfileIsFetching,
-  } = useQuery(
-    "userProfile",
-    async () => {
-      return await userProfileService(userId).catch(() =>
-        toast.error("Error fetching user profile")
-      );
+  } = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: userProfileHandler,
+    onError: () => {
+      toast.error("Error fetching user profile");
     },
-    {
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
   const {
     data: threads,
     isLoading: threadsLoading,
     isFetching: threadsIsFetching,
-  } = useQuery(
-    "userThreads",
-    async () => {
-      return await userThreadsService(userId).catch(() =>
-        toast.error("Error fetching user threads")
-      );
+  } = useQuery({
+    queryKey: ["userThreads"],
+    queryFn: userThreadsHandler,
+    onError: () => {
+      toast.error("Error fetching user threads");
     },
-    {
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
   return {
     activity: {
       data: activity,

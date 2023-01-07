@@ -1,10 +1,9 @@
-import { getAuthenticatedRequest, getRequest } from "../requests";
-import { IUserLocalStorage } from "../../types/user";
+import { getRequest } from "../requests";
 
 export interface IUserActivity {
   userid: number;
   threadid: number;
-  commentcontent: string;
+  comment: string;
   threadtitle: string;
 }
 

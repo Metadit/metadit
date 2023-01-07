@@ -30,8 +30,8 @@ const Activity = ({ data, activityLoading, isFetching }: Props) => {
           className="overflow-hidden h-[300px]
         overflow-y-scroll pr-2 relative"
         >
-          {data?.map((activity) => (
-            <ActivityRecord data={activity} key={activity.threadid} />
+          {data?.map((activity, index) => (
+            <ActivityRecord data={activity} key={index.toString()} />
           ))}
         </div>
       )}
