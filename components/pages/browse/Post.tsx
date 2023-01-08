@@ -6,13 +6,13 @@ import Link from "next/link";
 import { IThread } from "../../../src/services/threads";
 import moment from "moment";
 import { voteCountUpdater } from "../../../src/helpers/vote";
-import ReportModal from "../../modals/ReportModal";
 
 interface Props {
   data: IThread;
   setThreads: React.Dispatch<React.SetStateAction<IThread[]>>;
   threads: IThread[];
 }
+
 const Post = ({ data, setThreads, threads }: Props) => {
   const threadVoteUpdater = (vote: number) => {
     const newThreads = threads.map((thread) => {

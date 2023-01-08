@@ -1,4 +1,4 @@
-import React, { SetStateAction, useCallback, useEffect } from "react";
+import React, { SetStateAction } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -7,6 +7,7 @@ import {
   faList,
   faStrikethrough,
 } from "@fortawesome/free-solid-svg-icons";
+
 import Tippy from "@tippyjs/react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
