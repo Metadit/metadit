@@ -4,7 +4,7 @@ import PageContainer from "../../../components/global/PageContainer";
 import Vote from "../../../components/pages/browse/Vote";
 import CommentCount from "../../../components/pages/browse/CommentCount";
 import Comments from "../../../components/pages/post/comments";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   commentThreadService,
   getThreadService,
@@ -22,27 +22,18 @@ import Button from "../../../components/global/Button";
 const Index = () => {
   const [post, setPost] = useState<IThread | null>(null);
   const [commentInput, setCommentInput] = useState<string | null>("");
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
   const { user } = useUser();
   const threadIdParams = window.location.pathname.split("/")[2];
-  const { data, isLoading, isFetching } = useQuery(
-    "post",
-    async () => {
-      return await getThreadService(Number(threadIdParams), user?.id).catch(
-        () => toast.error("Error fetching thread")
-      );
-    },
-    {
-      refetchOnWindowFocus: false,
-    }
-  );
-  console.log(post);
-  const postData = data as unknown as IThread;
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ["thread", threadIdParams],
+    queryFn: () => getThreadService(Number(threadIdParams)),
+    refetchOnWindowFocus: false,
+  });
   useEffect(() => {
-    if (postData) {
-      setPost({ ...postData, threadid: Number(threadIdParams) });
+    if (data) {
+      setPost({ ...data, threadid: Number(threadIdParams) });
     }
-  }, [postData, threadIdParams]);
+  }, [data, threadIdParams]);
 
   const postVoteUpdater = (vote: number) => {
     if (post) {
@@ -54,23 +45,25 @@ const Index = () => {
     }
   };
 
-  const commentHandler = async () => {
-    setCommentLoading(true);
-    try {
-      if (post && user && commentInput) {
-        await commentThreadService({
-          threadId: post.threadid,
-          userId: user.id,
-          comment: commentInput,
-        });
+  const { isLoading: commentSubmitLoading, mutate: commentSubmit } =
+    useMutation(
+      () => {
+        if (commentInput && post && user) {
+          return commentThreadService({
+            threadId: post.threadid,
+            userId: user.id,
+            comment: commentInput,
+          });
+        } else {
+          return Promise.reject("No comment input");
+        }
+      },
+      {
+        onError: () => {
+          toast.error("Error while posting comment");
+        },
       }
-    } catch (e) {
-      toast.error("Error posting comment");
-    } finally {
-      setCommentLoading(false);
-      setCommentInput("");
-    }
-  };
+    );
 
   return (
     <PageContainer
@@ -127,13 +120,13 @@ const Index = () => {
           rounded-md h-36 focus:outline-0 focus:border-primary p-5"
             />
             <Button
-              onClick={commentHandler}
+              onClick={commentSubmit}
               normal={false}
-              disabled={commentInput?.length === 0}
+              disabled={commentInput?.length === 0 || commentSubmitLoading}
               className={`mt-5 bg-primary w-full
                 max-w-[100px] mx-auto`}
             >
-              {commentLoading ? <Loading size={20} /> : "Submit"}
+              {commentSubmitLoading ? <Loading size={20} /> : "Submit"}
             </Button>
             <div className="my-10">
               <Comments />
