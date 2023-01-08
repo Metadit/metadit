@@ -7,7 +7,8 @@ import React, {
 } from "react";
 import { IUserAuthTokenDecoded, IUserLocalStorage } from "../types/user";
 import jwt_decode from "jwt-decode";
-import Loading from "../../components/global/Loading";
+import Loading from "../components/global/Loading";
+
 interface Props {
   children: React.ReactNode;
 }
