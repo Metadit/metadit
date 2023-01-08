@@ -26,7 +26,7 @@ const Index = () => {
   const threadIdParams = window.location.pathname.split("/")[2];
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["thread", threadIdParams],
-    queryFn: () => getThreadService(Number(threadIdParams)),
+    queryFn: () => getThreadService(Number(threadIdParams), user?.id),
     refetchOnWindowFocus: false,
   });
   useEffect(() => {

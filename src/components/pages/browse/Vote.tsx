@@ -8,30 +8,30 @@ import { useUser } from "../../../contexts/User";
 interface Props {
   count: number;
   thread?: IThread | null;
-  onVoteUpdate?: (vote: number) => void;
+  onVoteUpdate: (vote: number) => void;
 }
 
 const Vote = ({ count, thread, onVoteUpdate }: Props) => {
   const { voteHandler } = useThread();
   const { user } = useUser();
-  const onVote = async () => {
-    await voteHandler(
-      {
-        threadId: thread?.threadid as number,
-        userId: user?.id as number,
-        currentUserVote: thread?.did_user_vote,
-        vote: 1,
-      },
-      "up"
-    );
-    if (onVoteUpdate) {
-      onVoteUpdate(1);
+  const onVote = async (direction: "up" | "down") => {
+    if (user && thread) {
+      await voteHandler(
+        {
+          threadId: thread.threadid,
+          userId: user.id,
+          currentUserVote: thread.did_user_vote,
+          vote: 1,
+        },
+        direction
+      );
+      onVoteUpdate(direction === "up" ? 1 : -1);
     }
   };
   return (
     <div className="flex flex-col gap-2 absolute left-[-20px] ml-2">
       <div
-        onClick={onVote}
+        onClick={() => onVote("up")}
         className={`${
           thread?.did_user_vote === 1
             ? "bg-primary border border-transparent"
@@ -49,20 +49,7 @@ const Vote = ({ count, thread, onVoteUpdate }: Props) => {
         <p className="text-white text-[14px]">{count}</p>
       </div>
       <div
-        onClick={() => {
-          voteHandler(
-            {
-              threadId: thread?.threadid as number,
-              currentUserVote: thread?.did_user_vote,
-              userId: user?.id as number,
-              vote: -1,
-            },
-            "down"
-          );
-          if (onVoteUpdate) {
-            onVoteUpdate(-1);
-          }
-        }}
+        onClick={() => onVote("down")}
         className={`${
           thread?.did_user_vote === -1
             ? "bg-primary border border-transparent"

@@ -36,7 +36,7 @@ const NavBar = () => {
               alt="metadit-logo"
             />
           </Link>
-          <Link className="hidden lg:flex" href="/src/pages/browse?tab=top">
+          <Link className="hidden lg:flex" href="/browse?tab=top">
             <p
               className="text-white transition-all duration-200
              font-bold text-[13px] hover:text-primary flex items-center gap-1"
@@ -70,7 +70,7 @@ const NavBar = () => {
           </Link>
           {user ? (
             <>
-              <Link href="/src/pages/create">
+              <Link href="/create">
                 <Button className="bg-primary" normal={false}>
                   + Create post
                 </Button>
