@@ -1,14 +1,14 @@
-import Context from "../components/pages/home/Context";
-import Layout from "../components/global/Layout";
+import Context from "../components/pages/home/Context"
+import Layout from "../components/global/Layout"
 
 const Home = () => {
-  return (
-    <>
-      <Context />
-    </>
-  );
-};
+    return (
+        <>
+            <Context />
+        </>
+    )
+}
 
-export default Home;
+export default Home
 
-Home.getLayout = (page: any) => <Layout>{page}</Layout>;
+Home.getLayout = (page: any) => <Layout>{page}</Layout>

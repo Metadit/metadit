@@ -1,14 +1,11 @@
 {
-  "extends": "next/core-web-vitals",
-  "plugins": ["unused-imports"],
-  "rules": {
-    "react/react-in-jsx-scope": "off",
-    "spaced-comment": "error",
-    "quotes": [
-      "error",
-      "double"
-    ],
-    "no-duplicate-imports": "error",
-    "unused-imports/no-unused-imports": "error"
-  }
+    "extends": "next/core-web-vitals",
+    "plugins": ["unused-imports"],
+    "rules": {
+        "react/react-in-jsx-scope": "off",
+        "spaced-comment": "error",
+        "quotes": ["error", "double"],
+        "no-duplicate-imports": "error",
+        "unused-imports/no-unused-imports": "error"
+    }
 }

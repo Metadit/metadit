@@ -1,15 +1,15 @@
-import React from "react";
-import ReportModal from "../modals/ReportModal";
-import { useModal } from "../../contexts/Modal";
+import React from "react"
+import ReportModal from "../modals/ReportModal"
+import { useModal } from "../../contexts/Modal"
 
 const ModalManager = () => {
-  const { activeModal } = useModal();
-  switch (activeModal) {
-    case "ReportModal":
-      return <ReportModal />;
-    default:
-      return null;
-  }
-};
+    const { activeModal } = useModal()
+    switch (activeModal) {
+        case "ReportModal":
+            return <ReportModal />
+        default:
+            return null
+    }
+}
 
-export default ModalManager;
+export default ModalManager
