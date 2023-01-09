@@ -11,7 +11,8 @@ import toast from "react-hot-toast";
 export const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const { setUser } = useContext(UserContext);
-
+    const threadIdParams = new URLSearchParams(window.location.search);
+    const threadId = threadIdParams.get("post");
     const walletAuthHandler = async (wallet_address: string) => {
         try {
             const { signature } = await signUserWalletService(wallet_address);
@@ -42,7 +43,8 @@ export const useLogin = () => {
                     ...userData,
                 })
             );
-            window.location.replace("/browse?tab=top");
+            if (threadId) window.location.replace(`/post/${threadId}`);
+            else window.location.replace("/browse?tab=top");
         } catch (e) {
             toast.error("Error authenticating user");
         } finally {

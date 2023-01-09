@@ -22,6 +22,8 @@ import { IThread } from "../../../services/threads/types";
 import TextAreaBox from "../../../components/global/TextAreaBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
+import smile from "../../../../public/images/smile.png";
+import Image from "next/image";
 
 const Index = () => {
     const [post, setPost] = useState<IThread | null>(null);
@@ -140,22 +142,32 @@ const Index = () => {
                         <CommentCount count={post?.comment_count as number} />
                         {!user ? (
                             <div
-                                className="w-full bg-darkContent p-6 my-10
+                                className="w-full bg-darkContent p-10 my-10
                              border border-zinc-800 rounded-xl text-center"
                             >
-                                <p className="text-white">
-                                    Want to comment and be part of the
-                                    conversation?
-                                </p>
-                                <Link href="/login">
-                                    <Button
-                                        normal={false}
-                                        className="mt-5 bg-primary w-full max-w-fit mx-auto"
+                                <div>
+                                    <Image
+                                        className="mx-auto mb-5"
+                                        src={smile}
+                                        alt="login"
+                                        width={100}
+                                    />
+                                    <p className="text-white mt-7">
+                                        Want to comment and be part of the
+                                        conversation?
+                                    </p>
+                                    <Link
+                                        href={`/login?post=${threadIdParams}`}
                                     >
-                                        <FontAwesomeIcon icon={faSignIn} />
-                                        Login and share your thoughts
-                                    </Button>
-                                </Link>
+                                        <Button
+                                            normal={false}
+                                            className="mt-3 bg-primary w-full max-w-fit mx-auto"
+                                        >
+                                            <FontAwesomeIcon icon={faSignIn} />
+                                            Login and share your thoughts
+                                        </Button>
+                                    </Link>
+                                </div>
                             </div>
                         ) : (
                             <div className="my-10">
