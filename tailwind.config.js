@@ -1,7 +1,6 @@
 /** @type {DefaultColors} */
 const colors = require("tailwindcss/colors")
 module.exports = {
-    important: true,
     content: [
         "./src/app/**/*.{js,ts,jsx,tsx}",
         "./src/pages/**/*.{js,ts,jsx,tsx}",
