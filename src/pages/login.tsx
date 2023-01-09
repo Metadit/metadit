@@ -9,6 +9,9 @@ import logo from "../../public/images/logo.svg";
 import Link from "next/link";
 import Head from "next/head";
 import { UserContext } from "../contexts/User";
+import Button from "../components/global/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const { user, loading } = useContext(UserContext);
@@ -49,9 +52,20 @@ const Login = () => {
                 <h1 className="text-[20px] md:text-[30px] text-white text-left w-full mb-5">
                   Welcome <b>User</b>,
                 </h1>
-                <div className="w-full flex flex-wrap gap-5">
+                <div className="w-full flex flex-wrap gap-3">
                   <Metamask />
                   <OtherWallets />
+                  <Link className="w-full" href="/browse">
+                    <Button
+                      className="h-[55px] w-full
+                      text-[12px] md:text-[15px]
+                       flex justify-between focus:outline-0 focus:scale-90"
+                      normal={true}
+                    >
+                      <FontAwesomeIcon icon={faGlobe} size="lg" color="#fff" />
+                      Don&apos;t want to login? lets go browse
+                    </Button>
+                  </Link>
                 </div>
                 <BePart />
               </div>

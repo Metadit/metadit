@@ -33,9 +33,24 @@ export interface IVote {
 }
 
 export interface IComment {
+  display_name: string | null;
+  wallet_address: string;
+  id: number;
   comment: string;
-  threadId: number;
+  threadid: number;
+  did_user_vote: number;
+  vote_count: number;
+  userid: number;
+  datepublished: string;
+}
+
+export interface ICommentVote {
+  commentId: number;
   userId: number;
+  threadId: number;
+  vote: number;
+  currentUserVote: number;
+  direction?: string;
 }
 
 export const createThreadService = async (
@@ -54,7 +69,7 @@ export const getThreadService = async (
 export const postVoteService = async (
   args: IVote
 ): Promise<Omit<IVote, "user_wallet" | "voteid">> => {
-  return await postAuthenticatedRequest("threads/vote", args);
+  return await postAuthenticatedRequest("threads/thread/vote", args);
 };
 export const getThreadsService = async (
   userid?: number
@@ -65,9 +80,31 @@ export const getThreadsService = async (
 };
 
 export const commentThreadService = async (
-  body: IComment
+  body: Omit<
+    IComment,
+    | "datepublished"
+    | "id"
+    | "wallet_address"
+    | "display_name"
+    | "did_user_vote"
+    | "vote_count"
+  >
 ): Promise<IComment> => {
   return await postAuthenticatedRequest("threads/comment", body);
+};
+
+export const getThreadCommentsService = async (
+  threadId: number,
+  userId?: number
+): Promise<IComment[]> => {
+  return await getRequest("threads/comments", {
+    threadId,
+    userId,
+  });
+};
+
+export const postCommentVoteService = async (args: ICommentVote) => {
+  return await postAuthenticatedRequest("threads/comment/vote", args);
 };
 
 export const deleteVoteService = async (

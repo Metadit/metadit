@@ -1,7 +1,9 @@
 import {
   createThreadService,
+  ICommentVote,
   IThreadCreate,
   IVote,
+  postCommentVoteService,
   postVoteService,
 } from "../services/threads";
 import { useContext, useState } from "react";
@@ -14,6 +16,25 @@ export const useThread = () => {
   const [createLoading, setCreateLoading] = useState(false);
   const router = useRouter();
 
+  const commentVoteHandler = async (args: ICommentVote, direction: string) => {
+    if (!user) {
+      return router.push("/login").then(() => {
+        toast.error("You must be logged in to vote");
+      });
+    }
+    try {
+      await postCommentVoteService({
+        userId: args.userId as number,
+        commentId: args.commentId as number,
+        threadId: args.threadId as number,
+        currentUserVote: args.currentUserVote,
+        vote: args.vote,
+        direction: direction,
+      });
+    } catch (error) {
+      toast.error("Error voting");
+    }
+  };
   const voteHandler = async (args: IVote, direction: string) => {
     if (!user) {
       return router.push("/login").then(() => {
@@ -57,5 +78,6 @@ export const useThread = () => {
     createThread,
     createLoading,
     voteHandler,
+    commentVoteHandler,
   };
 };

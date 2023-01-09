@@ -7,7 +7,7 @@ const OtherWallets = () => {
     <button
       className="bg-contentBg fa-border border-zinc-700 w-full rounded-lg flex
         items-center justify-between h-[55px] gap-2 px-5 transition-all duration-300
-        hover:bg-zinc-800 cursor-pointer"
+        hover:bg-zinc-800 cursor-pointer focus:outline-none focus:scale-90"
     >
       <FontAwesomeIcon icon={faWallet} size="lg" color="#fff" />
       <p className="text-white text-[12px] md:text-[15px]">

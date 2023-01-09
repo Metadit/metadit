@@ -13,12 +13,12 @@ const Button = ({ normal, children, className, disabled, onClick }: Props) => {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`h-[32px] font-bold gap-1 flex items-center justify-center ${
+      className={`${className} h-[32px] font-bold gap-1 flex items-center justify-center ${
         disabled && "bg-content cursor-not-allowed"
       } ${
         normal && "bg-zinc-800 border border-zinc-700 relative"
-      } text-white text-[12px] transition-all px-7 rounded-md hover:transition-all 
-      hover:duration-200 hover:brightness-125 ${className}`}
+      } text-white text-[12px] transition-all px-5 rounded-md hover:transition-all 
+      hover:duration-200 hover:brightness-125 `}
     >
       {children}
     </button>

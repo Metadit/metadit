@@ -4,9 +4,38 @@ import CommentVote from "./CommentVote";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReply, faFlag } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../../contexts/Modal";
+import { IComment } from "../../../services/threads";
+import moment from "moment";
+import Link from "next/link";
+import { voteCountUpdater } from "../../../helpers/vote";
 
-const Comment = () => {
+interface Props {
+  comment: IComment;
+  setComments: React.Dispatch<React.SetStateAction<IComment[]>>;
+  comments: IComment[];
+}
+
+const Comment = ({ comment, setComments, comments }: Props) => {
   const { setActiveModal } = useModal();
+
+  const commentVoteUpdater = (vote: number, commentId: number) => {
+    const newComments = comments.map((comment) => {
+      if (commentId === comment.id) {
+        return {
+          ...comment,
+          vote_count: voteCountUpdater(
+            comment.vote_count,
+            vote,
+            comment.did_user_vote
+          ),
+          did_user_vote: comment.did_user_vote === vote ? 0 : vote,
+        };
+      }
+      return comment;
+    });
+    setComments(newComments);
+  };
+
   return (
     <div className="flex w-full">
       <div className="flex flex-wrap gap-2">
@@ -18,14 +47,29 @@ const Comment = () => {
         />
         <div className="flex flex-wrap items-center flex-col">
           <div className="flex w-full gap-2 items-center">
-            <h2 className="text-[15px] text-white font-bold">John Doe</h2>
-            <p className="text-content text-sm">13hr.ago</p>
+            <Link href={`/profile/${comment.userid}`}>
+              <h2
+                className="text-[15px] text-primary font-bold transition-all
+              duration-200 hover:opacity-70"
+              >
+                {comment.wallet_address.substring(0, 10) + "..."}
+              </h2>
+            </Link>
+            <p className="text-content text-sm">
+              {moment(comment.datepublished).fromNow()}
+            </p>
           </div>
           <p className="text-white text-[14px] mt-1 w-full text-left">
-            Yo this was hilarious and so funny xD
+            {comment.comment}
           </p>
           <div className="justify-start mt-4 w-full flex gap-4 items-center">
-            <CommentVote count={200} />
+            <CommentVote
+              comment={comment}
+              onVoteUpdate={(vote: number, commentId: number) => {
+                commentVoteUpdater(vote, commentId);
+              }}
+              count={comment.vote_count}
+            />
             <p
               className="text-content text-sm
             transition-all duration-200 cursor-pointer

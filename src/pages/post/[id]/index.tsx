@@ -7,6 +7,7 @@ import Comments from "../../../components/pages/post/comments";
 import { useMutation, useQuery } from "react-query";
 import {
   commentThreadService,
+  getThreadCommentsService,
   getThreadService,
   IThread,
 } from "../../../services/threads";
@@ -29,6 +30,16 @@ const Index = () => {
     queryFn: () => getThreadService(Number(threadIdParams), user?.id),
     refetchOnWindowFocus: false,
   });
+  const {
+    data: comments,
+    isLoading: commentsLoading,
+    isFetching: commentsFetching,
+  } = useQuery({
+    queryKey: ["threadComments", threadIdParams],
+    queryFn: () => getThreadCommentsService(Number(threadIdParams), user?.id),
+    refetchOnWindowFocus: false,
+  });
+
   useEffect(() => {
     if (data) {
       setPost({ ...data, threadid: Number(threadIdParams) });
@@ -50,8 +61,8 @@ const Index = () => {
       () => {
         if (commentInput && post && user) {
           return commentThreadService({
-            threadId: post.threadid,
-            userId: user.id,
+            threadid: post.threadid,
+            userid: user.id,
             comment: commentInput,
           });
         } else {
@@ -76,7 +87,7 @@ const Index = () => {
       border border-zinc-800 bg-contentBg
       rounded-xl h-auto min-h-[150px] px-10 py-5 relative"
       >
-        {isLoading || isFetching ? (
+        {isLoading || isFetching || commentsLoading || commentsFetching ? (
           <Loading size={30} />
         ) : (
           <>
@@ -129,7 +140,11 @@ const Index = () => {
               {commentSubmitLoading ? <Loading size={20} /> : "Submit"}
             </Button>
             <div className="my-10">
-              <Comments />
+              <Comments
+                commentsRefetching={commentsFetching}
+                commentsLoading={commentsLoading}
+                data={comments}
+              />
             </div>
           </>
         )}

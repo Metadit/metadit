@@ -4,6 +4,8 @@ import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useThread } from "../../../hooks/useThread";
 import { IThread } from "../../../services/threads";
 import { useUser } from "../../../contexts/User";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 interface Props {
   count: number;
@@ -14,6 +16,7 @@ interface Props {
 const Vote = ({ count, thread, onVoteUpdate }: Props) => {
   const { voteHandler } = useThread();
   const { user } = useUser();
+  const router = useRouter();
   const onVote = async (direction: "up" | "down") => {
     if (user && thread) {
       await voteHandler(
@@ -21,11 +24,17 @@ const Vote = ({ count, thread, onVoteUpdate }: Props) => {
           threadId: thread.threadid,
           userId: user.id,
           currentUserVote: thread.did_user_vote,
-          vote: 1,
+          vote: direction === "up" ? 1 : -1,
         },
         direction
       );
       onVoteUpdate(direction === "up" ? 1 : -1);
+    } else {
+      if (!user) {
+        return router.push("/login").then(() => {
+          toast.error("You must be logged in to vote");
+        });
+      }
     }
   };
   return (
