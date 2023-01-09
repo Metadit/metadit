@@ -1,12 +1,12 @@
-import React from "react"
-import ActivityRecord from "./ActivityRecord"
-import Loading from "../../global/Loading"
-import { IUserActivity } from "../../../services/profile"
+import React from "react";
+import ActivityRecord from "./ActivityRecord";
+import Loading from "../../global/Loading";
+import { IUserActivity } from "../../../services/profile/types";
 
 interface Props {
-    data: IUserActivity[] | undefined
-    activityLoading: boolean
-    isFetching: boolean
+    data: IUserActivity[] | undefined;
+    activityLoading: boolean;
+    isFetching: boolean;
 }
 
 const Activity = ({ data, activityLoading, isFetching }: Props) => {
@@ -40,7 +40,7 @@ const Activity = ({ data, activityLoading, isFetching }: Props) => {
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default Activity
+export default Activity;

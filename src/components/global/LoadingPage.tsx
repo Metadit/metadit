@@ -1,9 +1,9 @@
-import React from "react"
-import Loading from "./Loading"
-import { useUser } from "../../contexts/User"
+import React from "react";
+import Loading from "./Loading";
+import { useUser } from "../../contexts/User";
 
 const LoadingPage = () => {
-    const { loading } = useUser()
+    const { loading } = useUser();
     return (
         <>
             {loading && (
@@ -16,7 +16,7 @@ const LoadingPage = () => {
                 </div>
             )}
         </>
-    )
-}
+    );
+};
 
-export default LoadingPage
+export default LoadingPage;

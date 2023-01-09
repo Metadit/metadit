@@ -1,6 +1,6 @@
-import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDiscord } from "@fortawesome/free-brands-svg-icons"
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
 const BePart = () => {
     return (
@@ -19,7 +19,7 @@ const BePart = () => {
                 </p>
             </div>
         </button>
-    )
-}
+    );
+};
 
-export default BePart
+export default BePart;

@@ -1,8 +1,8 @@
-import React from "react"
-import Image from "next/image"
-import notfound from "../../../../public/images/notfound.svg"
-import Link from "next/link"
-import Button from "../../../components/global/Button"
+import React from "react";
+import Image from "next/image";
+import notfound from "../../../../public/images/notfound.svg";
+import Link from "next/link";
+import Button from "../../../components/global/Button";
 
 const UserNotFound = () => {
     return (
@@ -26,7 +26,7 @@ const UserNotFound = () => {
                 </Button>
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default UserNotFound
+export default UserNotFound;

@@ -1,11 +1,11 @@
-import React from "react"
-import Button from "../../global/Button"
-import { IUserThreads } from "../../../services/profile"
-import parse from "html-react-parser"
-import Link from "next/link"
+import React from "react";
+import Button from "../../global/Button";
+import parse from "html-react-parser";
+import Link from "next/link";
+import { IUserThreads } from "../../../services/profile/types";
 
 interface Props {
-    thread: IUserThreads
+    thread: IUserThreads;
 }
 
 const ThreadCard = ({ thread }: Props) => {
@@ -30,7 +30,7 @@ const ThreadCard = ({ thread }: Props) => {
                 </Link>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ThreadCard
+export default ThreadCard;

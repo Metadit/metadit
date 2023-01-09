@@ -1,35 +1,35 @@
-import React from "react"
-import UserInfo from "./UserInfo"
-import Avatar from "react-avatar"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React from "react";
+import UserInfo from "./UserInfo";
+import Avatar from "react-avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faCopy,
-    faWallet,
     faClock,
+    faCopy,
     faUsers,
-} from "@fortawesome/free-solid-svg-icons"
-import Tippy from "@tippyjs/react"
-import Button from "../../global/Button"
-import Head from "next/head"
-import Loading from "../../global/Loading"
-import toast from "react-hot-toast"
-import moment from "moment"
-import { IUserProfile } from "../../../services/profile"
+    faWallet,
+} from "@fortawesome/free-solid-svg-icons";
+import Tippy from "@tippyjs/react";
+import Button from "../../global/Button";
+import Head from "next/head";
+import Loading from "../../global/Loading";
+import toast from "react-hot-toast";
+import moment from "moment";
+import { IUserProfile } from "../../../services/profile/types";
 
 interface Props {
-    className?: string
-    profileLoading: boolean
-    isFetching: boolean
-    data: IUserProfile | undefined
+    className?: string;
+    profileLoading: boolean;
+    isFetching: boolean;
+    data: IUserProfile | undefined;
 }
 
 const User = ({ className, data, profileLoading, isFetching }: Props) => {
     const copyHandler = () => {
         if (data?.wallet_address) {
-            navigator.clipboard.writeText(data.wallet_address)
+            navigator.clipboard.writeText(data.wallet_address);
         }
-        toast.success("Wallet address copied")
-    }
+        toast.success("Wallet address copied");
+    };
     return (
         <>
             <Head>
@@ -94,7 +94,7 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                 )}
             </div>
         </>
-    )
-}
+    );
+};
 
-export default User
+export default User;

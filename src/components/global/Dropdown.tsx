@@ -1,15 +1,15 @@
-import React from "react"
-import { IconProp } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { motion } from "framer-motion"
+import React from "react";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 
 interface Props {
     links: {
-        icon: IconProp
-        text: string
-        href: string
-        onClick?: () => void
-    }[]
+        icon: IconProp;
+        text: string;
+        href: string;
+        onClick?: () => void;
+    }[];
 }
 
 const Dropdown = ({ links }: Props) => {
@@ -34,7 +34,7 @@ const Dropdown = ({ links }: Props) => {
                 </div>
             ))}
         </motion.div>
-    )
-}
+    );
+};
 
-export default Dropdown
+export default Dropdown;

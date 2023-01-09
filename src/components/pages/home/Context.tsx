@@ -1,9 +1,9 @@
-import React from "react"
-import Button from "../../global/Button"
-import art from "../../../../public/images/homeart.svg"
-import Image from "next/image"
-import { motion } from "framer-motion"
-import Link from "next/link"
+import React from "react";
+import Button from "../../global/Button";
+import art from "../../../../public/images/homeart.svg";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 const Context = () => {
     return (
@@ -39,7 +39,7 @@ const Context = () => {
                 <Image src={art} alt="illustration" />
             </motion.div>
         </div>
-    )
-}
+    );
+};
 
-export default Context
+export default Context;

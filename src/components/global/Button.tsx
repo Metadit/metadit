@@ -1,11 +1,11 @@
-import React from "react"
+import React from "react";
 
 interface Props {
-    children: React.ReactNode
-    normal: boolean
-    className?: string
-    disabled?: boolean
-    onClick?: () => void
+    children: React.ReactNode;
+    normal: boolean;
+    className?: string;
+    disabled?: boolean;
+    onClick?: () => void;
 }
 
 const Button = ({ normal, children, className, disabled, onClick }: Props) => {
@@ -22,7 +22,7 @@ const Button = ({ normal, children, className, disabled, onClick }: Props) => {
         >
             {children}
         </button>
-    )
-}
+    );
+};
 
-export default Button
+export default Button;

@@ -1,9 +1,9 @@
-import React from "react"
-import CircularProgress from "@mui/material/CircularProgress"
+import React from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface Props {
-    size?: number
-    color?: string
+    size?: number;
+    color?: string;
 }
 
 const Loading = ({ size, color }: Props) => {
@@ -14,7 +14,7 @@ const Loading = ({ size, color }: Props) => {
                 size={size || 25}
             />
         </div>
-    )
-}
+    );
+};
 
-export default Loading
+export default Loading;

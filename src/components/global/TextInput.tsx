@@ -1,34 +1,34 @@
-import React, { SetStateAction } from "react"
-import { useUser } from "../../contexts/User"
-import Avatar from "react-avatar"
+import React, { SetStateAction } from "react";
+import { useUser } from "../../contexts/User";
+import Avatar from "react-avatar";
 import {
     faCaretDown,
     faCog,
     faSignOut,
     faUser,
-} from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Dropdown from "./Dropdown"
-import { AnimatePresence, motion } from "framer-motion"
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Dropdown from "./Dropdown";
+import { AnimatePresence, motion } from "framer-motion";
 
 const logoutHandler = () => {
-    localStorage.removeItem("metadit")
-    window.location.replace("/")
-}
+    localStorage.removeItem("metadit");
+    window.location.replace("/");
+};
 
 interface Props {
-    toggleDropDown?: React.Dispatch<SetStateAction<boolean>>
-    dropDown?: boolean
-    className?: string
+    toggleDropDown?: React.Dispatch<SetStateAction<boolean>>;
+    dropDown?: boolean;
+    className?: string;
 }
 
-const UserDropdown = ({ toggleDropDown, dropDown, className }: Props) => {
-    const { user } = useUser()
+const TextInput = ({ toggleDropDown, dropDown, className }: Props) => {
+    const { user } = useUser();
     const dropDownLinks = [
         { icon: faUser, text: "Profile", href: `/profile/${user?.id}` },
         { icon: faCog, text: "Settings", href: "/settings" },
         { icon: faSignOut, text: "Logout", href: "/", onClick: logoutHandler },
-    ]
+    ];
     return (
         <div
             onClick={() => (toggleDropDown ? toggleDropDown(!dropDown) : null)}
@@ -62,7 +62,7 @@ const UserDropdown = ({ toggleDropDown, dropDown, className }: Props) => {
                 <FontAwesomeIcon icon={faCaretDown} />
             </motion.div>
         </div>
-    )
-}
+    );
+};
 
-export default UserDropdown
+export default TextInput;

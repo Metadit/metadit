@@ -1,21 +1,21 @@
-import React from "react"
-import parse from "html-react-parser"
-import CommentCount from "./CommentCount"
-import Vote from "./Vote"
-import Link from "next/link"
-import moment from "moment"
-import voteCountUpdater from "../../../helpers/vote"
-import { IThread } from "../../../services/threads/types"
+import React from "react";
+import parse from "html-react-parser";
+import CommentCount from "./CommentCount";
+import Vote from "./Vote";
+import Link from "next/link";
+import moment from "moment";
+import voteCountUpdater from "../../../helpers/vote";
+import { IThread } from "../../../services/threads/types";
 
 interface Props {
-    data: IThread
-    setThreads: React.Dispatch<React.SetStateAction<IThread[]>>
-    threads: IThread[]
+    data: IThread;
+    setThreads: React.Dispatch<React.SetStateAction<IThread[]>>;
+    threads: IThread[];
 }
 
 const Post = ({ data, setThreads, threads }: Props) => {
     const threadVoteUpdater = (vote: number) => {
-        const newThreads = threads.map((thread) => {
+        const newThreads = threads.map(thread => {
             if (thread.threadid === data.threadid) {
                 return {
                     ...thread,
@@ -25,12 +25,12 @@ const Post = ({ data, setThreads, threads }: Props) => {
                         thread.did_user_vote
                     ),
                     did_user_vote: thread.did_user_vote === vote ? 0 : vote,
-                }
+                };
             }
-            return thread
-        })
-        setThreads(newThreads)
-    }
+            return thread;
+        });
+        setThreads(newThreads);
+    };
 
     return (
         <div
@@ -41,7 +41,7 @@ const Post = ({ data, setThreads, threads }: Props) => {
             <div>
                 <Vote
                     onVoteUpdate={(vote: number) => {
-                        threadVoteUpdater(vote)
+                        threadVoteUpdater(vote);
                     }}
                     thread={data}
                     count={data.vote_count}
@@ -71,7 +71,7 @@ const Post = ({ data, setThreads, threads }: Props) => {
             </div>
             <CommentCount count={data.comment_count} />
         </div>
-    )
-}
+    );
+};
 
-export default Post
+export default Post;

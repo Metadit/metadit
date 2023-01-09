@@ -1,21 +1,21 @@
-import React, { useEffect } from "react"
-import Layout from "../../../components/global/Layout"
-import PageContainer from "../../../components/global/PageContainer"
-import User from "../../../components/pages/profile/User"
-import Activity from "../../../components/pages/profile/Activity"
-import Threads from "../../../components/pages/profile/Threads"
-import { useProfile } from "../../../hooks/useProfile"
-import UserNotFound from "./userNotFound"
+import React, { useEffect } from "react";
+import Layout from "../../../components/global/Layout";
+import PageContainer from "../../../components/global/PageContainer";
+import User from "../../../components/pages/profile/User";
+import Activity from "../../../components/pages/profile/Activity";
+import Threads from "../../../components/pages/profile/Threads";
+import { useProfile } from "../../../hooks/useProfile";
+import UserNotFound from "./userNotFound";
 
 const Index = () => {
-    const userIdParams = window.location.pathname.split("/")[2]
-    const { activity, threads, userProfile } = useProfile(Number(userIdParams))
+    const userIdParams = window.location.pathname.split("/")[2];
+    const { activity, threads, userProfile } = useProfile(Number(userIdParams));
 
     useEffect(() => {
         if (isNaN(Number(userIdParams))) {
-            window.location.href = "/404"
+            window.location.href = "/404";
         }
-    }, [userIdParams])
+    }, [userIdParams]);
 
     return (
         <PageContainer>
@@ -47,9 +47,9 @@ const Index = () => {
                 </div>
             )}
         </PageContainer>
-    )
-}
+    );
+};
 
-export default Index
+export default Index;
 
-Index.getLayout = (page: any) => <Layout>{page}</Layout>
+Index.getLayout = (page: any) => <Layout>{page}</Layout>;

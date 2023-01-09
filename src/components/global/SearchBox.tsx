@@ -1,14 +1,14 @@
-import React, { useState } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch } from "@fortawesome/free-solid-svg-icons"
-import Input from "./Input"
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import Input from "./Input";
 
 interface Props {
-    className?: string
+    className?: string;
 }
 
 const SearchBox = ({ className }: Props) => {
-    const [active, setActive] = useState<boolean>(false)
+    const [active, setActive] = useState<boolean>(false);
     return (
         <div
             className={`w-full transition-all duration-200 relative bg-darkContent border
@@ -32,7 +32,7 @@ const SearchBox = ({ className }: Props) => {
                 value=""
             />
         </div>
-    )
-}
+    );
+};
 
-export default SearchBox
+export default SearchBox;

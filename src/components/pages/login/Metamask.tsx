@@ -1,11 +1,11 @@
-import React from "react"
-import Image from "next/image"
-import metamask from "../../../../public/images/metamask.png"
-import { useLogin } from "../../../hooks/useLogin"
-import Loading from "../../global/Loading"
+import React from "react";
+import Image from "next/image";
+import metamask from "../../../../public/images/metamask.png";
+import { useLogin } from "../../../hooks/useLogin";
+import Loading from "../../global/Loading";
 
 const Metamask = () => {
-    const { login, loading } = useLogin()
+    const { login, loading } = useLogin();
     return (
         <button
             onClick={login}
@@ -27,7 +27,7 @@ const Metamask = () => {
                 </>
             )}
         </button>
-    )
-}
+    );
+};
 
-export default Metamask
+export default Metamask;

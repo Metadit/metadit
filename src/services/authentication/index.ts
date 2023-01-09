@@ -1,10 +1,10 @@
-import { getRequest } from "../requests"
+import { getRequest } from "../requests";
 
 export const signUserWalletService = async (wallet_address: string) => {
     return await getRequest("auth/sign", {
         wallet_address,
-    })
-}
+    });
+};
 
 export const authenticateUserService = async (
     wallet_address: string,
@@ -13,5 +13,5 @@ export const authenticateUserService = async (
     return await getRequest("auth/authenticate", {
         wallet_address,
         signature,
-    })
-}
+    });
+};

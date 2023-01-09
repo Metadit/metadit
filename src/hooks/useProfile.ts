@@ -1,10 +1,10 @@
-import { useQuery } from "react-query"
+import { useQuery } from "react-query";
 import {
     userActivityService,
     userProfileService,
     userThreadsService,
-} from "../services/profile"
-import toast from "react-hot-toast"
+} from "../services/profile";
+import toast from "react-hot-toast";
 
 export const useProfile = (userId: number) => {
     const {
@@ -15,11 +15,11 @@ export const useProfile = (userId: number) => {
         queryKey: ["userActivity"],
         queryFn: () => userActivityService(userId),
         onError: () => {
-            toast.error("Error fetching user activity")
+            toast.error("Error fetching user activity");
         },
         refetchOnWindowFocus: false,
         retry: false,
-    })
+    });
     const {
         data: profile,
         isLoading: userProfileLoading,
@@ -28,11 +28,11 @@ export const useProfile = (userId: number) => {
         queryKey: ["userProfile"],
         queryFn: () => userProfileService(userId),
         onError: () => {
-            toast.error("Error fetching user profile")
+            toast.error("Error fetching user profile");
         },
         refetchOnWindowFocus: false,
         retry: false,
-    })
+    });
     const {
         data: threads,
         isLoading: threadsLoading,
@@ -41,11 +41,11 @@ export const useProfile = (userId: number) => {
         queryKey: ["userThreads"],
         queryFn: () => userThreadsService(userId),
         onError: () => {
-            toast.error("Error fetching user threads")
+            toast.error("Error fetching user threads");
         },
         refetchOnWindowFocus: false,
         retry: false,
-    })
+    });
     return {
         activity: {
             data: activity,
@@ -62,5 +62,5 @@ export const useProfile = (userId: number) => {
             isLoading: threadsLoading,
             isFetching: threadsIsFetching,
         },
-    }
-}
+    };
+};

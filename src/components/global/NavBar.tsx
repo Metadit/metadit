@@ -1,23 +1,26 @@
-import React, { useRef, useState } from "react"
-import logo from "../../../public/images/logo.svg"
-import Button from "./Button"
-import Hamburger from "hamburger-react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faStar, faSignIn, faGlobe } from "@fortawesome/free-solid-svg-icons"
-import { faDiscord } from "@fortawesome/free-brands-svg-icons"
-import HiddenMenu from "./HiddenMenu"
-import Image from "next/image"
-import Link from "next/link"
-import SearchBox from "./SearchBox"
-import { useUser } from "../../contexts/User"
-import UserDropdown from "./UserDropdown"
-import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick"
+import React, { useRef, useState } from "react";
+import logo from "../../../public/images/logo.svg";
+import Button from "./Button";
+import Hamburger from "hamburger-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe, faSignIn, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import HiddenMenu from "./HiddenMenu";
+import Image from "next/image";
+import Link from "next/link";
+import SearchBox from "./SearchBox";
+import { useUser } from "../../contexts/User";
+import TextInput from "./TextInput";
+import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
 
 const NavBar = () => {
-    const [isOpen, setOpen] = useState<boolean>(false)
-    const { user } = useUser()
-    const dropDownRef = useRef(null)
-    const [dropDown, toggleDropDown] = useDetectOutsideClick(dropDownRef, false)
+    const [isOpen, setOpen] = useState<boolean>(false);
+    const { user } = useUser();
+    const dropDownRef = useRef(null);
+    const [dropDown, toggleDropDown] = useDetectOutsideClick(
+        dropDownRef,
+        false
+    );
     return (
         <nav
             ref={dropDownRef}
@@ -78,7 +81,7 @@ const NavBar = () => {
                                     + Create post
                                 </Button>
                             </Link>
-                            <UserDropdown
+                            <TextInput
                                 toggleDropDown={toggleDropDown}
                                 dropDown={dropDown as boolean}
                             />
@@ -95,7 +98,7 @@ const NavBar = () => {
             </div>
             {isOpen && <HiddenMenu closeMenu={() => setOpen(!isOpen)} />}
         </nav>
-    )
-}
+    );
+};
 
-export default NavBar
+export default NavBar;

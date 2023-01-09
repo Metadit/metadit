@@ -1,25 +1,25 @@
-import React from "react"
-import Avatar from "react-avatar"
-import CommentVote from "./CommentVote"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFlag, faReply } from "@fortawesome/free-solid-svg-icons"
-import { useModal } from "../../../contexts/Modal"
-import moment from "moment"
-import Link from "next/link"
-import voteCountUpdater from "../../../helpers/vote"
-import { IComment } from "../../../services/threads/types"
+import React from "react";
+import Avatar from "react-avatar";
+import CommentVote from "./CommentVote";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFlag, faReply } from "@fortawesome/free-solid-svg-icons";
+import { useModal } from "../../../contexts/Modal";
+import moment from "moment";
+import Link from "next/link";
+import voteCountUpdater from "../../../helpers/vote";
+import { IComment } from "../../../services/threads/types";
 
 interface Props {
-    comment: IComment
-    setComments: React.Dispatch<React.SetStateAction<IComment[]>>
-    comments: IComment[]
+    comment: IComment;
+    setComments: React.Dispatch<React.SetStateAction<IComment[]>>;
+    comments: IComment[];
 }
 
 const Comment = ({ comment, setComments, comments }: Props) => {
-    const { setActiveModal } = useModal()
+    const { setActiveModal } = useModal();
 
     const commentVoteUpdater = (vote: number, commentId: number) => {
-        const newComments = comments.map((comment) => {
+        const newComments = comments.map(comment => {
             if (commentId === comment.id) {
                 return {
                     ...comment,
@@ -29,12 +29,12 @@ const Comment = ({ comment, setComments, comments }: Props) => {
                         comment.did_user_vote
                     ),
                     did_user_vote: comment.did_user_vote === vote ? 0 : vote,
-                }
+                };
             }
-            return comment
-        })
-        setComments(newComments)
-    }
+            return comment;
+        });
+        setComments(newComments);
+    };
 
     return (
         <div className="flex w-full">
@@ -67,7 +67,7 @@ const Comment = ({ comment, setComments, comments }: Props) => {
                         <CommentVote
                             comment={comment}
                             onVoteUpdate={(vote: number, commentId: number) => {
-                                commentVoteUpdater(vote, commentId)
+                                commentVoteUpdater(vote, commentId);
                             }}
                             count={comment.vote_count}
                         />
@@ -81,7 +81,7 @@ const Comment = ({ comment, setComments, comments }: Props) => {
                         </p>
                         <p
                             onClick={() => {
-                                setActiveModal("ReportModal")
+                                setActiveModal("ReportModal");
                             }}
                             className="text-content text-sm
             transition-all duration-200 cursor-pointer
@@ -94,7 +94,7 @@ const Comment = ({ comment, setComments, comments }: Props) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Comment
+export default Comment;

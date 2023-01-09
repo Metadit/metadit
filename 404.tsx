@@ -1,10 +1,10 @@
-import Button from "./src/components/global/Button"
-import { faHome } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Link from "next/link"
-import notfound from "./public/images/notfound.png"
-import Image from "next/image"
-import Layout from "./src/components/global/Layout"
+import Button from "./src/components/global/Button";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+import notfound from "./public/images/notfound.png";
+import Image from "next/image";
+import Layout from "./src/components/global/Layout";
 
 const NotFoundPage = () => {
     return (
@@ -27,9 +27,9 @@ const NotFoundPage = () => {
                 </Button>
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default NotFoundPage
+export default NotFoundPage;
 
-NotFoundPage.getLayout = (page: any) => <Layout>{page}</Layout>
+NotFoundPage.getLayout = (page: any) => <Layout>{page}</Layout>;

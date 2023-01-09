@@ -1,35 +1,35 @@
-import React, { useEffect } from "react"
-import ContentTabs from "../components/pages/browse/ContentTabs"
-import Post from "../components/pages/browse/Post"
-import Layout from "../components/global/Layout"
-import PageContainer from "../components/global/PageContainer"
-import { useQuery } from "react-query"
-import { getThreadsService } from "../services/threads"
-import toast from "react-hot-toast"
-import Loading from "../components/global/Loading"
-import { useUser } from "../contexts/User"
-import { IThread } from "../services/threads/types"
+import React, { useEffect } from "react";
+import ContentTabs from "../components/pages/browse/ContentTabs";
+import Post from "../components/pages/browse/Post";
+import Layout from "../components/global/Layout";
+import PageContainer from "../components/global/PageContainer";
+import { useQuery } from "react-query";
+import { getThreadsService } from "../services/threads";
+import toast from "react-hot-toast";
+import Loading from "../components/global/Loading";
+import { useUser } from "../contexts/User";
+import { IThread } from "../services/threads/types";
 
 const Browse = () => {
-    const { user } = useUser()
+    const { user } = useUser();
     const { data, isLoading, isFetching } = useQuery(
         "threads",
         async () => {
             return await getThreadsService(user?.id).catch(() => {
-                toast.error("Error fetching posts")
-            })
+                toast.error("Error fetching posts");
+            });
         },
         {
             refetchOnWindowFocus: false,
             retry: 0,
         }
-    )
-    const [threads, setThreads] = React.useState<IThread[]>([])
+    );
+    const [threads, setThreads] = React.useState<IThread[]>([]);
     useEffect(() => {
         if (data) {
-            setThreads(data)
+            setThreads(data);
         }
-    }, [data])
+    }, [data]);
 
     return (
         <PageContainer pageTitle="Browse Metadit">
@@ -51,9 +51,9 @@ const Browse = () => {
                 )}
             </div>
         </PageContainer>
-    )
-}
+    );
+};
 
-export default Browse
+export default Browse;
 
-Browse.getLayout = (page: any) => <Layout>{page}</Layout>
+Browse.getLayout = (page: any) => <Layout>{page}</Layout>;

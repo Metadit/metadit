@@ -1,35 +1,39 @@
-import React, { useEffect, useState } from "react"
-import Layout from "../../../components/global/Layout"
-import PageContainer from "../../../components/global/PageContainer"
-import Vote from "../../../components/pages/browse/Vote"
-import CommentCount from "../../../components/pages/browse/CommentCount"
-import Comments from "../../../components/pages/post/comments"
-import { useMutation, useQuery } from "react-query"
+import React, { useEffect, useState } from "react";
+import Layout from "../../../components/global/Layout";
+import PageContainer from "../../../components/global/PageContainer";
+import Vote from "../../../components/pages/browse/Vote";
+import CommentCount from "../../../components/pages/browse/CommentCount";
+import Comments from "../../../components/pages/post/comments";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
     commentThreadService,
     getThreadCommentsService,
     getThreadService,
-} from "../../../services/threads"
-import toast from "react-hot-toast"
-import parse from "html-react-parser"
-import Loading from "../../../components/global/Loading"
-import moment from "moment"
-import Link from "next/link"
-import { voteCountUpdater } from "../../../helpers/vote"
-import { useUser } from "../../../contexts/User"
-import Button from "../../../components/global/Button"
-import { IThread } from "../../../services/threads/types"
+} from "../../../services/threads";
+import toast from "react-hot-toast";
+import parse from "html-react-parser";
+import Loading from "../../../components/global/Loading";
+import moment from "moment";
+import Link from "next/link";
+import voteCountUpdater from "../../../helpers/vote";
+import { useUser } from "../../../contexts/User";
+import Button from "../../../components/global/Button";
+import { IThread } from "../../../services/threads/types";
+import TextAreaBox from "../../../components/global/TextAreaBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 
 const Index = () => {
-    const [post, setPost] = useState<IThread | null>(null)
-    const [commentInput, setCommentInput] = useState<string | null>("")
-    const { user } = useUser()
-    const threadIdParams = window.location.pathname.split("/")[2]
+    const [post, setPost] = useState<IThread | null>(null);
+    const [commentInput, setCommentInput] = useState<string>("");
+    const queryClient = useQueryClient();
+    const { user } = useUser();
+    const threadIdParams = window.location.pathname.split("/")[2];
     const { data, isLoading, isFetching } = useQuery({
         queryKey: ["thread", threadIdParams],
         queryFn: () => getThreadService(Number(threadIdParams), user?.id),
         refetchOnWindowFocus: false,
-    })
+    });
     const {
         data: comments,
         isLoading: commentsLoading,
@@ -39,13 +43,13 @@ const Index = () => {
         queryFn: () =>
             getThreadCommentsService(Number(threadIdParams), user?.id),
         refetchOnWindowFocus: false,
-    })
+    });
 
     useEffect(() => {
         if (data) {
-            setPost({ ...data, threadid: Number(threadIdParams) })
+            setPost(data);
         }
-    }, [data, threadIdParams])
+    }, [data]);
 
     const postVoteUpdater = (vote: number) => {
         if (post) {
@@ -57,29 +61,34 @@ const Index = () => {
                     post.did_user_vote
                 ),
                 did_user_vote: post.did_user_vote === vote ? 0 : vote,
-            })
+            });
         }
-    }
+    };
 
     const { isLoading: commentSubmitLoading, mutate: commentSubmit } =
         useMutation(
             () => {
                 if (commentInput && post && user) {
                     return commentThreadService({
-                        threadid: post.threadid,
+                        threadid: Number(threadIdParams),
                         userid: user.id,
                         comment: commentInput,
-                    })
+                    });
                 } else {
-                    return Promise.reject("No comment input")
+                    return Promise.reject("No comment input");
                 }
             },
             {
                 onError: () => {
-                    toast.error("Error while posting comment")
+                    toast.error("Error while posting comment");
+                },
+                onSuccess: () => {
+                    setCommentInput("");
+                    queryClient.invalidateQueries(["threadComments"]);
+                    toast.success("Comment posted!");
                 },
             }
-        )
+        );
 
     return (
         <PageContainer
@@ -103,7 +112,7 @@ const Index = () => {
                             <Vote
                                 thread={post}
                                 onVoteUpdate={(vote: number) => {
-                                    postVoteUpdater(vote)
+                                    postVoteUpdater(vote);
                                 }}
                                 count={post?.vote_count as number}
                             />
@@ -129,34 +138,55 @@ const Index = () => {
                             </div>
                         )}
                         <CommentCount count={post?.comment_count as number} />
-                        <div
-                            placeholder="What are your thoughts?"
-                            contentEditable={true}
-                            defaultValue={commentInput as string}
-                            onInput={(e) =>
-                                setCommentInput(e.currentTarget.textContent)
-                            }
-                            className="mt-10 text-[14px] bg-darkContent text-white resize-none
-          transition-all duration-200 border border-zinc-800 w-full
-          rounded-md h-36 focus:outline-0 focus:border-primary p-5"
-                        />
-                        <Button
-                            onClick={commentSubmit}
-                            normal={false}
-                            disabled={
-                                commentInput?.length === 0 ||
-                                commentSubmitLoading
-                            }
-                            className={`mt-5 bg-primary w-full
+                        {!user ? (
+                            <div
+                                className="w-full bg-darkContent p-6 my-10
+                             border border-zinc-800 rounded-xl text-center"
+                            >
+                                <p className="text-white">
+                                    Want to comment and be part of the
+                                    conversation?
+                                </p>
+                                <Link href="/login">
+                                    <Button
+                                        normal={false}
+                                        className="mt-5 bg-primary w-full max-w-fit mx-auto"
+                                    >
+                                        <FontAwesomeIcon icon={faSignIn} />
+                                        Login and share your thoughts
+                                    </Button>
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="my-10">
+                                <TextAreaBox
+                                    placeholder="What are your thoughts?"
+                                    onChange={e =>
+                                        setCommentInput(e.target.value)
+                                    }
+                                    value={commentInput}
+                                    className="w-full h-[140px]"
+                                    rows={5}
+                                />
+                                <Button
+                                    onClick={commentSubmit}
+                                    normal={false}
+                                    disabled={
+                                        commentInput?.length === 0 ||
+                                        commentSubmitLoading
+                                    }
+                                    className={`mt-4 bg-primary w-full
                 max-w-[100px] mx-auto`}
-                        >
-                            {commentSubmitLoading ? (
-                                <Loading size={20} />
-                            ) : (
-                                "Submit"
-                            )}
-                        </Button>
-                        <div className="my-10">
+                                >
+                                    {commentSubmitLoading ? (
+                                        <Loading size={20} />
+                                    ) : (
+                                        "Submit"
+                                    )}
+                                </Button>
+                            </div>
+                        )}
+                        <div>
                             <Comments
                                 commentsRefetching={commentsFetching}
                                 commentsLoading={commentsLoading}
@@ -167,9 +197,9 @@ const Index = () => {
                 )}
             </div>
         </PageContainer>
-    )
-}
+    );
+};
 
-export default Index
+export default Index;
 
-Index.getLayout = (page: any) => <Layout>{page}</Layout>
+Index.getLayout = (page: any) => <Layout>{page}</Layout>;

@@ -1,19 +1,19 @@
-import Layout from "../components/global/Layout"
-import PageContainer from "../components/global/PageContainer"
-import React, { useState } from "react"
-import Input from "../components/global/Input"
-import Button from "../components/global/Button"
-import { useThread } from "../hooks/useThread"
-import Loading from "../components/global/Loading"
-import { useRouter } from "next/router"
+import Layout from "../components/global/Layout";
+import PageContainer from "../components/global/PageContainer";
+import React, { useState } from "react";
+import Input from "../components/global/Input";
+import Button from "../components/global/Button";
+import { useThread } from "../hooks/useThread";
+import Loading from "../components/global/Loading";
+import { useRouter } from "next/router";
 
 const Create = () => {
     const ReactQuill =
-        typeof window === "object" ? require("react-quill") : () => false
-    const { createLoading, createThread } = useThread()
-    const router = useRouter()
-    const [postTitle, setPostTitle] = useState("")
-    const [content, setContent] = useState("")
+        typeof window === "object" ? require("react-quill") : () => false;
+    const { createLoading, createThread } = useThread();
+    const router = useRouter();
+    const [postTitle, setPostTitle] = useState("");
+    const [content, setContent] = useState("");
     const modules = {
         toolbar: [
             ["bold", "italic", "underline", "strike", "blockquote"],
@@ -24,11 +24,11 @@ const Create = () => {
             // toggle to add extra line breaks when pasting HTML:
             matchVisual: false,
         },
-    }
+    };
     const submitHandler = async () => {
-        const threadId = await createThread(postTitle, content)
-        await router.push(`/post/${threadId}`)
-    }
+        const threadId = await createThread(postTitle, content);
+        await router.push(`/post/${threadId}`);
+    };
 
     return (
         <PageContainer pageTitle="Create Post">
@@ -42,16 +42,16 @@ const Create = () => {
                     type="text"
                     name="title"
                     placeholder={"Title"}
-                    onChange={(e) => setPostTitle(e.target.value)}
+                    onChange={e => setPostTitle(e.target.value)}
                     value={postTitle}
                 />
                 <ReactQuill
                     modules={modules}
                     onChange={(e: React.SetStateAction<string>) => {
                         if (e === "<p><br></p>") {
-                            setContent("")
+                            setContent("");
                         } else {
-                            setContent(e)
+                            setContent(e);
                         }
                     }}
                     style={{ marginTop: 20 }}
@@ -71,9 +71,9 @@ const Create = () => {
                 </Button>
             </div>
         </PageContainer>
-    )
-}
+    );
+};
 
-export default Create
+export default Create;
 
-Create.getLayout = (page: any) => <Layout>{page}</Layout>
+Create.getLayout = (page: any) => <Layout>{page}</Layout>;

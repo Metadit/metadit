@@ -1,14 +1,14 @@
-import React from "react"
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import Tippy from "@tippyjs/react"
+import React from "react";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Tippy from "@tippyjs/react";
 
 interface Props {
-    icon: IconDefinition
-    info: string | undefined
-    children?: React.ReactNode
-    name: string
-    onClick?: () => void
+    icon: IconDefinition;
+    info: string | undefined;
+    children?: React.ReactNode;
+    name: string;
+    onClick?: () => void;
 }
 
 const UserInfo = ({ icon, info, children, name, onClick }: Props) => {
@@ -35,7 +35,7 @@ const UserInfo = ({ icon, info, children, name, onClick }: Props) => {
                 {children ? children : null}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default UserInfo
+export default UserInfo;

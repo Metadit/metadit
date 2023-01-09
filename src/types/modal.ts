@@ -1,3 +1,3 @@
 export interface IModalIds {
-    ReportModal: string
+    ReportModal: string;
 }

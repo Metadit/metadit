@@ -1,5 +1,5 @@
-import { NextRouter } from "next/router"
-import toast from "react-hot-toast"
+import { NextRouter } from "next/router";
+import toast from "react-hot-toast";
 
 const redirectWithError = (
     message: string,
@@ -7,8 +7,8 @@ const redirectWithError = (
     router: NextRouter
 ) => {
     return router.push(path).then(() => {
-        toast.error(message)
-    })
-}
+        toast.error(message);
+    });
+};
 
-export default redirectWithError
+export default redirectWithError;

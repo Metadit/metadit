@@ -1,23 +1,23 @@
-import React from "react"
-import Button from "./Button"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React from "react";
+import Button from "./Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faSignIn,
     faStar,
     faGlobe,
     faUser,
-} from "@fortawesome/free-solid-svg-icons"
-import { faDiscord } from "@fortawesome/free-brands-svg-icons"
-import Link from "next/link"
-import SearchBox from "./SearchBox"
-import { useUser } from "../../contexts/User"
+} from "@fortawesome/free-solid-svg-icons";
+import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import Link from "next/link";
+import SearchBox from "./SearchBox";
+import { useUser } from "../../contexts/User";
 
 interface Props {
-    closeMenu: () => void
+    closeMenu: () => void;
 }
 
 const HiddenMenu = ({ closeMenu }: Props) => {
-    const { user } = useUser()
+    const { user } = useUser();
     return (
         <div
             className="flex-col flex gap-2 p-5 w-full justify-center bg-zinc-800
@@ -73,7 +73,7 @@ const HiddenMenu = ({ closeMenu }: Props) => {
             )}
             <SearchBox className="mt-5" />
         </div>
-    )
-}
+    );
+};
 
-export default HiddenMenu
+export default HiddenMenu;

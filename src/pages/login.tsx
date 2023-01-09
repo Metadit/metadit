@@ -1,25 +1,25 @@
-import React, { useContext, useEffect } from "react"
-import Image from "next/image"
-import art from "../../public/images/loginart.png"
-import Metamask from "../components/pages/login/Metamask"
-import OtherWallets from "../components/pages/login/OtherWallets"
-import BePart from "../components/pages/login/BePart"
-import { motion } from "framer-motion"
-import logo from "../../public/images/logo.svg"
-import Link from "next/link"
-import Head from "next/head"
-import { UserContext } from "../contexts/User"
-import Button from "../components/global/Button"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGlobe } from "@fortawesome/free-solid-svg-icons"
+import React, { useContext, useEffect } from "react";
+import Image from "next/image";
+import art from "../../public/images/loginart.png";
+import Metamask from "../components/pages/login/Metamask";
+import OtherWallets from "../components/pages/login/OtherWallets";
+import BePart from "../components/pages/login/BePart";
+import { motion } from "framer-motion";
+import logo from "../../public/images/logo.svg";
+import Link from "next/link";
+import Head from "next/head";
+import { UserContext } from "../contexts/User";
+import Button from "../components/global/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
-    const { user, loading } = useContext(UserContext)
+    const { user, loading } = useContext(UserContext);
     useEffect(() => {
         if (user?.wallet_address) {
-            window.location.href = "/browse/?tab=top"
+            window.location.href = "/browse/?tab=top";
         }
-    }, [user])
+    }, [user]);
     return (
         <>
             <Head>
@@ -79,7 +79,7 @@ const Login = () => {
                 </div>
             )}
         </>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

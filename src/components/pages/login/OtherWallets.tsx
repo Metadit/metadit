@@ -1,6 +1,6 @@
-import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faWallet } from "@fortawesome/free-solid-svg-icons"
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWallet } from "@fortawesome/free-solid-svg-icons";
 
 const OtherWallets = () => {
     return (
@@ -14,7 +14,7 @@ const OtherWallets = () => {
                 Login with <b>other wallets</b>
             </p>
         </button>
-    )
-}
+    );
+};
 
-export default OtherWallets
+export default OtherWallets;

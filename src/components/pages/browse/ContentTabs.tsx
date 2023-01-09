@@ -1,23 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React, { useCallback, useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faRocket,
     faFire,
     faWandSparkles,
-} from "@fortawesome/free-solid-svg-icons"
-import { useSearchParams } from "next/navigation"
-import { useRouter } from "next/router"
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core"
+} from "@fortawesome/free-solid-svg-icons";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 const tabOptions = [
     { name: "Top", icon: faRocket },
     { name: "Hot", icon: faFire },
     { name: "New", icon: faWandSparkles },
-]
+];
 
 interface TabsKey {
-    name: string
-    icon: IconDefinition
+    name: string;
+    icon: IconDefinition;
 }
 
 enum Tabs {
@@ -27,26 +27,26 @@ enum Tabs {
 }
 
 const ContentTabs = () => {
-    const [activeTab, setActiveTab] = useState<number | null>(null)
-    const params = useSearchParams()
-    const navigate = useRouter()
-    const getTabParams = params.get("tab")
+    const [activeTab, setActiveTab] = useState<number | null>(null);
+    const params = useSearchParams();
+    const navigate = useRouter();
+    const getTabParams = params.get("tab");
     const tabHandler = (tab: TabsKey, index: number) => {
-        setActiveTab(index)
-        navigate.replace("/browse?tab=" + tab.name.toLowerCase())
-    }
+        setActiveTab(index);
+        navigate.replace("/browse?tab=" + tab.name.toLowerCase());
+    };
     const paramsHandler = useCallback(() => {
         if (getTabParams === "hot") {
-            setActiveTab(Tabs.Hot)
+            setActiveTab(Tabs.Hot);
         } else if (getTabParams === "new") {
-            setActiveTab(Tabs.New)
+            setActiveTab(Tabs.New);
         } else {
-            setActiveTab(Tabs.Top)
+            setActiveTab(Tabs.Top);
         }
-    }, [getTabParams])
+    }, [getTabParams]);
     useEffect(() => {
-        paramsHandler()
-    }, [getTabParams, paramsHandler])
+        paramsHandler();
+    }, [getTabParams, paramsHandler]);
 
     return (
         <div
@@ -76,10 +76,10 @@ const ContentTabs = () => {
                         />
                         {tab.name}
                     </p>
-                )
+                );
             })}
         </div>
-    )
-}
+    );
+};
 
-export default ContentTabs
+export default ContentTabs;

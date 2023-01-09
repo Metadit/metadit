@@ -1,22 +1,22 @@
-import React, { RefObject, useRef } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes } from "@fortawesome/free-solid-svg-icons"
-import { useModal } from "../../contexts/Modal"
-import { motion } from "framer-motion"
+import React, { RefObject, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useModal } from "../../contexts/Modal";
+import { motion } from "framer-motion";
 
 interface Props {
-    children: React.ReactNode
-    title: string
+    children: React.ReactNode;
+    title: string;
 }
 
 const Modal = ({ children, title }: Props) => {
-    const { setActiveModal } = useModal()
-    const modalRef: RefObject<HTMLDivElement> = useRef(null)
+    const { setActiveModal } = useModal();
+    const modalRef: RefObject<HTMLDivElement> = useRef(null);
     const outSideClickHandler = (e: any) => {
         if (modalRef.current !== null && !modalRef.current.contains(e.target)) {
-            setActiveModal(null)
+            setActiveModal(null);
         }
-    }
+    };
     return (
         <div
             className="w-full h-full fixed z-[100] bg-zinc-800 bg-opacity-50 flex justify-center
@@ -45,7 +45,7 @@ const Modal = ({ children, title }: Props) => {
                 {children}
             </motion.div>
         </div>
-    )
-}
+    );
+};
 
-export default Modal
+export default Modal;

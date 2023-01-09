@@ -1,12 +1,12 @@
-import React from "react"
-import ThreadCard from "./ThreadCard"
-import Loading from "../../global/Loading"
-import { IUserThreads } from "../../../services/profile"
+import React from "react";
+import ThreadCard from "./ThreadCard";
+import Loading from "../../global/Loading";
+import { IUserThreads } from "../../../services/profile/types";
 
 interface Props {
-    data: IUserThreads[] | undefined
-    threadsLoading: boolean
-    isFetching: boolean
+    data: IUserThreads[] | undefined;
+    threadsLoading: boolean;
+    isFetching: boolean;
 }
 
 const Threads = ({ data, threadsLoading, isFetching }: Props) => {
@@ -31,14 +31,14 @@ const Threads = ({ data, threadsLoading, isFetching }: Props) => {
                     {threadsLoading || isFetching ? (
                         <Loading size={30} />
                     ) : (
-                        data?.map((thread) => (
+                        data?.map(thread => (
                             <ThreadCard thread={thread} key={thread.threadid} />
                         ))
                     )}
                 </div>
             )}
         </div>
-    )
-}
+    );
+};
 
-export default Threads
+export default Threads;

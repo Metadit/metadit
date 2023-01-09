@@ -1,25 +1,25 @@
-import React, { SetStateAction } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import React, { SetStateAction } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faBold,
     faItalic,
     faLink,
     faList,
     faStrikethrough,
-} from "@fortawesome/free-solid-svg-icons"
+} from "@fortawesome/free-solid-svg-icons";
 
-import Tippy from "@tippyjs/react"
-import { IconProp } from "@fortawesome/fontawesome-svg-core"
+import Tippy from "@tippyjs/react";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface Options {
-    action: string
-    icon: IconProp
-    active: boolean
+    action: string;
+    icon: IconProp;
+    active: boolean;
 }
 
 interface Props {
-    setActiveMarkdown: React.Dispatch<SetStateAction<string[]>>
-    activeMarkdown: string[]
+    setActiveMarkdown: React.Dispatch<SetStateAction<string[]>>;
+    activeMarkdown: string[];
 }
 
 const TextEditor = ({ setActiveMarkdown, activeMarkdown }: Props) => {
@@ -29,24 +29,24 @@ const TextEditor = ({ setActiveMarkdown, activeMarkdown }: Props) => {
         { action: "strike through", icon: faStrikethrough, active: false },
         { action: "list", icon: faList, active: false },
         { action: "link", icon: faLink, active: false },
-    ])
+    ]);
     const activeHandler = (action: string) => {
-        const newActiveOptions = activeOptions.map((option) => {
+        const newActiveOptions = activeOptions.map(option => {
             if (option.action === action) {
-                option.active = !option.active
+                option.active = !option.active;
             }
-            return option
-        })
-        setActiveOptions(newActiveOptions)
+            return option;
+        });
+        setActiveOptions(newActiveOptions);
         setActiveMarkdown(
             newActiveOptions.reduce((acc, option) => {
                 if (option.active) {
-                    acc.push(option.action)
+                    acc.push(option.action);
                 }
-                return acc
+                return acc;
             }, [] as string[])
-        )
-    }
+        );
+    };
 
     return (
         <div
@@ -57,9 +57,9 @@ const TextEditor = ({ setActiveMarkdown, activeMarkdown }: Props) => {
                 <Tippy key={index.toString()} content={action}>
                     <FontAwesomeIcon
                         onClick={() => activeHandler(action)}
-                        onMouseDown={(event) => {
-                            event.preventDefault()
-                            document.execCommand(action, false)
+                        onMouseDown={event => {
+                            event.preventDefault();
+                            document.execCommand(action, false);
                         }}
                         className={`text-content transition-all duration-200
             hover:brightness-125 cursor-pointer hover:bg-contentBg focus:outline-0 ${
@@ -70,7 +70,7 @@ const TextEditor = ({ setActiveMarkdown, activeMarkdown }: Props) => {
                 </Tippy>
             ))}
         </div>
-    )
-}
+    );
+};
 
-export default TextEditor
+export default TextEditor;

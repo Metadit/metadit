@@ -1,9 +1,9 @@
-import React from "react"
-import { IUserActivity } from "../../../services/profile"
-import Link from "next/link"
+import React from "react";
+import Link from "next/link";
+import { IUserActivity } from "../../../services/profile/types";
 
 interface Props {
-    data: IUserActivity | undefined
+    data: IUserActivity | undefined;
 }
 
 const ActivityRecord = ({ data }: Props) => {
@@ -19,7 +19,7 @@ const ActivityRecord = ({ data }: Props) => {
                 </span>
             </Link>
         </div>
-    )
-}
+    );
+};
 
-export default ActivityRecord
+export default ActivityRecord;
