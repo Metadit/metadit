@@ -11,7 +11,7 @@ import { IComment } from "../../../services/threads/types";
 
 interface Props {
     comment: IComment;
-    setComments: React.Dispatch<React.SetStateAction<IComment[]>>;
+    setComments: React.Dispatch<React.SetStateAction<IComment[] | undefined>>;
     comments: IComment[];
 }
 

@@ -1,14 +1,23 @@
 import {
     createThreadService,
+    getThreadCommentsService,
+    getThreadService,
     postCommentVoteService,
     postVoteService,
 } from "../services/threads";
-import { useContext, useState } from "react";
-import { UserContext } from "../contexts/User";
+import { useContext, useEffect, useState } from "react";
+import { UserContext, useUser } from "../contexts/User";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { ICommentVote, IThreadCreate, IVote } from "../services/threads/types";
+import {
+    IComment,
+    ICommentVote,
+    IThread,
+    IThreadCreate,
+    IVote,
+} from "../services/threads/types";
 import redirectWithError from "../helpers/redirectWithError";
+import { useQuery } from "react-query";
 
 export const useThread = () => {
     const { user } = useContext(UserContext);
@@ -85,5 +94,51 @@ export const useThread = () => {
         createLoading,
         voteHandler,
         commentVoteHandler,
+    };
+};
+
+export const useThreadService = (threadId: number) => {
+    const [thread, setThread] = useState<IThread | undefined>();
+    const [comments, setCommentsData] = useState<IComment[] | undefined>();
+    const { user } = useUser();
+    const {
+        data: threadData,
+        isLoading,
+        isFetching,
+    } = useQuery({
+        queryKey: ["thread", threadId],
+        queryFn: () => getThreadService(threadId, user?.id),
+        refetchOnWindowFocus: false,
+    });
+    const {
+        data: commentsData,
+        isLoading: commentsLoading,
+        isFetching: commentsFetching,
+    } = useQuery({
+        queryKey: ["threadComments", threadId],
+        queryFn: () => getThreadCommentsService(threadId, user?.id),
+        refetchOnWindowFocus: false,
+    });
+
+    useEffect(() => {
+        if (threadData && commentsData) {
+            setThread(threadData);
+            setCommentsData(commentsData);
+        }
+    }, [commentsData, threadData]);
+
+    return {
+        thread: {
+            setThread,
+            data: thread,
+            isLoading,
+            isFetching,
+        },
+        comments: {
+            setCommentsData,
+            data: comments,
+            isLoading: commentsLoading,
+            isFetching: commentsFetching,
+        },
     };
 };
