@@ -5,7 +5,7 @@ import {
     postCommentVoteService,
     postVoteService,
 } from "../services/threads";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext, useUser } from "../contexts/User";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -99,14 +99,14 @@ export const useThread = () => {
 
 export const useThreadService = (threadId: number) => {
     const [thread, setThread] = useState<IThread | undefined>();
-    const [comments, setCommentsData] = useState<IComment[] | undefined>();
     const { user } = useUser();
+    const [comments, setCommentsData] = useState<IComment[] | undefined>();
     const {
         data: threadData,
         isLoading,
         isFetching,
     } = useQuery({
-        queryKey: ["thread", threadId],
+        queryKey: ["thread"],
         queryFn: () => getThreadService(threadId, user?.id),
         refetchOnWindowFocus: false,
     });
@@ -115,17 +115,21 @@ export const useThreadService = (threadId: number) => {
         isLoading: commentsLoading,
         isFetching: commentsFetching,
     } = useQuery({
-        queryKey: ["threadComments", threadId],
+        queryKey: ["threadComments"],
         queryFn: () => getThreadCommentsService(threadId, user?.id),
         refetchOnWindowFocus: false,
     });
 
-    useEffect(() => {
+    const threadInfo = useCallback(() => {
         if (threadData && commentsData) {
             setThread(threadData);
             setCommentsData(commentsData);
         }
-    }, [commentsData, threadData]);
+    }, [threadData, commentsData]);
+
+    useEffect(() => {
+        threadInfo();
+    }, [threadInfo]);
 
     return {
         thread: {

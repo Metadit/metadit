@@ -1,5 +1,6 @@
 import React from "react";
 import ReportModal from "../modals/ReportModal";
+import DeleteCommentModal from "../modals/DeleteCommentModal";
 import { useModal } from "../../contexts/Modal";
 
 const ModalManager = () => {
@@ -7,6 +8,8 @@ const ModalManager = () => {
     switch (activeModal) {
         case "ReportModal":
             return <ReportModal />;
+        case "DeleteCommentModal":
+            return <DeleteCommentModal />;
         default:
             return null;
     }

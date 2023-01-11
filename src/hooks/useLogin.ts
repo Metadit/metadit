@@ -66,7 +66,10 @@ export const useLogin = () => {
                 await authenticationHandler(wallet_address);
             }
         } catch (error: any) {
-            throw new Error(error);
+            window.ethereum.request({
+                method: "wallet_requestPermissions",
+                params: [{ eth_accounts: {} }],
+            });
         }
         setLoading(false);
     };

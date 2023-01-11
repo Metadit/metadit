@@ -47,11 +47,15 @@ export const commentThreadService = async (
 
 export const getThreadCommentsService = async (
     threadId: number,
-    userId?: number
+    userId?: number,
+    limit?: number,
+    offset?: number
 ): Promise<IComment[]> => {
     return await getRequest("threads/comments", {
         threadId,
         userId,
+        limit,
+        offset,
     });
 };
 
@@ -63,4 +67,12 @@ export const deleteVoteService = async (
     vote_id: number
 ): Promise<{ id: number }> => {
     return await deleteAuthenticatedRequest("threads/vote", { id: vote_id });
+};
+
+export const deleteCommentService = async (
+    comment_id: number
+): Promise<{ id: number }> => {
+    return await deleteAuthenticatedRequest("threads/comment", {
+        commentId: comment_id,
+    });
 };

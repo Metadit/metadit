@@ -1,4 +1,7 @@
 import React from "react";
+import { Simulate } from "react-dom/test-utils";
+import load = Simulate.load;
+import Loading from "./Loading";
 
 interface Props {
     children: React.ReactNode;
@@ -6,21 +9,31 @@ interface Props {
     className?: string;
     disabled?: boolean;
     onClick?: () => void;
+    loading?: boolean;
 }
 
-const Button = ({ normal, children, className, disabled, onClick }: Props) => {
+const Button = ({
+    normal,
+    children,
+    className,
+    disabled,
+    onClick,
+    loading,
+}: Props) => {
     return (
         <button
             onClick={onClick}
             disabled={disabled}
             className={`${className} h-[32px] font-bold gap-1 flex items-center justify-center ${
                 disabled && "bg-content cursor-not-allowed"
-            } ${
+            } 
+             ${loading && "bg-content cursor-not-allowed"}
+            ${
                 normal && "bg-zinc-800 border border-zinc-700 relative"
             } text-white text-[12px] transition-all px-5 rounded-md hover:transition-all 
       hover:duration-200 hover:brightness-125 `}
         >
-            {children}
+            {loading ? <Loading size={20} /> : children}
         </button>
     );
 };

@@ -3,7 +3,6 @@ import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import Vote from "../../../components/pages/browse/Vote";
 import CommentCount from "../../../components/pages/browse/CommentCount";
-import Comments from "../../../components/pages/post/comments";
 import { useMutation } from "react-query";
 import { commentThreadService } from "../../../services/threads";
 import toast from "react-hot-toast";
@@ -20,6 +19,7 @@ import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 import smile from "../../../../public/images/smile.png";
 import Image from "next/image";
 import { useThreadService } from "../../../hooks/useThread";
+import Comment from "../../../components/pages/post/Comment";
 
 const Index = () => {
     const [commentInput, setCommentInput] = useState<string>("");
@@ -184,13 +184,17 @@ const Index = () => {
                                 </Button>
                             </div>
                         )}
-                        <div>
-                            <Comments
-                                commentsRefetching={comments.isFetching}
-                                setComments={comments.setCommentsData}
-                                commentsLoading={comments.isLoading}
-                                data={comments.data}
-                            />
+                        <div className="flex flex-col gap-10">
+                            {comments.data?.map(comment => {
+                                return (
+                                    <Comment
+                                        setComments={comments.setCommentsData}
+                                        comments={comments.data}
+                                        key={comment.id}
+                                        comment={comment}
+                                    />
+                                );
+                            })}
                         </div>
                     </>
                 )}

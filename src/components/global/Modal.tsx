@@ -3,13 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../contexts/Modal";
 import { motion } from "framer-motion";
+import Button from "./Button";
 
 interface Props {
     children: React.ReactNode;
     title: string;
+    buttonLoading?: boolean;
+    submitHandler?: () => void;
 }
 
-const Modal = ({ children, title }: Props) => {
+const Modal = ({ children, title, buttonLoading, submitHandler }: Props) => {
     const { setActiveModal } = useModal();
     const modalRef: RefObject<HTMLDivElement> = useRef(null);
     const outSideClickHandler = (e: any) => {
@@ -43,6 +46,14 @@ const Modal = ({ children, title }: Props) => {
                     {title}
                 </h1>
                 {children}
+                <Button
+                    loading={buttonLoading}
+                    normal={false}
+                    onClick={submitHandler}
+                    className="mt-4 mx-auto bg-primary  w-fit"
+                >
+                    Confirm
+                </Button>
             </motion.div>
         </div>
     );

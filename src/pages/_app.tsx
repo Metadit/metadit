@@ -9,6 +9,7 @@ import { UserProvider } from "../contexts/User";
 import { Toaster } from "react-hot-toast";
 import ModalManager from "../components/global/ModalManager";
 import { ModalProvider } from "../contexts/Modal";
+import { ModalValuesProvider } from "../contexts/ModalValues";
 
 type Props = AppProps & {
     Component: Page;
@@ -20,23 +21,25 @@ export default function App({ Component, pageProps }: Props) {
     const getLayout = Component.getLayout ?? ((page: any) => page);
     return (
         <QueryClientProvider client={queryClient}>
-            <Toaster
-                position="top-right"
-                toastOptions={{
-                    position: "top-center",
-                    style: {
-                        background: "#181818",
-                        color: "#fff",
-                        border: "1px solid #282828",
-                        fontSize: "13px",
-                    },
-                }}
-            />
             <UserProvider>
-                <ModalProvider>
-                    <ModalManager />
-                    {getLayout(<Component {...pageProps} />)}
-                </ModalProvider>
+                <ModalValuesProvider>
+                    <ModalProvider>
+                        <Toaster
+                            position="top-right"
+                            toastOptions={{
+                                position: "top-center",
+                                style: {
+                                    background: "#181818",
+                                    color: "#fff",
+                                    border: "1px solid #282828",
+                                    fontSize: "13px",
+                                },
+                            }}
+                        />
+                        <ModalManager />
+                        {getLayout(<Component {...pageProps} />)}
+                    </ModalProvider>
+                </ModalValuesProvider>
             </UserProvider>
         </QueryClientProvider>
     );
