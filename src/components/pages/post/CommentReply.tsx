@@ -1,18 +1,21 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import Avatar from "react-avatar";
 import Link from "next/link";
 import moment from "moment/moment";
+import CommentActions from "./CommentActions";
+import { IComment } from "../../../services/threads/types";
 
-const CommentReply = () => {
-    const comment = {
-        comment: "comment",
-        datepublished: "datepublished",
-    };
+interface Props {
+    comment: IComment;
+    comments: IComment[] | undefined;
+    setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
+}
+const CommentReply = ({ comment, comments, setComments }: Props) => {
     return (
         <div className="flex w-full">
             <div className="flex flex-wrap gap-2">
                 <Avatar
-                    className="mr-2 align-top"
+                    className="mr-2"
                     name="Jager32"
                     size="40"
                     round={true}
@@ -34,7 +37,14 @@ const CommentReply = () => {
                     <p className="text-white text-[14px] mt-1 w-full text-left">
                         {comment.comment}
                     </p>
-                    <div className="justify-start mt-4 w-full flex gap-4 items-center"></div>
+                    <div className="justify-start mt-4 w-full flex gap-4 items-center">
+                        <CommentActions
+                            comment={comment}
+                            hideReply={true}
+                            comments={comments}
+                            setComments={setComments}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
