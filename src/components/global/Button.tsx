@@ -33,7 +33,7 @@ const Button = ({
             } text-white text-[12px] transition-all px-5 rounded-md hover:transition-all 
       hover:duration-200 hover:brightness-125 `}
         >
-            {loading ? <Loading size={20} /> : children}
+            {loading ? <Loading noAbsolute={true} size={20} /> : children}
         </button>
     );
 };

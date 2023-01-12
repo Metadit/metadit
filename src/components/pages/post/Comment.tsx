@@ -6,6 +6,7 @@ import Link from "next/link";
 import voteCountUpdater from "../../../helpers/vote";
 import { IComment } from "../../../services/threads/types";
 import CommentActions from "./CommentActions";
+import CommentReply from "./CommentReply";
 
 interface Props {
     comment: IComment;
@@ -72,6 +73,9 @@ const Comment = ({ comment, setComments, comments }: Props) => {
                                 count={comment.vote_count}
                             />
                             <CommentActions comment={comment} />
+                        </div>
+                        <div className="mt-7">
+                            <CommentReply />
                         </div>
                     </div>
                 </div>

@@ -177,7 +177,7 @@ const Index = () => {
                 max-w-[100px] mx-auto`}
                                 >
                                     {commentSubmitLoading ? (
-                                        <Loading size={20} />
+                                        <Loading noAbsolute={true} size={20} />
                                     ) : (
                                         "Submit"
                                     )}

@@ -4,14 +4,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 interface Props {
     size?: number;
     color?: string;
-    noAbsolute?: false;
+    noAbsolute?: true;
 }
 
 const Loading = ({ size, color, noAbsolute }: Props) => {
     return (
         <div
             className={`${
-                !noAbsolute ? "" : "absolute"
+                noAbsolute ? "" : "absolute"
             } w-full h-full flex justify-center items-center left-0 top-0`}
         >
             <CircularProgress
