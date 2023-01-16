@@ -27,7 +27,7 @@ export const useThread = () => {
 
     const commentOnVote = async (
         direction: "up" | "down",
-        onVoteUpdate: (direction: number, id: number) => void,
+        onVoteUpdate: (direction: number, comment: IComment) => void,
         comment: IComment
     ) => {
         if (user && comment) {
@@ -43,7 +43,7 @@ export const useThread = () => {
                     },
                     direction
                 );
-                onVoteUpdate(direction === "up" ? 1 : -1, comment.id);
+                onVoteUpdate(direction === "up" ? 1 : -1, comment);
             } else {
                 return router.push("/login").then(() => {
                     toast.error("You must be logged in to vote");
@@ -54,7 +54,7 @@ export const useThread = () => {
 
     const replyOnVote = async (
         direction: "up" | "down",
-        onVoteUpdate: (direction: number, id: number) => void,
+        onVoteUpdate: (direction: number, comment: ICommentReply) => void,
         commentReply: ICommentReply
     ) => {
         if (user && commentReply) {
@@ -69,7 +69,7 @@ export const useThread = () => {
                 },
                 direction
             );
-            onVoteUpdate(direction === "up" ? 1 : -1, commentReply.id);
+            onVoteUpdate(direction === "up" ? 1 : -1, commentReply);
         } else {
             return router.push("/login").then(() => {
                 toast.error("You must be logged in to vote");

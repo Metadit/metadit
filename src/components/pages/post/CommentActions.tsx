@@ -35,9 +35,9 @@ const CommentActions = ({
         replyContent: "",
     });
     const [toggleReply, setToggleReply] = useState(false);
-    const commentVoteUpdater = (vote: number, commentId: number) => {
+    const commentVoteUpdater = (vote: number, commentData: IComment) => {
         const newComments = comments?.map(comment => {
-            if (commentId === comment.id) {
+            if (commentData.id === comment.id) {
                 return {
                     ...comment,
                     vote_count: voteCountUpdater(
@@ -95,8 +95,8 @@ const CommentActions = ({
             <div className="w-full flex gap-4 items-center">
                 <CommentVote
                     comment={comment}
-                    onVoteUpdate={(vote: number, commentId: number) => {
-                        commentVoteUpdater(vote, commentId);
+                    onVoteUpdate={(vote: number, comment: IComment) => {
+                        commentVoteUpdater(vote, comment);
                     }}
                     count={comment.vote_count}
                 />

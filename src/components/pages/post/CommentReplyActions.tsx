@@ -33,17 +33,26 @@ const CommentReplyActions = ({
         replyContent: "",
     });
     const [toggleReply, setToggleReply] = useState(false);
-    const commentVoteUpdater = (vote: number, commentId: number) => {
+    const commentVoteUpdater = (vote: number, commentData: ICommentReply) => {
         const newComments = comments?.map(comment => {
-            if (commentId === comment.id) {
+            if (commentData.commentid === comment.id) {
                 return {
                     ...comment,
-                    vote_count: voteCountUpdater(
-                        comment.vote_count,
-                        vote,
-                        comment.did_user_vote
-                    ),
-                    did_user_vote: comment.did_user_vote === vote ? 0 : vote,
+                    replies: comment.replies?.map(reply => {
+                        if (reply.id === commentData.id) {
+                            return {
+                                ...reply,
+                                vote_count: voteCountUpdater(
+                                    reply.vote_count,
+                                    vote,
+                                    reply.did_user_vote
+                                ),
+                                did_user_vote:
+                                    reply.did_user_vote === vote ? 0 : vote,
+                            };
+                        }
+                        return reply;
+                    }),
                 };
             }
             return comment;
@@ -61,8 +70,8 @@ const CommentReplyActions = ({
             <div className="w-full flex gap-4 items-center">
                 <CommentVote
                     commentReply={comment}
-                    onVoteUpdate={(vote: number, commentId: number) => {
-                        commentVoteUpdater(vote, commentId);
+                    onVoteUpdate={(vote: number, comment: ICommentReply) => {
+                        commentVoteUpdater(vote, comment);
                     }}
                     count={comment.vote_count}
                 />
@@ -99,7 +108,10 @@ const CommentReplyActions = ({
                     <p
                         onClick={() => {
                             setActiveModal("DeleteCommentModal");
-                            setModalValues({ commentId: comment.id });
+                            setModalValues({
+                                commentId: comment.id,
+                                isReply: true,
+                            });
                         }}
                         className="text-content text-[13px]
             transition-all duration-200 cursor-pointer

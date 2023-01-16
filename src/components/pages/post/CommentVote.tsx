@@ -6,7 +6,7 @@ import { IComment, ICommentReply } from "../../../services/threads/types";
 
 interface Props {
     count: number;
-    onVoteUpdate: (vote: number, commentId: number) => void;
+    onVoteUpdate: (vote: number, comment: any) => void;
     comment?: IComment;
     commentReply?: ICommentReply;
 }

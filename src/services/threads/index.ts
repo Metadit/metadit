@@ -97,9 +97,11 @@ export const deleteVoteService = async (
 };
 
 export const deleteCommentService = async (
-    comment_id: number
+    comment_id: number,
+    isReply?: boolean
 ): Promise<{ id: number }> => {
     return await deleteAuthenticatedRequest("threads/comment", {
         commentId: comment_id,
+        isReply: isReply,
     });
 };

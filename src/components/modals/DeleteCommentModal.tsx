@@ -13,7 +13,10 @@ const DeleteCommentModal = () => {
 
     const deleteHandler = async () => {
         try {
-            await deleteCommentService(modalValues.commentId);
+            await deleteCommentService(
+                modalValues.commentId,
+                !!modalValues.isReply
+            );
             await queryClient.invalidateQueries("threadComments");
             setActiveModal(null);
             toast.success("Comment deleted successfully");
