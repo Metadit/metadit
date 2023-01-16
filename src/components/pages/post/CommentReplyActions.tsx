@@ -3,29 +3,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag, faReply, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../../contexts/Modal";
 import { useUser } from "../../../contexts/User";
-import { IComment } from "../../../services/threads/types";
+import { IComment, ICommentReply } from "../../../services/threads/types";
 import { useModalValues } from "../../../contexts/ModalValues";
 import { useInputForm } from "../../../hooks/useInputForm";
 import TextAreaBox from "../../global/TextAreaBox";
 import CommentVote from "./CommentVote";
 import voteCountUpdater from "../../../helpers/vote";
 import { motion } from "framer-motion";
-import Button from "../../global/Button";
-import { useMutation } from "react-query";
-import { postCommentReplyService } from "../../../services/threads";
-import toast from "react-hot-toast";
 
 interface Props {
-    comment: IComment;
+    comment: ICommentReply;
     comments: IComment[] | undefined;
     setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
+    hideReply?: boolean;
     threadCreator: number | undefined;
 }
 
-const CommentActions = ({
+const CommentReplyActions = ({
     comment,
     comments,
     setComments,
+    hideReply,
     threadCreator,
 }: Props) => {
     const { setActiveModal } = useModal();
@@ -58,60 +56,30 @@ const CommentActions = ({
         setInputValues({ replyContent: "" });
     };
 
-    const { isLoading, mutate: submitReply } = useMutation(async () => {
-        if (user && comment) {
-            const { data } = await postCommentReplyService({
-                userid: user?.id,
-                commentid: comment.id,
-                threadid: comment.threadid,
-                comment: inputValues.replyContent,
-                wallet_address: user?.wallet_address,
-                display_name: user?.display_name,
-            });
-            const newComment = {
-                ...data,
-                vote_count: 0,
-                did_user_vote: 0,
-                wallet_address: user?.wallet_address,
-                display_name: user?.display_name,
-            };
-            const updateComment = comments?.map(comment => {
-                if (comment.id === data.commentid) {
-                    return {
-                        ...comment,
-                        replies: [...comment.replies, newComment],
-                    };
-                }
-                return comment;
-            });
-            setComments(updateComment);
-            toggleHandler(false);
-            toast.success("Comment posted successfully");
-        }
-    });
-
     return (
         <div className="w-full">
             <div className="w-full flex gap-4 items-center">
                 <CommentVote
-                    comment={comment}
+                    commentReply={comment}
                     onVoteUpdate={(vote: number, commentId: number) => {
                         commentVoteUpdater(vote, commentId);
                     }}
                     count={comment.vote_count}
                 />
-                <p
-                    onClick={() => toggleHandler(!toggleReply)}
-                    className="text-content text-[13px]
+                {hideReply ? null : (
+                    <p
+                        onClick={() => toggleHandler(!toggleReply)}
+                        className="text-content text-[13px]
             transition-all duration-200 cursor-pointer
              hover:text-primary"
-                >
-                    <FontAwesomeIcon
-                        className="mr-1 text-[12px]"
-                        icon={faReply}
-                    />
-                    Reply
-                </p>
+                    >
+                        <FontAwesomeIcon
+                            className="mr-1 text-[12px]"
+                            icon={faReply}
+                        />
+                        Reply
+                    </p>
+                )}
                 <p
                     onClick={() => {
                         setActiveModal("ReportModal");
@@ -158,29 +126,10 @@ const CommentActions = ({
                         value={inputValues.replyContent}
                         className="w-full md:w-[60%] h-[150px] mt-5"
                     />
-                    <div className="flex gap-4 items-center mt-3">
-                        <Button
-                            onClick={submitReply}
-                            disabled={
-                                inputValues.replyContent.length === 0 ||
-                                isLoading
-                            }
-                            normal={false}
-                            className="bg-primary border-transparent"
-                        >
-                            Submit
-                        </Button>
-                        <Button
-                            onClick={() => toggleHandler(false)}
-                            normal={true}
-                        >
-                            Cancel
-                        </Button>
-                    </div>
                 </motion.div>
             )}
         </div>
     );
 };
 
-export default CommentActions;
+export default CommentReplyActions;

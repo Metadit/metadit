@@ -58,6 +58,7 @@ const Index = () => {
                             wallet_address: user.wallet_address,
                             vote_count: 0,
                             did_user_vote: 0,
+                            replies: [],
                         },
                         ...comments.data,
                     ]);
@@ -184,10 +185,11 @@ const Index = () => {
                                 </Button>
                             </div>
                         )}
-                        <div className="flex flex-col gap-10">
+                        <div className="flex flex-col gap-5">
                             {comments.data?.map(comment => {
                                 return (
                                     <Comment
+                                        threadCreator={thread.data?.userid}
                                         setComments={comments.setCommentsData}
                                         comments={comments.data}
                                         key={comment.id}

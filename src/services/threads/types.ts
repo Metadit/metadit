@@ -36,12 +36,27 @@ export interface IComment {
     vote_count: number;
     userid: number;
     datepublished: string;
+    replies: ICommentReply[];
+}
+
+export interface ICommentReply {
+    id: number;
+    vote_count: number;
+    did_user_vote: number;
+    commentid: number;
+    threadid: number;
+    comment: string;
+    userid: number;
+    datepublished: string;
+    wallet_address: string;
+    display_name: string | null;
 }
 
 export interface ICommentVote {
-    commentId: number;
-    userId: number;
-    threadId: number;
+    commentid?: number | undefined;
+    replyid?: number | undefined;
+    userid: number;
+    threadid: number;
     vote: number;
     currentUserVote: number;
     direction?: string;

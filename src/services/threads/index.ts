@@ -3,7 +3,14 @@ import {
     getRequest,
     postAuthenticatedRequest,
 } from "../requests";
-import { IComment, ICommentVote, IThread, IThreadCreate, IVote } from "./types";
+import {
+    IComment,
+    ICommentReply,
+    ICommentVote,
+    IThread,
+    IThreadCreate,
+    IVote,
+} from "./types";
 
 export const createThreadService = async (
     body: IThreadCreate
@@ -40,6 +47,7 @@ export const commentThreadService = async (
         | "display_name"
         | "did_user_vote"
         | "vote_count"
+        | "replies"
     >
 ): Promise<IComment> => {
     return await postAuthenticatedRequest("threads/comment", body);
@@ -61,6 +69,25 @@ export const getThreadCommentsService = async (
 
 export const postCommentVoteService = async (args: ICommentVote) => {
     return await postAuthenticatedRequest("threads/comment/vote", args);
+};
+
+export const postCommentReplyService = async (
+    args: Omit<
+        ICommentReply,
+        "datepublished" | "id" | "did_user_vote" | "vote_count"
+    >
+) => {
+    return await postAuthenticatedRequest("threads/comment/reply", args);
+};
+
+export const getCommentRepliesService = async (
+    commentId: number,
+    userId?: number
+): Promise<ICommentReply[]> => {
+    return await getRequest("threads/comment/reply", {
+        commentId,
+        userId,
+    });
 };
 
 export const deleteVoteService = async (

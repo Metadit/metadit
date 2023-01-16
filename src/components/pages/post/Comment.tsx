@@ -2,17 +2,20 @@ import React from "react";
 import Avatar from "react-avatar";
 import moment from "moment";
 import Link from "next/link";
-import { IComment } from "../../../services/threads/types";
+import { IComment, ICommentReply } from "../../../services/threads/types";
 import CommentActions from "./CommentActions";
 import CommentReply from "./CommentReply";
+import { useUser } from "../../../contexts/User";
 
 interface Props {
     comment: IComment;
     setComments: React.Dispatch<React.SetStateAction<IComment[] | undefined>>;
     comments: IComment[] | undefined;
+    threadCreator: number | undefined;
 }
 
-const Comment = ({ comment, setComments, comments }: Props) => {
+const Comment = ({ comment, setComments, comments, threadCreator }: Props) => {
+    const { user } = useUser();
     return (
         <div className="w-full">
             <div className="w-full flex flex-wrap gap-2">
@@ -48,17 +51,24 @@ const Comment = ({ comment, setComments, comments }: Props) => {
                     </div>
                     <div className="justify-start mt-4 w-full flex gap-4 items-center">
                         <CommentActions
+                            threadCreator={threadCreator}
                             setComments={setComments}
                             comments={comments}
                             comment={comment}
                         />
                     </div>
                     <div className="mt-7 mr-auto ml-8 w-full">
-                        <CommentReply
-                            setComments={setComments}
-                            comments={comments}
-                            comment={comment}
-                        />
+                        {comment.replies.map((reply: ICommentReply) => {
+                            return (
+                                <CommentReply
+                                    key={reply.id}
+                                    setComments={setComments}
+                                    threadCreator={threadCreator}
+                                    comments={comments}
+                                    comment={reply}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             </div>
