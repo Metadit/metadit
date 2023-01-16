@@ -61,3 +61,11 @@ export interface ICommentVote {
     currentUserVote: number;
     direction?: string;
 }
+
+export interface ICommentReport {
+    commentid?: number | undefined;
+    replyid?: number | undefined;
+    userid: number;
+    threadid: number;
+    reason: string;
+}

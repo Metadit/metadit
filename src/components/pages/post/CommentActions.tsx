@@ -90,6 +90,11 @@ const CommentActions = ({
         }
     });
 
+    const toggleReportModal = () => {
+        setActiveModal("ReportModal");
+        setModalValues({ ...comment, type: "comment" });
+    };
+
     return (
         <div className="w-full">
             <div className="w-full flex gap-4 items-center">
@@ -113,9 +118,7 @@ const CommentActions = ({
                     Reply
                 </p>
                 <p
-                    onClick={() => {
-                        setActiveModal("ReportModal");
-                    }}
+                    onClick={toggleReportModal}
                     className="text-content text-[13px]
             transition-all duration-200 cursor-pointer
              hover:text-primary"

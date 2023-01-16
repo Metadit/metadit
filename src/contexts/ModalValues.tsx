@@ -23,4 +23,3 @@ export const ModalValuesProvider = ({ children }: { children: ReactNode }) => {
         </modalValuesContext.Provider>
     );
 };
-

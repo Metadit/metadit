@@ -4,16 +4,25 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../contexts/Modal";
 import { motion } from "framer-motion";
 import Button from "./Button";
+import { useModalValues } from "../../contexts/ModalValues";
 
 interface Props {
     children: React.ReactNode;
     title: string;
     buttonLoading?: boolean;
     submitHandler?: () => void;
+    disabledButton?: boolean;
 }
 
-const Modal = ({ children, title, buttonLoading, submitHandler }: Props) => {
+const Modal = ({
+    children,
+    title,
+    buttonLoading,
+    submitHandler,
+    disabledButton,
+}: Props) => {
     const { setActiveModal } = useModal();
+    const { setModalValues } = useModalValues();
     const modalRef: RefObject<HTMLDivElement> = useRef(null);
     const outSideClickHandler = (e: any) => {
         if (modalRef.current !== null && !modalRef.current.contains(e.target)) {
@@ -34,7 +43,10 @@ const Modal = ({ children, title, buttonLoading, submitHandler }: Props) => {
        bg-contentBg rounded-md relative"
             >
                 <div
-                    onClick={() => setActiveModal(null)}
+                    onClick={() => {
+                        setActiveModal(null);
+                        setModalValues(null);
+                    }}
                     className="bg-contentBg rounded-full bg-zinc-800
           absolute w-8 h-8 border border-zinc-700
            flex items-center justify-center right-[-7px] top-[-7px] transition-all duration-200
@@ -48,6 +60,7 @@ const Modal = ({ children, title, buttonLoading, submitHandler }: Props) => {
                 {children}
                 <Button
                     loading={buttonLoading}
+                    disabled={disabledButton}
                     normal={false}
                     onClick={submitHandler}
                     className="mt-4 mx-auto bg-primary  w-fit"

@@ -6,6 +6,7 @@ import {
 import {
     IComment,
     ICommentReply,
+    ICommentReport,
     ICommentVote,
     IThread,
     IThreadCreate,
@@ -80,22 +81,11 @@ export const postCommentReplyService = async (
     return await postAuthenticatedRequest("threads/comment/reply", args);
 };
 
-export const getCommentRepliesService = async (
-    commentId: number,
-    userId?: number
-): Promise<ICommentReply[]> => {
-    return await getRequest("threads/comment/reply", {
-        commentId,
-        userId,
-    });
+export const reportCommentService = async (
+    args: ICommentReport
+): Promise<{ message: string }> => {
+    return await postAuthenticatedRequest("threads/comment/report", args);
 };
-
-export const deleteVoteService = async (
-    vote_id: number
-): Promise<{ id: number }> => {
-    return await deleteAuthenticatedRequest("threads/vote", { id: vote_id });
-};
-
 export const deleteCommentService = async (
     comment_id: number,
     isReply?: boolean

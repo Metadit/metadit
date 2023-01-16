@@ -10,6 +10,7 @@ import TextAreaBox from "../../global/TextAreaBox";
 import CommentVote from "./CommentVote";
 import voteCountUpdater from "../../../helpers/vote";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 
 interface Props {
     comment: ICommentReply;
@@ -32,6 +33,8 @@ const CommentReplyActions = ({
     const { onChangeHandler, inputValues, setInputValues } = useInputForm({
         replyContent: "",
     });
+    const router = useRouter();
+    const threadIdParam = router.query.id as string;
     const [toggleReply, setToggleReply] = useState(false);
     const commentVoteUpdater = (vote: number, commentData: ICommentReply) => {
         const newComments = comments?.map(comment => {
@@ -60,7 +63,15 @@ const CommentReplyActions = ({
         setComments(newComments);
     };
 
-    const toggleHandler = (active?: boolean) => {
+    const toggleReportModal = () => {
+        if (!user) {
+            return router.replace(`/login/?post=${threadIdParam}`);
+        }
+        setActiveModal("ReportModal");
+        setModalValues({ ...comment, type: "commentReply" });
+    };
+
+    const toggleReplyModal = (active?: boolean) => {
         setToggleReply(active || false);
         setInputValues({ replyContent: "" });
     };
@@ -77,7 +88,7 @@ const CommentReplyActions = ({
                 />
                 {hideReply ? null : (
                     <p
-                        onClick={() => toggleHandler(!toggleReply)}
+                        onClick={() => toggleReplyModal(!toggleReply)}
                         className="text-content text-[13px]
             transition-all duration-200 cursor-pointer
              hover:text-primary"
@@ -90,9 +101,7 @@ const CommentReplyActions = ({
                     </p>
                 )}
                 <p
-                    onClick={() => {
-                        setActiveModal("ReportModal");
-                    }}
+                    onClick={toggleReportModal}
                     className="text-content text-[13px]
             transition-all duration-200 cursor-pointer
              hover:text-primary"
