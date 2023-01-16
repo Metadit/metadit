@@ -2,17 +2,24 @@ import React, { Dispatch, SetStateAction } from "react";
 import Avatar from "react-avatar";
 import Link from "next/link";
 import moment from "moment/moment";
-import CommentActions from "./CommentActions";
-import { IComment } from "../../../services/threads/types";
+import CommentReplyActions from "./CommentReplyActions";
+import { IComment, ICommentReply } from "../../../services/threads/types";
 
 interface Props {
-    comment: IComment;
+    comment: ICommentReply;
     comments: IComment[] | undefined;
     setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
+    threadCreator: number | undefined;
 }
-const CommentReply = ({ comment, comments, setComments }: Props) => {
+
+const CommentReply = ({
+    comment,
+    comments,
+    setComments,
+    threadCreator,
+}: Props) => {
     return (
-        <div className="flex w-full">
+        <div className="flex w-full mb-8">
             <div className="flex flex-wrap gap-2">
                 <Avatar
                     className="mr-2"
@@ -22,12 +29,13 @@ const CommentReply = ({ comment, comments, setComments }: Props) => {
                 />
                 <div className="flex flex-wrap items-center flex-col">
                     <div className="flex w-full gap-2 items-center">
-                        <Link href={""}>
+                        <Link href={`/profile/${comment.userid}`}>
                             <h2
                                 className="text-[15px] text-primary font-bold transition-all
               duration-200 hover:opacity-70"
                             >
-                                wallet address
+                                {comment.wallet_address.substring(0, 10) +
+                                    "..."}
                             </h2>
                         </Link>
                         <p className="text-content text-sm">
@@ -37,14 +45,15 @@ const CommentReply = ({ comment, comments, setComments }: Props) => {
                     <p className="text-white text-[14px] mt-1 w-full text-left">
                         {comment.comment}
                     </p>
-                    <div className="justify-start mt-4 w-full flex gap-4 items-center">
-                        <CommentActions
-                            comment={comment}
-                            hideReply={true}
-                            comments={comments}
-                            setComments={setComments}
-                        />
-                    </div>
+                </div>
+                <div className="justify-start mt-3 w-full flex gap-4 items-center">
+                    <CommentReplyActions
+                        comment={comment}
+                        threadCreator={threadCreator}
+                        hideReply={true}
+                        comments={comments}
+                        setComments={setComments}
+                    />
                 </div>
             </div>
         </div>

@@ -3,7 +3,15 @@ import {
     getRequest,
     postAuthenticatedRequest,
 } from "../requests";
-import { IComment, ICommentVote, IThread, IThreadCreate, IVote } from "./types";
+import {
+    IComment,
+    ICommentReply,
+    ICommentReport,
+    ICommentVote,
+    IThread,
+    IThreadCreate,
+    IVote,
+} from "./types";
 
 export const createThreadService = async (
     body: IThreadCreate
@@ -40,6 +48,7 @@ export const commentThreadService = async (
         | "display_name"
         | "did_user_vote"
         | "vote_count"
+        | "replies"
     >
 ): Promise<IComment> => {
     return await postAuthenticatedRequest("threads/comment", body);
@@ -63,16 +72,26 @@ export const postCommentVoteService = async (args: ICommentVote) => {
     return await postAuthenticatedRequest("threads/comment/vote", args);
 };
 
-export const deleteVoteService = async (
-    vote_id: number
-): Promise<{ id: number }> => {
-    return await deleteAuthenticatedRequest("threads/vote", { id: vote_id });
+export const postCommentReplyService = async (
+    args: Omit<
+        ICommentReply,
+        "datepublished" | "id" | "did_user_vote" | "vote_count"
+    >
+) => {
+    return await postAuthenticatedRequest("threads/comment/reply", args);
 };
 
+export const reportCommentService = async (
+    args: ICommentReport
+): Promise<{ message: string }> => {
+    return await postAuthenticatedRequest("threads/comment/report", args);
+};
 export const deleteCommentService = async (
-    comment_id: number
+    comment_id: number,
+    isReply?: boolean
 ): Promise<{ id: number }> => {
     return await deleteAuthenticatedRequest("threads/comment", {
         commentId: comment_id,
+        isReply: isReply,
     });
 };

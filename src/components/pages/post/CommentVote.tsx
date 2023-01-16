@@ -1,49 +1,30 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from "../../../contexts/User";
 import { useThread } from "../../../hooks/useThread";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
-import { IComment } from "../../../services/threads/types";
+import { IComment, ICommentReply } from "../../../services/threads/types";
 
 interface Props {
     count: number;
-    onVoteUpdate: (vote: number, commentId: number) => void;
-    comment: IComment;
+    onVoteUpdate: (vote: number, comment: any) => void;
+    comment?: IComment;
+    commentReply?: ICommentReply;
 }
 
-const CommentVote = ({ count, onVoteUpdate, comment }: Props) => {
-    const { user } = useUser();
-    const { commentVoteHandler } = useThread();
-    const router = useRouter();
-    const onVote = async (direction: "up" | "down") => {
-        if (user && comment) {
-            await commentVoteHandler(
-                {
-                    commentId: comment.id,
-                    threadId: comment.threadid,
-                    userId: user.id,
-                    currentUserVote: comment.did_user_vote,
-                    vote: direction === "up" ? 1 : -1,
-                },
-                direction
-            );
-            onVoteUpdate(direction === "up" ? 1 : -1, comment.id);
-        } else {
-            if (!user) {
-                return router.push("/login").then(() => {
-                    toast.error("You must be logged in to vote");
-                });
-            }
-        }
-    };
+const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
+    const { commentOnVote, replyOnVote } = useThread();
     return (
         <div className="flex gap-2">
             <div
-                onClick={() => onVote("up")}
+                onClick={() =>
+                    comment
+                        ? commentOnVote("up", onVoteUpdate, comment)
+                        : commentReply &&
+                          replyOnVote("up", onVoteUpdate, commentReply)
+                }
                 className={`${
-                    comment?.did_user_vote === 1
+                    comment?.did_user_vote === 1 ||
+                    commentReply?.did_user_vote === 1
                         ? "bg-primary border border-transparent"
                         : "bg-contentBg"
                 } w-[35px] border border-zinc-700
@@ -62,9 +43,15 @@ const CommentVote = ({ count, onVoteUpdate, comment }: Props) => {
                 <p className="text-white text-[12px]">{count}</p>
             </div>
             <div
-                onClick={() => onVote("down")}
+                onClick={() =>
+                    comment
+                        ? commentOnVote("down", onVoteUpdate, comment)
+                        : commentReply &&
+                          replyOnVote("down", onVoteUpdate, commentReply)
+                }
                 className={`${
-                    comment?.did_user_vote === -1
+                    comment?.did_user_vote === -1 ||
+                    commentReply?.did_user_vote === -1
                         ? "bg-primary border border-transparent"
                         : "bg-contentBg"
                 } flex border border-zinc-700

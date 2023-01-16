@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import {
     IComment,
+    ICommentReply,
     ICommentVote,
     IThread,
     IThreadCreate,
@@ -24,10 +25,59 @@ export const useThread = () => {
     const [createLoading, setCreateLoading] = useState(false);
     const router = useRouter();
 
-    const commentVoteHandler = async (
-        args: ICommentVote,
-        direction: string
+    const commentOnVote = async (
+        direction: "up" | "down",
+        onVoteUpdate: (direction: number, comment: IComment) => void,
+        comment: IComment
     ) => {
+        if (user && comment) {
+            if (comment) {
+                await commentVoteHandler(
+                    {
+                        commentid: comment.id,
+                        replyid: undefined,
+                        threadid: comment.threadid,
+                        userid: user.id,
+                        currentUserVote: comment.did_user_vote,
+                        vote: direction === "up" ? 1 : -1,
+                    },
+                    direction
+                );
+                onVoteUpdate(direction === "up" ? 1 : -1, comment);
+            } else {
+                return router.push("/login").then(() => {
+                    toast.error("You must be logged in to vote");
+                });
+            }
+        }
+    };
+
+    const replyOnVote = async (
+        direction: "up" | "down",
+        onVoteUpdate: (direction: number, comment: ICommentReply) => void,
+        commentReply: ICommentReply
+    ) => {
+        if (user && commentReply) {
+            await commentVoteHandler(
+                {
+                    commentid: undefined,
+                    replyid: commentReply.id,
+                    threadid: commentReply.threadid,
+                    userid: user.id,
+                    currentUserVote: commentReply.did_user_vote,
+                    vote: direction === "up" ? 1 : -1,
+                },
+                direction
+            );
+            onVoteUpdate(direction === "up" ? 1 : -1, commentReply);
+        } else {
+            return router.push("/login").then(() => {
+                toast.error("You must be logged in to vote");
+            });
+        }
+    };
+
+    async function commentVoteHandler(args: ICommentVote, direction: string) {
         if (!user) {
             await redirectWithError(
                 "You must be logged in to vote",
@@ -37,17 +87,19 @@ export const useThread = () => {
         }
         try {
             await postCommentVoteService({
-                userId: args.userId as number,
-                commentId: args.commentId as number,
-                threadId: args.threadId as number,
+                userid: args.userid as number,
+                threadid: args.threadid as number,
                 currentUserVote: args.currentUserVote,
                 vote: args.vote,
                 direction: direction,
+                replyid: args.replyid,
+                commentid: args.commentid,
             });
         } catch (error) {
             toast.error("Error voting");
         }
-    };
+    }
+
     const voteHandler = async (args: IVote, direction: string) => {
         if (!user) {
             await redirectWithError(
@@ -92,8 +144,10 @@ export const useThread = () => {
     return {
         createThread,
         createLoading,
+        commentOnVote,
         voteHandler,
         commentVoteHandler,
+        replyOnVote,
     };
 };
 
