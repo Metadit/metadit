@@ -9,9 +9,11 @@ import toast from "react-hot-toast";
 import Loading from "../components/global/Loading";
 import { useUser } from "../contexts/User";
 import { IThread } from "../services/threads/types";
+import { useVisibleElement } from "../hooks/useVisibleElement";
 
 const Browse = () => {
     const { user } = useUser();
+    const [isVisible, elementRef] = useVisibleElement();
     const { data, isLoading, isFetching } = useQuery(
         "threads",
         async () => {
@@ -31,6 +33,8 @@ const Browse = () => {
         }
     }, [data]);
 
+    console.log(isVisible);
+
     return (
         <PageContainer pageTitle="Browse Metadit">
             <ContentTabs />
@@ -40,14 +44,28 @@ const Browse = () => {
                         <Loading size={30} />
                     </div>
                 ) : (
-                    threads?.map((post: IThread) => (
-                        <Post
-                            threads={threads}
-                            setThreads={setThreads}
-                            data={post}
-                            key={post.threadid}
-                        />
-                    ))
+                    threads?.map((post: IThread, index: number) => {
+                        if (threads.length === index + 1) {
+                            return (
+                                <Post
+                                    lastElement={elementRef}
+                                    threads={threads}
+                                    setThreads={setThreads}
+                                    data={post}
+                                    key={post.threadid}
+                                />
+                            );
+                        } else {
+                            return (
+                                <Post
+                                    threads={threads}
+                                    setThreads={setThreads}
+                                    data={post}
+                                    key={post.threadid}
+                                />
+                            );
+                        }
+                    })
                 )}
             </div>
         </PageContainer>

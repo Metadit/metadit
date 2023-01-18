@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Ref } from "react";
 import Avatar from "react-avatar";
 import moment from "moment";
 import Link from "next/link";
@@ -12,12 +12,19 @@ interface Props {
     setComments: React.Dispatch<React.SetStateAction<IComment[] | undefined>>;
     comments: IComment[] | undefined;
     threadCreator: number | undefined;
+    lastElement?: Ref<HTMLDivElement>;
 }
 
-const Comment = ({ comment, setComments, comments, threadCreator }: Props) => {
+const Comment = ({
+    comment,
+    setComments,
+    comments,
+    threadCreator,
+    lastElement,
+}: Props) => {
     const { user } = useUser();
     return (
-        <div className="w-full">
+        <div ref={lastElement} className="w-full">
             <div className="w-full flex flex-wrap gap-2">
                 <div className="w-full flex flex-wrap items-center flex-col">
                     <div className="w-full flex gap-2 items-center">

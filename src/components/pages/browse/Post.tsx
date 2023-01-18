@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import parse from "html-react-parser";
 import CommentCount from "./CommentCount";
 import Vote from "./Vote";
@@ -11,9 +11,10 @@ interface Props {
     data: IThread;
     setThreads: React.Dispatch<React.SetStateAction<IThread[]>>;
     threads: IThread[];
+    lastElement?: boolean | RefObject<HTMLDivElement>;
 }
 
-const Post = ({ data, setThreads, threads }: Props) => {
+const Post = ({ data, setThreads, threads, lastElement }: Props) => {
     const threadVoteUpdater = (vote: number) => {
         const newThreads = threads.map(thread => {
             if (thread.threadid === data.threadid) {
@@ -34,6 +35,7 @@ const Post = ({ data, setThreads, threads }: Props) => {
 
     return (
         <div
+            ref={lastElement}
             className="w-full
       border border-zinc-800 bg-contentBg
       rounded-xl h-auto px-10 py-5 relative"
