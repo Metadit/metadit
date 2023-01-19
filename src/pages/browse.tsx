@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ContentTabs from "../components/pages/browse/ContentTabs";
 import Post from "../components/pages/browse/Post";
 import Layout from "../components/global/Layout";
@@ -15,7 +15,7 @@ const Browse = () => {
     const { user } = useUser();
     const { isVisible, elementRef } = useVisibleElement();
     const params = window.location.search;
-    const getTabParams = new URLSearchParams(params).get("tab");
+    const getTabParams = new URLSearchParams(params).get("tab") || "top";
 
     const { data, isLoading, isFetching, refetch, isRefetching } = useQuery(
         "threads",
@@ -29,16 +29,13 @@ const Browse = () => {
             retry: 0,
         }
     );
-    const [threads, setThreads] = React.useState<IThread[]>([]);
+    const [threads, setThreads] = useState<IThread[] | null>(null);
+
     useEffect(() => {
-        if (data) {
-            setThreads(data);
-        }
-        if (getTabParams) {
-            (async () => {
-                await refetch();
-            })();
-        }
+        (async () => {
+            const { data } = await refetch();
+            setThreads(data as IThread[]);
+        })();
     }, [getTabParams, refetch]);
 
     return (

@@ -1,4 +1,10 @@
-import React, { ForwardedRef, forwardRef } from "react";
+import React, {
+    ForwardedRef,
+    forwardRef,
+    useState,
+    Dispatch,
+    SetStateAction,
+} from "react";
 import parse from "html-react-parser";
 import CommentCount from "./CommentCount";
 import Vote from "./Vote";
@@ -9,12 +15,16 @@ import { IThread } from "../../../services/threads/types";
 
 interface Props {
     data: IThread;
-    setThreads: React.Dispatch<React.SetStateAction<IThread[]>>;
+    setThreads: Dispatch<SetStateAction<IThread[] | null>>;
     threads: IThread[];
 }
 
 const Post = forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
     const { threads, setThreads, data } = props;
+    const [playAnimation, setPlayAnimation] = useState(false);
+    const [threadVoteClick, setThreadVoteClick] = useState<IThread | null>(
+        null
+    );
     const threadVoteUpdater = (vote: number) => {
         const newThreads = threads.map(thread => {
             if (thread.threadid === data.threadid) {
@@ -31,24 +41,27 @@ const Post = forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
             return thread;
         });
         setThreads(newThreads);
+        setPlayAnimation(true);
     };
 
     return (
         <div
+            onClick={() => setThreadVoteClick(data)}
             ref={ref}
             className="w-full
       border border-zinc-800 bg-contentBg
       rounded-xl h-auto px-10 py-5 relative"
         >
-            <div>
-                <Vote
-                    onVoteUpdate={(vote: number) => {
-                        threadVoteUpdater(vote);
-                    }}
-                    thread={data}
-                    count={data.vote_count}
-                />
-            </div>
+            <Vote
+                onVoteUpdate={(vote: number) => {
+                    threadVoteUpdater(vote);
+                }}
+                thread={data}
+                playAnimation={playAnimation}
+                setPlayAnimation={setPlayAnimation}
+                threadVoteClick={threadVoteClick}
+                count={data.vote_count}
+            />
             <div className="w-full">
                 <p className="text-[12px] text-content">
                     Posted by{" "}

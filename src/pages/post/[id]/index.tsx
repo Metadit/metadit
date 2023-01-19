@@ -26,6 +26,7 @@ const Index = () => {
     const { user } = useUser();
     const threadIdParams = window.location.pathname.split("/")[2];
     const { thread, comments } = useThreadService(Number(threadIdParams));
+    const [playAnimation, setPlayAnimation] = useState(false);
 
     const threadVoteUpdater = (vote: number) => {
         if (thread.data) {
@@ -38,6 +39,7 @@ const Index = () => {
                 ),
                 did_user_vote: thread.data.did_user_vote === vote ? 0 : vote,
             });
+            setPlayAnimation(true);
         }
     };
 
@@ -95,6 +97,9 @@ const Index = () => {
                 ) : (
                     <>
                         <Vote
+                            playAnimation={playAnimation}
+                            setPlayAnimation={setPlayAnimation}
+                            individualThread={true}
                             thread={thread.data}
                             onVoteUpdate={(vote: number) => {
                                 threadVoteUpdater(vote);

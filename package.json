@@ -17,7 +17,7 @@
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@mui/material": "^5.11.0",
         "@tippyjs/react": "^4.2.6",
-        "@types/node": "18.11.9",
+        "@types/node": "18.11.18",
         "@types/react": "18.0.25",
         "@types/react-dom": "18.0.9",
         "@types/sanitize-html": "^2.6.2",
@@ -29,6 +29,7 @@
         "hamburger-react": "^2.5.0",
         "html-react-parser": "^3.0.6",
         "jwt-decode": "^3.1.2",
+        "lottie-react": "^2.3.1",
         "moment": "^2.29.4",
         "next": "13.0.3",
         "prettier": "^2.7.1",
@@ -41,6 +42,7 @@
         "react-hot-toast": "^2.4.0",
         "react-html-parser": "^2.0.2",
         "react-intersection-observer": "^9.4.1",
+        "react-lottie": "^1.2.3",
         "react-query": "^3.39.2",
         "react-quill": "^2.0.0",
         "sanitize-html": "^2.8.0",
@@ -50,6 +52,7 @@
         "web3": "1.7.4"
     },
     "devDependencies": {
+        "@types/react-lottie": "^1.2.6",
         "autoprefixer": "^10.4.13",
         "husky": "^8.0.3",
         "lint-staged": "^13.1.0",

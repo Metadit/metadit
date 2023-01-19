@@ -24,6 +24,7 @@ export const useThread = () => {
     const { user } = useContext(UserContext);
     const [createLoading, setCreateLoading] = useState(false);
     const [voteLoading, setVoteLoading] = useState(false);
+    const [commentPlayAnimation, setCommentPlayAnimation] = useState(false);
     const router = useRouter();
 
     const commentOnVote = async (
@@ -45,6 +46,7 @@ export const useThread = () => {
                     direction
                 );
                 onVoteUpdate(direction === "up" ? 1 : -1, comment);
+                setCommentPlayAnimation(true);
             } else {
                 return router.push("/login").then(() => {
                     toast.error("You must be logged in to vote");
@@ -71,6 +73,7 @@ export const useThread = () => {
                 direction
             );
             onVoteUpdate(direction === "up" ? 1 : -1, commentReply);
+            setCommentPlayAnimation(true);
         } else {
             return router.push("/login").then(() => {
                 toast.error("You must be logged in to vote");
@@ -156,6 +159,8 @@ export const useThread = () => {
         voteHandler,
         replyOnVote,
         voteLoading,
+        setCommentPlayAnimation,
+        commentPlayAnimation,
     };
 };
 
