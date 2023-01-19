@@ -1,6 +1,4 @@
 import React from "react";
-import { Simulate } from "react-dom/test-utils";
-import load = Simulate.load;
 import Loading from "./Loading";
 
 interface Props {
@@ -25,9 +23,9 @@ const Button = ({
             onClick={onClick}
             disabled={disabled}
             className={`${className} h-[32px] font-bold gap-1 flex items-center justify-center ${
-                disabled && "bg-content cursor-not-allowed"
+                disabled && "bg-zinc-700 cursor-not-allowed"
             } 
-             ${loading && "bg-content cursor-not-allowed"}
+             ${loading && "bg-zinc-700 cursor-not-allowed"}
             ${
                 normal && "bg-zinc-800 border border-zinc-700 relative"
             } text-white text-[12px] transition-all px-5 rounded-md hover:transition-all 

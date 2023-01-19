@@ -164,6 +164,7 @@ const CommentActions = ({
                     <div className="flex gap-4 items-center mt-3">
                         <Button
                             onClick={submitReply}
+                            loading={isLoading}
                             disabled={
                                 inputValues.replyContent.length === 0 ||
                                 isLoading

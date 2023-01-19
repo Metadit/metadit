@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faRocket,
     faFire,
+    faRocket,
     faWandSparkles,
 } from "@fortawesome/free-solid-svg-icons";
 import { useSearchParams } from "next/navigation";
@@ -27,15 +27,15 @@ enum Tabs {
 }
 
 const ContentTabs = () => {
-    const [activeTab, setActiveTab] = useState<number | null>(null);
     const params = useSearchParams();
+    const [activeTab, setActiveTab] = useState<number | null>(null);
     const navigate = useRouter();
     const getTabParams = params.get("tab");
     const tabHandler = (tab: TabsKey, index: number) => {
         setActiveTab(index);
         navigate.replace("/browse?tab=" + tab.name.toLowerCase());
     };
-    const paramsHandler = useCallback(() => {
+    const paramsHandler = useCallback(async () => {
         if (getTabParams === "hot") {
             setActiveTab(Tabs.Hot);
         } else if (getTabParams === "new") {

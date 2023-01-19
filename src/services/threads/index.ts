@@ -32,10 +32,12 @@ export const postVoteService = async (
     return await postAuthenticatedRequest("threads/thread/vote", args);
 };
 export const getThreadsService = async (
-    userid?: number
+    userid?: number,
+    type?: "hot" | "new" | "top" | null | string
 ): Promise<IThread[]> => {
     return await getRequest("threads/threads", {
         userid,
+        type,
     });
 };
 

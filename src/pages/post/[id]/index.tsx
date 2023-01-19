@@ -94,15 +94,13 @@ const Index = () => {
                     <Loading size={30} />
                 ) : (
                     <>
-                        <div>
-                            <Vote
-                                thread={thread.data}
-                                onVoteUpdate={(vote: number) => {
-                                    threadVoteUpdater(vote);
-                                }}
-                                count={thread.data?.vote_count as number}
-                            />
-                        </div>
+                        <Vote
+                            thread={thread.data}
+                            onVoteUpdate={(vote: number) => {
+                                threadVoteUpdater(vote);
+                            }}
+                            count={thread.data?.vote_count as number}
+                        />
                         <p className="text-sm text-content">
                             Posted by{" "}
                             <Link
@@ -186,7 +184,7 @@ const Index = () => {
                             </div>
                         )}
                         <div className="flex flex-col gap-5">
-                            {comments.data?.map(comment => {
+                            {comments.data?.map((comment, index) => {
                                 return (
                                     <Comment
                                         threadCreator={thread.data?.userid}
