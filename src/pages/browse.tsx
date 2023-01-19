@@ -13,11 +13,14 @@ import { useVisibleElement } from "../hooks/useVisibleElement";
 
 const Browse = () => {
     const { user } = useUser();
-    const [isVisible, elementRef] = useVisibleElement();
-    const { data, isLoading, isFetching } = useQuery(
+    const { isVisible, elementRef } = useVisibleElement();
+    const params = window.location.search;
+    const getTabParams = new URLSearchParams(params).get("tab");
+
+    const { data, isLoading, isFetching, refetch, isRefetching } = useQuery(
         "threads",
         async () => {
-            return await getThreadsService(user?.id).catch(() => {
+            return await getThreadsService(user?.id, getTabParams).catch(() => {
                 toast.error("Error fetching posts");
             });
         },
@@ -31,15 +34,18 @@ const Browse = () => {
         if (data) {
             setThreads(data);
         }
-    }, [data]);
-
-    console.log(isVisible);
+        if (getTabParams) {
+            (async () => {
+                await refetch();
+            })();
+        }
+    }, [getTabParams, refetch]);
 
     return (
         <PageContainer pageTitle="Browse Metadit">
             <ContentTabs />
             <div className="flex flex-col gap-5 relative">
-                {isLoading || isFetching ? (
+                {isLoading || isFetching || isRefetching ? (
                     <div className="mt-32">
                         <Loading size={30} />
                     </div>
@@ -48,7 +54,7 @@ const Browse = () => {
                         if (threads.length === index + 1) {
                             return (
                                 <Post
-                                    lastElement={elementRef}
+                                    ref={elementRef}
                                     threads={threads}
                                     setThreads={setThreads}
                                     data={post}

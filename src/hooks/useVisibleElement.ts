@@ -6,7 +6,7 @@ export const useVisibleElement = () => {
 
     const observerOptions = useMemo(() => {
         return {
-            threshold: 1.0,
+            threshold: 0.1,
             rootMargin: "0px",
         };
     }, []);
@@ -15,18 +15,20 @@ export const useVisibleElement = () => {
         setIsVisible(entry.isIntersecting);
     };
 
+    const observer = new IntersectionObserver(
+        observerCallback,
+        observerOptions
+    );
+
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            observerCallback,
-            observerOptions
-        );
         const elementTarget = elementRef.current;
-        elementTarget &&
-            observer.observe(elementTarget as unknown as HTMLDivElement);
+        elementTarget && observer.observe(elementTarget);
         return () => {
-            elementTarget &&
-                observer.unobserve(elementTarget as unknown as HTMLDivElement);
+            elementTarget && observer.unobserve(elementTarget);
         };
-    }, [observerOptions, elementRef]);
-    return [isVisible, elementRef];
+    }, [observerOptions, observer]);
+    return {
+        isVisible,
+        elementRef,
+    };
 };

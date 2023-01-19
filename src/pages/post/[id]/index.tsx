@@ -94,15 +94,13 @@ const Index = () => {
                     <Loading size={30} />
                 ) : (
                     <>
-                        <div>
-                            <Vote
-                                thread={thread.data}
-                                onVoteUpdate={(vote: number) => {
-                                    threadVoteUpdater(vote);
-                                }}
-                                count={thread.data?.vote_count as number}
-                            />
-                        </div>
+                        <Vote
+                            thread={thread.data}
+                            onVoteUpdate={(vote: number) => {
+                                threadVoteUpdater(vote);
+                            }}
+                            count={thread.data?.vote_count as number}
+                        />
                         <p className="text-sm text-content">
                             Posted by{" "}
                             <Link

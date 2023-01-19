@@ -23,6 +23,7 @@ import { useQuery } from "react-query";
 export const useThread = () => {
     const { user } = useContext(UserContext);
     const [createLoading, setCreateLoading] = useState(false);
+    const [voteLoading, setVoteLoading] = useState(false);
     const router = useRouter();
 
     const commentOnVote = async (
@@ -86,6 +87,7 @@ export const useThread = () => {
             );
         }
         try {
+            setVoteLoading(true);
             await postCommentVoteService({
                 userid: args.userid as number,
                 threadid: args.threadid as number,
@@ -97,6 +99,8 @@ export const useThread = () => {
             });
         } catch (error) {
             toast.error("Error voting");
+        } finally {
+            setVoteLoading(false);
         }
     }
 
@@ -109,6 +113,7 @@ export const useThread = () => {
             );
         }
         try {
+            setVoteLoading(true);
             await postVoteService({
                 userId: args.userId as number,
                 threadId: args.threadId as number,
@@ -118,8 +123,11 @@ export const useThread = () => {
             });
         } catch (error) {
             toast.error("Error voting");
+        } finally {
+            setVoteLoading(false);
         }
     };
+
     const createThread = async (
         threadTitle: IThreadCreate["threadTitle"],
         threadContent: IThreadCreate["threadContent"]
@@ -146,8 +154,8 @@ export const useThread = () => {
         createLoading,
         commentOnVote,
         voteHandler,
-        commentVoteHandler,
         replyOnVote,
+        voteLoading,
     };
 };
 
