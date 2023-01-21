@@ -65,7 +65,7 @@ const Vote = ({
     );
 
     return (
-        <div className="flex flex-col gap-2 absolute left-[-20px] ml-2 z-[2]">
+        <div className="flex flex-col gap-2 absolute left-[-20px] ml-2 z-[10]">
             {(threadsBrowsingCheck || individualThreadCheck) && (
                 <div className="absolute w-[150px] h-[150px] top-[-80px] left-[-60px] z-[-1]">
                     <Lottie

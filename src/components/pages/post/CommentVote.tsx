@@ -4,7 +4,7 @@ import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useThread } from "../../../hooks/useThread";
 import { IComment, ICommentReply } from "../../../services/threads/types";
 import Button from "../../global/Button";
-import Lottie from "lottie-react";
+import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import foam from "../../../lottieJsons/confetti.json";
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
-    const lottieRef = useRef<any>(null);
+    const lottieRef = useRef<LottieRefCurrentProps>(null);
     const {
         commentOnVote,
         replyOnVote,
@@ -23,7 +23,6 @@ const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
         setCommentPlayAnimation,
         commentPlayAnimation,
     } = useThread();
-    console.log(commentPlayAnimation);
     return (
         <div className="flex gap-2 relative z-10">
             {commentPlayAnimation &&

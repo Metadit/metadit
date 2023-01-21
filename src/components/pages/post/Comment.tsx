@@ -5,7 +5,6 @@ import Link from "next/link";
 import { IComment, ICommentReply } from "../../../services/threads/types";
 import CommentActions from "./CommentActions";
 import CommentReply from "./CommentReply";
-import { useUser } from "../../../contexts/User";
 
 interface Props {
     comment: IComment;
@@ -22,7 +21,6 @@ const Comment = ({
     threadCreator,
     lastElement,
 }: Props) => {
-    const { user } = useUser();
     return (
         <div ref={lastElement} className="w-full">
             <div className="w-full flex flex-wrap gap-2">

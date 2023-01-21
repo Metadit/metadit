@@ -1,4 +1,4 @@
-import React, { SetStateAction } from "react";
+import React, { SetStateAction, useRef } from "react";
 import { useUser } from "../../contexts/User";
 import Avatar from "react-avatar";
 import {
@@ -10,6 +10,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { AnimatePresence, motion } from "framer-motion";
+import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
 
 const logoutHandler = () => {
     localStorage.removeItem("metadit");
@@ -22,8 +23,13 @@ interface Props {
     className?: string;
 }
 
-const TextInput = ({ toggleDropDown, dropDown, className }: Props) => {
+const UserDropdown = ({ className }: Props) => {
     const { user } = useUser();
+    const dropDownRef = useRef<HTMLDivElement>(null);
+    const [dropDown, toggleDropDown] = useDetectOutsideClick(
+        dropDownRef,
+        false
+    );
     const dropDownLinks = [
         { icon: faUser, text: "Profile", href: `/profile/${user?.id}` },
         { icon: faCog, text: "Settings", href: "/settings" },
@@ -31,6 +37,7 @@ const TextInput = ({ toggleDropDown, dropDown, className }: Props) => {
     ];
     return (
         <div
+            ref={dropDownRef}
             onClick={() => (toggleDropDown ? toggleDropDown(!dropDown) : null)}
             className={`text-white text-[12px] relative
         flex items-center justify-between gap-1 cursor-pointer
@@ -65,4 +72,4 @@ const TextInput = ({ toggleDropDown, dropDown, className }: Props) => {
     );
 };
 
-export default TextInput;
+export default UserDropdown;

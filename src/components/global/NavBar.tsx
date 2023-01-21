@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import logo from "../../../public/images/logo.svg";
 import Button from "./Button";
 import Hamburger from "hamburger-react";
@@ -10,20 +10,14 @@ import Image from "next/image";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
 import { useUser } from "../../contexts/User";
-import TextInput from "./TextInput";
-import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
+import Notifications from "./Notifications/Notifications";
+import UserDropdown from "./UserDropdown";
 
 const NavBar = () => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const { user } = useUser();
-    const dropDownRef = useRef(null);
-    const [dropDown, toggleDropDown] = useDetectOutsideClick(
-        dropDownRef,
-        false
-    );
     return (
         <nav
-            ref={dropDownRef}
             className="h-[75px] border-b border-b-zinc-800 sticky top-0 z-50
     bg-contentBg bg-opacity-50 backdrop-blur"
         >
@@ -81,10 +75,8 @@ const NavBar = () => {
                                     + Create post
                                 </Button>
                             </Link>
-                            <TextInput
-                                toggleDropDown={toggleDropDown}
-                                dropDown={dropDown as boolean}
-                            />
+                            <UserDropdown />
+                            <Notifications />
                         </>
                     ) : (
                         <Link href={"/login"}>
