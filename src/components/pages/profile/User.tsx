@@ -86,7 +86,7 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                         />
                         <Button
                             normal={false}
-                            className="mt-5 bg-primary w-[80%] mx-auto"
+                            className="mt-5 bg-primaryDark border border-primary w-[80%] mx-auto"
                         >
                             + Follow
                         </Button>

@@ -10,6 +10,7 @@ module.exports = {
         extend: {
             colors: {
                 primary: colors.orange["600"],
+                primaryDark: colors.orange["800"],
                 content: colors.zinc["500"],
                 contentBg: "#181818",
                 darkContent: "#151515",

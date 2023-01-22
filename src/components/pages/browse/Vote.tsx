@@ -83,11 +83,11 @@ const Vote = ({
                 onClick={() => voteSubmit("up")}
                 className={`${
                     thread?.did_user_vote === 1
-                        ? "bg-primary border border-transparent"
+                        ? "bg-primaryDark border-primary"
                         : "bg-contentBg"
                 } w-[35px] px-0 border border-zinc-700
-            h-[35px] flex items-center justify-center rounded-md
-            hover:bg-primary hover:border-transparent cursor-pointer`}
+            h-[35px] flex items-center focus:scale-[0.75] justify-center rounded-md
+            hover:bg-primaryDark hover:border-primary cursor-pointer`}
             >
                 <FontAwesomeIcon className="text-white" icon={faArrowUp} />
             </Button>
@@ -103,11 +103,11 @@ const Vote = ({
                 onClick={() => voteSubmit("down")}
                 className={`${
                     thread?.did_user_vote === -1
-                        ? "bg-primary border border-transparent"
+                        ? "bg-primaryDark border-primary"
                         : "bg-contentBg"
                 } w-[35px] px-0 border border-zinc-700
-            h-[35px] flex items-center justify-center rounded-md
-            hover:bg-primary hover:border-transparent cursor-pointer`}
+            h-[35px] flex items-center focus:scale-[0.75] justify-center rounded-md
+            hover:bg-primaryDark hover:border-primary cursor-pointer`}
             >
                 <FontAwesomeIcon className="text-white" icon={faArrowDown} />
             </Button>

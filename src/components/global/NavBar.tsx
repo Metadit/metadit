@@ -71,7 +71,10 @@ const NavBar = memo(() => {
                     {user ? (
                         <>
                             <Link href="/create">
-                                <Button className="bg-primary" normal={false}>
+                                <Button
+                                    className="bg-primaryDark border border-primary"
+                                    normal={false}
+                                >
                                     + Create post
                                 </Button>
                             </Link>

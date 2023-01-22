@@ -23,7 +23,7 @@ const ThreadCard = ({ thread }: Props) => {
                 <Link href={`/post/${thread.threadid}`}>
                     <Button
                         normal={false}
-                        className="bg-primary w-[30%] mx-auto mt-5"
+                        className="bg-primaryDark border border-primary w-[30%] mx-auto mt-5"
                     >
                         View
                     </Button>
