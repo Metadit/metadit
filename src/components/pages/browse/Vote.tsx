@@ -86,8 +86,8 @@ const Vote = ({
                         ? "bg-primary border border-transparent"
                         : "bg-contentBg"
                 } w-[35px] px-0 border border-zinc-700
-            h-[35px] flex focus:scale-75 items-center justify-center rounded-md transition-all
-            duration-200 hover:bg-primary hover:border-transparent cursor-pointer`}
+            h-[35px] flex items-center justify-center rounded-md
+            hover:bg-primary hover:border-transparent cursor-pointer`}
             >
                 <FontAwesomeIcon className="text-white" icon={faArrowUp} />
             </Button>
@@ -106,8 +106,8 @@ const Vote = ({
                         ? "bg-primary border border-transparent"
                         : "bg-contentBg"
                 } w-[35px] px-0 border border-zinc-700
-            h-[35px] flex items-center focus:scale-75 justify-center rounded-md transition-all
-            duration-200 hover:bg-primary hover:border-transparent cursor-pointer`}
+            h-[35px] flex items-center justify-center rounded-md
+            hover:bg-primary hover:border-transparent cursor-pointer`}
             >
                 <FontAwesomeIcon className="text-white" icon={faArrowDown} />
             </Button>
