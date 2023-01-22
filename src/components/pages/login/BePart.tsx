@@ -9,7 +9,7 @@ const BePart = () => {
                 Be part of our community
             </h2>
             <div
-                className="bg-[#615EFF] fa-border border-zinc-700 w-full rounded-lg flex
+                className="bg-indigo-800 fa-border border-indigo-600 w-full rounded-lg flex
         items-center justify-between h-[55px] gap-2 px-5 transition-all duration-300
         hover:brightness-110 cursor-pointer"
             >

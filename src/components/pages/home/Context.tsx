@@ -22,7 +22,10 @@ const Context = () => {
                     right?{" "}
                 </p>
                 <Link href="/login">
-                    <Button className="bg-primary mt-5" normal={false}>
+                    <Button
+                        className="bg-primaryDark border border-primary mt-5"
+                        normal={false}
+                    >
                         Join now
                     </Button>
                 </Link>

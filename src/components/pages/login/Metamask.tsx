@@ -11,7 +11,9 @@ const Metamask = () => {
             onClick={login}
             disabled={loading}
             className={`${
-                loading ? "bg-zinc-500 cursor-not-allowed" : "bg-primary"
+                loading
+                    ? "bg-zinc-800 border border-zinc-600 cursor-not-allowed"
+                    : "bg-primaryDark border border-primary"
             } w-full rounded-lg flex
         transform items-center scale-100 justify-between h-[55px] gap-2 px-5 transition-all duration-300
         hover:brightness-110 cursor-pointer focus:outline-none focus:scale-90`}

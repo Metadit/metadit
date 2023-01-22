@@ -83,7 +83,10 @@ const NavBar = memo(() => {
                         </>
                     ) : (
                         <Link href={"/login"}>
-                            <Button className="bg-primary" normal={false}>
+                            <Button
+                                className="bg-primaryDark border border-primary"
+                                normal={false}
+                            >
                                 <FontAwesomeIcon icon={faSignIn} />
                                 Login
                             </Button>
