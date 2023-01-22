@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import logo from "../../../public/images/logo.svg";
 import Button from "./Button";
 import Hamburger from "hamburger-react";
@@ -13,7 +13,7 @@ import { useUser } from "../../contexts/User";
 import Notifications from "./Notifications/Notifications";
 import UserDropdown from "./UserDropdown";
 
-const NavBar = () => {
+const NavBar = memo(() => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const { user } = useUser();
     return (
@@ -91,6 +91,8 @@ const NavBar = () => {
             {isOpen && <HiddenMenu closeMenu={() => setOpen(!isOpen)} />}
         </nav>
     );
-};
+});
+
+NavBar.displayName = "Navbar";
 
 export default NavBar;

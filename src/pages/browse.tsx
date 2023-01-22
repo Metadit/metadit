@@ -17,7 +17,7 @@ const Browse = () => {
     const params = window.location.search;
     const getTabParams = new URLSearchParams(params).get("tab") || "top";
 
-    const { data, isLoading, isFetching, refetch, isRefetching } = useQuery(
+    const { isLoading, isFetching, refetch, isRefetching } = useQuery(
         "threads",
         async () => {
             return await getThreadsService(user?.id, getTabParams).catch(() => {

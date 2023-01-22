@@ -33,7 +33,7 @@ const Notifications = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 0 }}
                         className="absolute w-[250px] p-2
-                bg-contentBg border border-zinc-800 left-0
+                bg-contentBg border border-zinc-800 right-0
                 text-[13px] top-9 rounded-md text-center
                 flex flex-col gap-1.5 h-[200px]"
                     >
