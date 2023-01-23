@@ -11,6 +11,7 @@ import CommentVote from "./CommentVote";
 import voteCountUpdater from "../../../helpers/vote";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import redirectWithError from "../../../helpers/redirectWithError";
 
 interface Props {
     comment: ICommentReply;
@@ -65,9 +66,13 @@ const CommentReplyActions = ({
 
     const toggleReportModal = () => {
         if (!user) {
-            return router.replace(`/login/?post=${threadIdParam}`);
+            return redirectWithError(
+                "You must be logged in to report a comment",
+                `/login/?post=${threadIdParam}`,
+                router
+            );
         }
-        setActiveModal("ReportModal");
+        setActiveModal("REPORT_MODAL");
         setModalValues({ ...comment, type: "commentReply" });
     };
 
@@ -116,7 +121,7 @@ const CommentReplyActions = ({
                     threadCreator === user?.id) && (
                     <p
                         onClick={() => {
-                            setActiveModal("DeleteCommentModal");
+                            setActiveModal("DELETE_COMMENT_MODAL");
                             setModalValues({
                                 commentId: comment.id,
                                 isReply: true,

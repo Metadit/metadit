@@ -5,8 +5,10 @@ import {
     userThreadsService,
 } from "../services/profile";
 import toast from "react-hot-toast";
+import { useUser } from "../contexts/User";
 
 export const useProfile = (userId: number) => {
+    const { user } = useUser();
     const {
         data: activity,
         isLoading: activityLoading,
@@ -26,7 +28,7 @@ export const useProfile = (userId: number) => {
         isFetching: userProfileIsFetching,
     } = useQuery({
         queryKey: ["userProfile"],
-        queryFn: () => userProfileService(userId),
+        queryFn: () => userProfileService(userId, user?.id),
         onError: () => {
             toast.error("Error fetching user profile");
         },

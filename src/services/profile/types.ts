@@ -12,6 +12,8 @@ export interface IUserProfile {
     id: number;
     date_registered: string;
     display_name: string | null;
+    follower_count: number;
+    did_user_follow: boolean;
     userId: number;
     wallet_address: string;
 }

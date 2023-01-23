@@ -9,18 +9,16 @@ import {
 import { IModalIds } from "../types/modal";
 
 export const ModalContext = createContext<{
-    activeModal: keyof IModalIds | null;
-    setActiveModal: Dispatch<SetStateAction<keyof IModalIds | null>>;
+    activeModal: IModalIds | string;
+    setActiveModal: Dispatch<SetStateAction<IModalIds | string>>;
 }>({
-    activeModal: null,
+    activeModal: "",
     setActiveModal: () => {},
 });
 
 export const useModal = () => useContext(ModalContext);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-    const [activeModal, setActiveModal] = useState<keyof IModalIds | null>(
-        null
-    );
+    const [activeModal, setActiveModal] = useState<IModalIds | string>("");
     return (
         <ModalContext.Provider value={{ activeModal, setActiveModal }}>
             {children}

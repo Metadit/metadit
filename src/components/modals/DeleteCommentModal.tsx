@@ -18,7 +18,7 @@ const DeleteCommentModal = () => {
                 !!modalValues.isReply
             );
             await queryClient.invalidateQueries("threadComments");
-            setActiveModal(null);
+            setActiveModal("");
             toast.success("Comment deleted successfully");
         } catch (error) {
             toast.error("Error deleting comment");
@@ -29,7 +29,7 @@ const DeleteCommentModal = () => {
         deleteHandler,
         {
             onSuccess: () => {
-                setActiveModal(null);
+                setActiveModal("");
             },
         }
     );

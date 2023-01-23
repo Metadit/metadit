@@ -1,4 +1,5 @@
-export interface IModalIds {
-    ReportModal: string;
-    DeleteCommentModal: string;
-}
+export type IModalIds =
+    "REPORT_MODAL" |
+    "DELETE_COMMENT_MODAL" |
+    "FOLLOW_USER_MODAL"
+

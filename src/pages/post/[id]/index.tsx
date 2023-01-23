@@ -151,7 +151,8 @@ const Index = () => {
                                     >
                                         <Button
                                             normal={false}
-                                            className="mt-3 bg-primary w-full max-w-fit mx-auto"
+                                            className="mt-3 bg-primaryDark border border-primary
+                                             w-full max-w-fit mx-auto"
                                         >
                                             <FontAwesomeIcon icon={faSignIn} />
                                             Login and share your thoughts

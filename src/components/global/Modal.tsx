@@ -5,6 +5,7 @@ import { useModal } from "../../contexts/Modal";
 import { motion } from "framer-motion";
 import Button from "./Button";
 import { useModalValues } from "../../contexts/ModalValues";
+import Link from "next/link";
 
 interface Props {
     children: React.ReactNode;
@@ -12,13 +13,17 @@ interface Props {
     buttonLoading?: boolean;
     submitHandler?: () => void;
     disabledButton?: boolean;
+    buttonText?: string;
+    buttonLink?: string;
 }
 
 const Modal = ({
     children,
     title,
     buttonLoading,
+    buttonText,
     submitHandler,
+    buttonLink,
     disabledButton,
 }: Props) => {
     const { setActiveModal } = useModal();
@@ -26,7 +31,7 @@ const Modal = ({
     const modalRef: RefObject<HTMLDivElement> = useRef(null);
     const outSideClickHandler = (e: any) => {
         if (modalRef.current !== null && !modalRef.current.contains(e.target)) {
-            setActiveModal(null);
+            setActiveModal("");
         }
     };
     return (
@@ -44,7 +49,7 @@ const Modal = ({
             >
                 <div
                     onClick={() => {
-                        setActiveModal(null);
+                        setActiveModal("");
                         setModalValues(null);
                     }}
                     className="bg-contentBg rounded-full bg-zinc-800
@@ -58,15 +63,29 @@ const Modal = ({
                     {title}
                 </h1>
                 {children}
-                <Button
-                    loading={buttonLoading}
-                    disabled={disabledButton}
-                    normal={false}
-                    onClick={submitHandler}
-                    className="mt-4 mx-auto bg-primary  w-fit"
-                >
-                    Confirm
-                </Button>
+                {buttonLink ? (
+                    <Link href={buttonLink}>
+                        <Button
+                            loading={buttonLoading}
+                            disabled={disabledButton}
+                            normal={false}
+                            onClick={submitHandler}
+                            className="mt-4 mx-auto bg-primaryDark border border-primary w-fit"
+                        >
+                            {buttonText || "Confirm"}
+                        </Button>
+                    </Link>
+                ) : (
+                    <Button
+                        loading={buttonLoading}
+                        disabled={disabledButton}
+                        normal={false}
+                        onClick={submitHandler}
+                        className="mt-4 mx-auto bg-primaryDark border border-primary w-fit"
+                    >
+                        {buttonText || "Confirm"}
+                    </Button>
+                )}
             </motion.div>
         </div>
     );

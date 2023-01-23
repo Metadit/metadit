@@ -46,7 +46,7 @@ const ReportModal = () => {
                 threadid: modalValues.threadid,
             });
             toast.success(message);
-            setActiveModal(null);
+            setActiveModal("");
         } catch (error: any) {
             toast.error(error.response.data || "Something went wrong");
         } finally {

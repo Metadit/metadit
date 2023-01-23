@@ -13,6 +13,17 @@ export const useLogin = () => {
     const { setUser } = useContext(UserContext);
     const threadIdParams = new URLSearchParams(window.location.search);
     const threadId = threadIdParams.get("post");
+    const userId = threadIdParams.get("user");
+
+    const loginRedirectHandler = () => {
+        if (threadId) {
+            window.location.replace(`/post/${threadId}`);
+        } else if (userId) {
+            window.location.replace(`/profile/${userId}`);
+        } else {
+            window.location.replace("/browse?tab=top");
+        }
+    };
     const walletAuthHandler = async (wallet_address: string) => {
         try {
             const { signature } = await signUserWalletService(wallet_address);
@@ -43,8 +54,7 @@ export const useLogin = () => {
                     ...userData,
                 })
             );
-            if (threadId) window.location.replace(`/post/${threadId}`);
-            else window.location.replace("/browse?tab=top");
+            loginRedirectHandler();
         } catch (e) {
             toast.error("Error authenticating user");
         } finally {

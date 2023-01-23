@@ -14,6 +14,8 @@ import Button from "../../global/Button";
 import { useMutation } from "react-query";
 import { postCommentReplyService } from "../../../services/threads";
 import toast from "react-hot-toast";
+import redirectWithError from "../../../helpers/redirectWithError";
+import { router } from "next/client";
 
 interface Props {
     comment: IComment;
@@ -91,7 +93,14 @@ const CommentActions = ({
     });
 
     const toggleReportModal = () => {
-        setActiveModal("ReportModal");
+        if (!user) {
+            return redirectWithError(
+                "Please login to report a comment",
+                "/login",
+                router
+            );
+        }
+        setActiveModal("REPORT_MODAL");
         setModalValues({ ...comment, type: "comment" });
     };
 
@@ -133,7 +142,7 @@ const CommentActions = ({
                     threadCreator === user?.id) && (
                     <p
                         onClick={() => {
-                            setActiveModal("DeleteCommentModal");
+                            setActiveModal("DELETE_COMMENT_MODAL");
                             setModalValues({ commentId: comment.id });
                         }}
                         className="text-content text-[13px]
