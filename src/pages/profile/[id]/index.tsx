@@ -10,7 +10,6 @@ import { NextPageContext } from "next";
 
 const Index = ({ id: userId }: { id: number }) => {
     const { activity, threads, userProfile } = useProfile(Number(userId));
-
     useEffect(() => {
         if (isNaN(Number(userId))) {
             window.location.href = "/404";
@@ -56,6 +55,5 @@ Index.getInitialProps = (ctx: NextPageContext) => {
     const { id } = ctx.query;
     return { id: id };
 };
-
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

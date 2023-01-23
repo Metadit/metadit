@@ -25,7 +25,6 @@ const Index = ({ id: threadId }: { id: number }) => {
     const { user } = useUser();
     const { thread, comments } = useThreadService(Number(threadId));
     const [playAnimation, setPlayAnimation] = useState(false);
-    console.log(threadId);
     const threadVoteUpdater = (vote: number) => {
         if (thread.data) {
             thread.setThread({
@@ -168,7 +167,7 @@ const Index = ({ id: threadId }: { id: number }) => {
                                         commentInput?.length === 0 ||
                                         commentSubmitLoading
                                     }
-                                    className={`mt-4 bg-primary w-full
+                                    className={`mt-4 bg-primaryDark border border-primary w-full
                 max-w-[100px] mx-auto`}
                                 >
                                     {commentSubmitLoading ? (
@@ -202,8 +201,8 @@ const Index = ({ id: threadId }: { id: number }) => {
 export default Index;
 
 Index.getInitialProps = (ctx: NextPageContext) => {
-    const {id} = ctx.query;
-    return {id: id};
-}
+    const { id } = ctx.query;
+    return { id: id };
+};
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

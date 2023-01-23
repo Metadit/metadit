@@ -23,9 +23,9 @@ const Button = ({
             onClick={onClick}
             disabled={disabled}
             className={`${className} h-[32px] font-bold gap-1 flex items-center justify-center transition-all duration-200 ${
-                disabled && "bg-zinc-700 cursor-not-allowed"
+                disabled && "bg-zinc-700 border-zinc-600 cursor-not-allowed"
             } 
-             ${loading && "!bg-zinc-700 !cursor-not-allowed !border-zinc-600"}
+             ${loading && "bg-zinc-700 !cursor-not-allowed border-zinc-600"}
             ${
                 normal && "bg-zinc-800 border border-zinc-700 relative"
             } text-white text-[12px] px-5 rounded-md

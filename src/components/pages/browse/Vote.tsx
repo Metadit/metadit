@@ -83,9 +83,9 @@ const Vote = ({
                 onClick={() => voteSubmit("up")}
                 className={`${
                     thread?.did_user_vote === 1
-                        ? "bg-primaryDark border-primary"
-                        : "bg-contentBg"
-                } w-[35px] px-0 border border-zinc-700
+                        ? "bg-primaryDark border-primary border"
+                        : "bg-contentBg border border-zinc-700"
+                } w-[35px] px-0
             h-[35px] flex items-center focus:scale-[0.75] justify-center rounded-md
             hover:bg-primaryDark hover:border-primary cursor-pointer`}
             >
@@ -103,9 +103,9 @@ const Vote = ({
                 onClick={() => voteSubmit("down")}
                 className={`${
                     thread?.did_user_vote === -1
-                        ? "bg-primaryDark border-primary"
-                        : "bg-contentBg"
-                } w-[35px] px-0 border border-zinc-700
+                        ? "bg-primaryDark border border-primary"
+                        : "bg-contentBg border border-zinc-700"
+                } w-[35px] px-0
             h-[35px] flex items-center focus:scale-[0.75] justify-center rounded-md
             hover:bg-primaryDark hover:border-primary cursor-pointer`}
             >
