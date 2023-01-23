@@ -6,16 +6,16 @@ import Activity from "../../../components/pages/profile/Activity";
 import Threads from "../../../components/pages/profile/Threads";
 import { useProfile } from "../../../hooks/useProfile";
 import UserNotFound from "./userNotFound";
+import { NextPageContext } from "next";
 
-const Index = () => {
-    const userIdParams = window.location.pathname.split("/")[2];
-    const { activity, threads, userProfile } = useProfile(Number(userIdParams));
+const Index = ({ id: userId }: { id: number }) => {
+    const { activity, threads, userProfile } = useProfile(Number(userId));
 
     useEffect(() => {
-        if (isNaN(Number(userIdParams))) {
+        if (isNaN(Number(userId))) {
             window.location.href = "/404";
         }
-    }, [userIdParams]);
+    }, [userId]);
 
     return (
         <PageContainer>
@@ -51,5 +51,11 @@ const Index = () => {
 };
 
 export default Index;
+
+Index.getInitialProps = (ctx: NextPageContext) => {
+    const { id } = ctx.query;
+    return { id: id };
+};
+
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

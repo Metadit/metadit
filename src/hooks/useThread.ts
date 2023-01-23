@@ -5,10 +5,10 @@ import {
     postCommentVoteService,
     postVoteService,
 } from "../services/threads";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { UserContext, useUser } from "../contexts/User";
+import {useCallback, useContext, useEffect, useState} from "react";
+import {UserContext, useUser} from "../contexts/User";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import {
     IComment,
     ICommentReply,
@@ -18,10 +18,10 @@ import {
     IVote,
 } from "../services/threads/types";
 import redirectWithError from "../helpers/redirectWithError";
-import { useQuery } from "react-query";
+import {useQuery} from "react-query";
 
 export const useThread = () => {
-    const { user } = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const [createLoading, setCreateLoading] = useState(false);
     const [voteLoading, setVoteLoading] = useState(false);
     const [commentPlayAnimation, setCommentPlayAnimation] = useState(false);
@@ -138,7 +138,7 @@ export const useThread = () => {
         try {
             setCreateLoading(true);
             if (user) {
-                const { id } = await createThreadService({
+                const {id} = await createThreadService({
                     userId: user.id,
                     threadTitle,
                     threadContent,
@@ -166,8 +166,9 @@ export const useThread = () => {
 
 export const useThreadService = (threadId: number) => {
     const [thread, setThread] = useState<IThread | undefined>();
-    const { user } = useUser();
+    const {user} = useUser();
     const [comments, setCommentsData] = useState<IComment[] | undefined>();
+
     const {
         data: threadData,
         isLoading,
@@ -196,7 +197,7 @@ export const useThreadService = (threadId: number) => {
 
     useEffect(() => {
         threadInfo();
-    }, [threadInfo]);
+    }, [threadInfo, threadId]);
 
     return {
         thread: {

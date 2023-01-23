@@ -15,7 +15,7 @@ import { useMutation } from "react-query";
 import { postCommentReplyService } from "../../../services/threads";
 import toast from "react-hot-toast";
 import redirectWithError from "../../../helpers/redirectWithError";
-import { router } from "next/client";
+import { useRouter } from "next/router";
 
 interface Props {
     comment: IComment;
@@ -33,6 +33,7 @@ const CommentActions = ({
     const { setActiveModal } = useModal();
     const { user } = useUser();
     const { setModalValues } = useModalValues();
+    const router = useRouter();
     const { onChangeHandler, inputValues, setInputValues } = useInputForm({
         replyContent: "",
     });

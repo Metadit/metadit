@@ -16,18 +16,16 @@ import Button from "../../../components/global/Button";
 import TextAreaBox from "../../../components/global/TextAreaBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
-import smile from "../../../../public/images/smile.png";
-import Image from "next/image";
 import { useThreadService } from "../../../hooks/useThread";
 import Comment from "../../../components/pages/post/Comment";
+import { NextPageContext } from "next";
 
-const Index = () => {
+const Index = ({ id: threadId }: { id: number }) => {
     const [commentInput, setCommentInput] = useState<string>("");
     const { user } = useUser();
-    const threadIdParams = window.location.pathname.split("/")[2];
-    const { thread, comments } = useThreadService(Number(threadIdParams));
+    const { thread, comments } = useThreadService(Number(threadId));
     const [playAnimation, setPlayAnimation] = useState(false);
-
+    console.log(threadId);
     const threadVoteUpdater = (vote: number) => {
         if (thread.data) {
             thread.setThread({
@@ -48,7 +46,7 @@ const Index = () => {
             async () => {
                 if (commentInput && comments.data && thread && user) {
                     const data = await commentThreadService({
-                        threadid: Number(threadIdParams),
+                        threadid: Number(threadId),
                         userid: user.id,
                         comment: commentInput,
                     });
@@ -132,23 +130,15 @@ const Index = () => {
                         />
                         {!user ? (
                             <div
-                                className="w-full bg-darkContent p-10 my-10
+                                className="w-full bg-darkContent p-5 my-10
                              border border-zinc-800 rounded-xl text-center"
                             >
                                 <div>
-                                    <Image
-                                        className="mx-auto mb-5"
-                                        src={smile}
-                                        alt="login"
-                                        width={100}
-                                    />
-                                    <p className="text-white mt-7">
+                                    <p className="text-white">
                                         Want to comment and be part of the
                                         conversation?
                                     </p>
-                                    <Link
-                                        href={`/login?post=${threadIdParams}`}
-                                    >
+                                    <Link href={`/login?post=${threadId}`}>
                                         <Button
                                             normal={false}
                                             className="mt-3 bg-primaryDark border border-primary
@@ -210,5 +200,10 @@ const Index = () => {
 };
 
 export default Index;
+
+Index.getInitialProps = (ctx: NextPageContext) => {
+    const {id} = ctx.query;
+    return {id: id};
+}
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;
