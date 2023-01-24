@@ -88,8 +88,8 @@ export const useThread = () => {
         try {
             setVoteLoading(true);
             await postCommentVoteService({
-                userid: args.userid as number,
-                threadid: args.threadid as number,
+                userid: args.userid,
+                threadid: args.threadid,
                 currentUserVote: args.currentUserVote,
                 vote: args.vote,
                 direction: direction,
@@ -110,8 +110,8 @@ export const useThread = () => {
         try {
             setVoteLoading(true);
             await postVoteService({
-                userId: args.userId as number,
-                threadId: args.threadId as number,
+                userId: args.userId,
+                threadId: args.threadId,
                 currentUserVote: args.currentUserVote,
                 vote: args.vote,
                 direction: direction,

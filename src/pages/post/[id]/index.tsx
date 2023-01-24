@@ -3,7 +3,7 @@ import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import Vote from "../../../components/pages/browse/Vote";
 import CommentCount from "../../../components/pages/browse/CommentCount";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { commentThreadService } from "../../../services/threads";
 import toast from "react-hot-toast";
 import parse from "html-react-parser";
@@ -19,11 +19,15 @@ import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { useThreadService } from "../../../hooks/useThread";
 import Comment from "../../../components/pages/post/Comment";
 import { NextPageContext } from "next";
+import { useInputForm } from "../../../hooks/useInputForm";
 
 const Index = ({ id: threadId }: { id: number }) => {
-    const [commentInput, setCommentInput] = useState<string>("");
+    const { onChangeHandler, inputValues, setInputValues } = useInputForm({
+        comment: "",
+    });
     const { user } = useUser();
     const { thread, comments } = useThreadService(Number(threadId));
+    const queryClient = useQueryClient();
     const [playAnimation, setPlayAnimation] = useState(false);
     const threadVoteUpdater = (vote: number) => {
         if (thread.data) {
@@ -43,13 +47,12 @@ const Index = ({ id: threadId }: { id: number }) => {
     const { isLoading: commentSubmitLoading, mutate: commentSubmit } =
         useMutation(
             async () => {
-                if (commentInput && comments.data && thread && user) {
+                if (inputValues.comment && comments.data && thread && user) {
                     const data = await commentThreadService({
                         threadid: Number(threadId),
                         userid: user.id,
-                        comment: commentInput,
+                        comment: inputValues.comment,
                     });
-                    setCommentInput("");
                     comments.setCommentsData([
                         {
                             ...data,
@@ -58,15 +61,19 @@ const Index = ({ id: threadId }: { id: number }) => {
                             vote_count: 0,
                             did_user_vote: 0,
                             replies: [],
+                            image_url: user.image_url || "",
                         },
                         ...comments.data,
                     ]);
-                    toast.success("Comment posted!");
                 } else {
                     return Promise.reject("No comment input");
                 }
             },
             {
+                onSuccess: async () => {
+                    toast.success("Comment posted!");
+                    setInputValues({ comment: "" });
+                },
                 onError: () => {
                     toast.error("Error while posting comment");
                 },
@@ -153,10 +160,9 @@ const Index = ({ id: threadId }: { id: number }) => {
                             <div className="my-10">
                                 <TextAreaBox
                                     placeholder="What are your thoughts?"
-                                    onChange={e =>
-                                        setCommentInput(e.target.value)
-                                    }
-                                    value={commentInput}
+                                    onChange={onChangeHandler}
+                                    name="comment"
+                                    value={inputValues.comment}
                                     className="w-full h-[140px]"
                                     rows={5}
                                 />
@@ -164,7 +170,7 @@ const Index = ({ id: threadId }: { id: number }) => {
                                     onClick={commentSubmit}
                                     normal={false}
                                     disabled={
-                                        commentInput?.length === 0 ||
+                                        inputValues.comment?.length === 0 ||
                                         commentSubmitLoading
                                     }
                                     className={`mt-4 bg-primaryDark border border-primary w-full
@@ -201,8 +207,8 @@ const Index = ({ id: threadId }: { id: number }) => {
 export default Index;
 
 Index.getInitialProps = (ctx: NextPageContext) => {
-    const { id } = ctx.query;
-    return { id: id };
+    const {id} = ctx.query;
+    return {id: id};
 };
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

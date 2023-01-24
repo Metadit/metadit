@@ -50,6 +50,7 @@ export const commentThreadService = async (
         | "display_name"
         | "did_user_vote"
         | "vote_count"
+        | "image_url"
         | "replies"
     >
 ): Promise<IComment> => {
@@ -77,7 +78,7 @@ export const postCommentVoteService = async (args: ICommentVote) => {
 export const postCommentReplyService = async (
     args: Omit<
         ICommentReply,
-        "datepublished" | "id" | "did_user_vote" | "vote_count"
+        "datepublished" | "id" | "did_user_vote" | "vote_count" | "image_url"
     >
 ) => {
     return await postAuthenticatedRequest("threads/comment/reply", args);

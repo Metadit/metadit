@@ -75,6 +75,7 @@ const CommentActions = ({
                 did_user_vote: 0,
                 wallet_address: user?.wallet_address,
                 display_name: user?.display_name,
+                image_url: user?.image_url,
             };
             const updateComment = comments?.map(comment => {
                 if (comment.id === data.commentid) {

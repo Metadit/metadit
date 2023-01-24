@@ -4,6 +4,7 @@ import Link from "next/link";
 import moment from "moment/moment";
 import CommentReplyActions from "./CommentReplyActions";
 import { IComment, ICommentReply } from "../../../services/threads/types";
+import Image from "next/image";
 
 interface Props {
     comment: ICommentReply;
@@ -21,12 +22,22 @@ const CommentReply = ({
     return (
         <div className="flex w-full mb-8">
             <div className="flex flex-wrap gap-2">
-                <Avatar
-                    className="mr-2"
-                    name="Jager32"
-                    size="40"
-                    round={true}
-                />
+                {comment.image_url ? (
+                    <Image
+                        className="rounded-full w-[40px] h-[40px]"
+                        width={40}
+                        height={40}
+                        src={(comment.image_url + `?${Date.now()}`) as string}
+                        alt="user"
+                    />
+                ) : (
+                    <Avatar
+                        className="mr-2"
+                        name={comment.wallet_address}
+                        size="40"
+                        round={true}
+                    />
+                )}
                 <div className="flex flex-wrap items-center flex-col">
                     <div className="flex w-full gap-2 items-center">
                         <Link href={`/profile/${comment.userid}`}>

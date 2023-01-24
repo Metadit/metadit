@@ -34,6 +34,7 @@ export interface IComment {
     threadid: number;
     did_user_vote: number;
     vote_count: number;
+    image_url: string;
     userid: number;
     datepublished: string;
     replies: ICommentReply[];
@@ -48,6 +49,7 @@ export interface ICommentReply {
     comment: string;
     userid: number;
     datepublished: string;
+    image_url: string;
     wallet_address: string;
     display_name: string | null;
 }

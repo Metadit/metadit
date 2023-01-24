@@ -11,25 +11,21 @@ const DeleteCommentModal = () => {
     const { modalValues } = useModalValues();
     const queryClient = useQueryClient();
 
-    const deleteHandler = async () => {
-        try {
+    const { mutate: deleteComment, isLoading: deleteLoading } = useMutation(
+        async () => {
             await deleteCommentService(
                 modalValues.commentId,
                 !!modalValues.isReply
             );
-            await queryClient.invalidateQueries("threadComments");
-            setActiveModal("");
-            toast.success("Comment deleted successfully");
-        } catch (error) {
-            toast.error("Error deleting comment");
-        }
-    };
-
-    const { isLoading: deleteLoading, mutate: deleteComment } = useMutation(
-        deleteHandler,
+        },
         {
-            onSuccess: () => {
+            onSuccess: async () => {
                 setActiveModal("");
+                toast.success("Comment deleted successfully");
+                await queryClient.invalidateQueries("threadComments");
+            },
+            onError: () => {
+                toast.error("Error deleting comment");
             },
         }
     );
