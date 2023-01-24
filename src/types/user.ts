@@ -5,6 +5,7 @@ export interface IUserLocalStorage {
     display_name: string | null;
     message: string;
     wallet_address: string;
+    image_url: string | null;
 }
 
 export interface IUserAuthTokenDecoded {

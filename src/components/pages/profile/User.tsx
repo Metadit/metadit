@@ -24,6 +24,10 @@ import {
 } from "../../../services/profile";
 import { useModal } from "../../../contexts/Modal";
 import { useModalValues } from "../../../contexts/ModalValues";
+import { motion } from "framer-motion";
+import { supabase } from "../../../supabase";
+import { uploadImageService } from "../../../services/user";
+import Image from "next/image";
 
 interface Props {
     className?: string;
@@ -33,17 +37,20 @@ interface Props {
 }
 
 const User = ({ className, data, profileLoading, isFetching }: Props) => {
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const fileRef = useRef<HTMLInputElement>(null);
     const queryClient = useQueryClient();
+    const [imageUploading, setImageUploading] = useState(false);
     const { setActiveModal } = useModal();
     const { setModalValues } = useModalValues();
     const [userImageFile, setUserImageFile] = useState<{
         file: File | undefined;
         imageUrl: string;
+        imageUploaded: boolean;
     }>({
         file: undefined,
         imageUrl: "",
+        imageUploaded: false,
     });
     const copyHandler = () => {
         if (data?.wallet_address) {
@@ -52,27 +59,20 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
         toast.success("Wallet address copied");
     };
 
-    const fileInputHandler = () => {
-        fileRef?.current?.click();
-    };
-
-    const readFile = (file: File) => {
-        const reader = new FileReader();
-        reader.onload = e => {
-            if (e.target?.result) {
-                setUserImageFile({
-                    ...userImageFile,
-                    imageUrl: e.target.result.toString(),
-                });
-            }
-        };
-        if (file) reader.readAsDataURL(file);
-    };
-
     const fileOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setUserImageFile({ ...userImageFile, file: e.target.files[0] });
-            readFile(e.target.files[0]);
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = e => {
+                if (e.target?.result) {
+                    setUserImageFile({
+                        ...userImageFile,
+                        file: file,
+                        imageUrl: e.target.result.toString(),
+                    });
+                }
+            };
+            if (file) reader.readAsDataURL(file);
         }
     };
 
@@ -81,10 +81,9 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
             if (!data?.did_user_follow) {
                 await followUserService(data?.id as number, user?.id as number);
             } else {
-                await unfollowUserService(
-                    data?.id as number,
-                    user?.id as number
-                );
+                if (user) {
+                    await unfollowUserService(data.id, user.id);
+                }
             }
         },
         {
@@ -108,6 +107,64 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
         }
     );
 
+    const { mutate: uploadImageHandler } = useMutation(
+        async (imageUrl: string) => {
+            if (user) {
+                await uploadImageService(user.id, imageUrl);
+            }
+        },
+        {
+            onSuccess: () => {
+                queryClient.setQueryData("userProfile", (oldData: any) => {
+                    return {
+                        ...oldData,
+                        image_url: userImageFile.imageUrl,
+                    };
+                });
+                toast.success("Avatar updated successfully");
+            },
+            onError: () => {
+                toast.error("Error uploading image");
+            },
+        }
+    );
+
+    const cancelImageHandler = () => {
+        setUserImageFile({
+            ...userImageFile,
+            file: undefined,
+            imageUrl: "",
+        });
+    };
+
+    const submitImageHandler = async () => {
+        if (userImageFile.file) {
+            const fileExtension = userImageFile.file.name.split(".").pop();
+            const fileName = `${user?.id}.${fileExtension}`;
+            const filePath = `${fileName}`;
+            try {
+                setImageUploading(true);
+                await supabase.storage
+                    .from("useravatars")
+                    .remove([`${user?.id}.png`, `${user?.id}.jpg`]);
+                await supabase.storage
+                    .from("useravatars")
+                    .upload(filePath, userImageFile.file);
+                const { data } = supabase.storage
+                    .from("useravatars")
+                    .getPublicUrl(filePath);
+                await uploadImageHandler(data.publicUrl);
+                setUser({ ...user, image_url: data.publicUrl });
+                setUserImageFile({ ...userImageFile, imageUploaded: true });
+            } catch (e) {
+                toast.error("Error uploading image");
+                console.log(e);
+            } finally {
+                setImageUploading(false);
+            }
+        }
+    };
+
     return (
         <>
             <Head>
@@ -126,14 +183,17 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                 ) : (
                     <>
                         <div className="relative w-[100px] h-[100px] mb-7 mx-auto">
-                            {userImageFile.imageUrl ? (
-                                <div
-                                    style={{
-                                        backgroundImage: `url(${userImageFile.imageUrl})`,
-                                        backgroundSize: "cover",
-                                        backgroundPosition: "center",
-                                    }}
-                                    className="w-[100px] h-[100px] rounded-full"
+                            {userImageFile.imageUrl || data?.image_url ? (
+                                <Image
+                                    className="rounded-full w-[100px] h-[100px]"
+                                    width={100}
+                                    height={100}
+                                    src={
+                                        (userImageFile.imageUrl as string) ||
+                                        ((data?.image_url +
+                                            `?${Date.now()}`) as string)
+                                    }
+                                    alt="user"
                                 />
                             ) : (
                                 <Avatar
@@ -152,7 +212,9 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                             w-[30px] h-[30px] rounded-full absolute
                             flex items-center justify-center right-0 bottom-0
                             cursor-pointer transition-all duration-200 hover:brightness-125"
-                                        onClick={fileInputHandler}
+                                        onClick={() =>
+                                            fileRef?.current?.click()
+                                        }
                                     >
                                         <FontAwesomeIcon
                                             icon={faPencil}
@@ -161,7 +223,9 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                                         />
                                     </div>
                                     <input
+                                        key={Date.now()}
                                         onChange={fileOnChange}
+                                        accept="image/png, image/jpeg"
                                         ref={fileRef}
                                         className="hidden"
                                         type="file"
@@ -169,6 +233,32 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                                 </>
                             )}
                         </div>
+                        {userImageFile.imageUrl &&
+                            !userImageFile.imageUploaded && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="w-full flex justify-center gap-3 mb-5"
+                                >
+                                    <Button
+                                        onClick={submitImageHandler}
+                                        loading={imageUploading}
+                                        disabled={imageUploading}
+                                        className="bg-blue-800 border-blue-600 border"
+                                        normal={false}
+                                    >
+                                        Save
+                                    </Button>
+                                    <Button
+                                        disabled={imageUploading}
+                                        onClick={cancelImageHandler}
+                                        className="bg-red-800 border-red-600 border"
+                                        normal={false}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </motion.div>
+                            )}
                         <UserInfo
                             onClick={copyHandler}
                             name="Wallet"

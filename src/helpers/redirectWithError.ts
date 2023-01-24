@@ -1,11 +1,7 @@
-import { NextRouter } from "next/router";
+import router from "next/router";
 import toast from "react-hot-toast";
 
-const redirectWithError = (
-    message: string,
-    path: string,
-    router: NextRouter
-) => {
+const redirectWithError = (message: string, path: string) => {
     return router.push(path).then(() => {
         toast.error(message);
     });

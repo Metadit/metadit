@@ -1,15 +1,12 @@
 import React from "react";
 import Modal from "../global/Modal";
-import {useModalValues} from "../../contexts/ModalValues";
-import {useModal} from "../../contexts/Modal";
+import { useModalValues } from "../../contexts/ModalValues";
 
 const FollowUserModal = () => {
-    const {modalValues} = useModalValues();
-    const {setActiveModal} = useModal();
-    const {userid} = modalValues;
+    const { modalValues } = useModalValues();
+    const { userid } = modalValues;
     return (
         <Modal
-            submitHandler={() => setActiveModal("")}
             buttonLink={`/login?user=${userid}`}
             title="Snap!"
             buttonText="Login"

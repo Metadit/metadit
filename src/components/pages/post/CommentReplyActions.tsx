@@ -68,8 +68,7 @@ const CommentReplyActions = ({
         if (!user) {
             return redirectWithError(
                 "You must be logged in to report a comment",
-                `/login/?post=${threadIdParam}`,
-                router
+                `/login/?post=${threadIdParam}`
             );
         }
         setActiveModal("REPORT_MODAL");

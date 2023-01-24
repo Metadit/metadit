@@ -2,6 +2,7 @@ import React from "react";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface Props {
     customClass?: string;
@@ -33,7 +34,7 @@ const Dropdown = ({ links, customClass }: Props) => {
                     {link.icon && (
                         <FontAwesomeIcon className="mr-1" icon={link.icon} />
                     )}
-                    <a href={link.href}>{link.text}</a>
+                    <Link href={link.href}>{link.text}</Link>
                 </div>
             ))}
         </motion.div>

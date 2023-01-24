@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Dropdown from "./Dropdown";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
+import Image from "next/image";
 
 const logoutHandler = () => {
     localStorage.removeItem("metadit");
@@ -48,12 +49,22 @@ const UserDropdown = ({ className }: Props) => {
                 {dropDown && <Dropdown links={dropDownLinks} />}
             </AnimatePresence>
             <div className="flex items-center overflow-hidden">
-                <Avatar
-                    className="mr-2 align-top"
-                    name="Jager32"
-                    size="20"
-                    round={true}
-                />
+                {user?.image_url ? (
+                    <Image
+                        className="rounded-full mr-2"
+                        width={20}
+                        height={20}
+                        src={user?.image_url + `?${Date.now()}`}
+                        alt="user"
+                    />
+                ) : (
+                    <Avatar
+                        className="mr-2 align-top"
+                        name={user?.wallet_address}
+                        size="20"
+                        round={true}
+                    />
+                )}
                 {user?.wallet_address && (
                     <p className="text-[13px] w-full max-w-[300px] lg:max-w-[60px] overflow-hidden text-ellipsis">
                         {user?.wallet_address}

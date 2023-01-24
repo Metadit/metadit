@@ -64,7 +64,7 @@ const Modal = ({
                 </h1>
                 {children}
                 {buttonLink ? (
-                    <Link href={buttonLink}>
+                    <Link onClick={() => setActiveModal("")} href={buttonLink}>
                         <Button
                             loading={buttonLoading}
                             disabled={disabledButton}

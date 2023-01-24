@@ -15,6 +15,7 @@ export interface IUserProfile {
     follower_count: number;
     did_user_follow: boolean;
     userId: number;
+    image_url: string | null;
     wallet_address: string;
 }
 
