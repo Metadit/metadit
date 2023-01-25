@@ -56,7 +56,6 @@ const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
                         : "bg-contentBg border border-zinc-700"
                 }
                 relative z-10
-                focus:scale-75
             h-[30px] flex px-0 w-[35px] items-center justify-center rounded-md transition-all
             duration-200 hover:bg-primaryDark hover:border-primary cursor-pointer`}
             >
@@ -85,7 +84,7 @@ const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
                     commentReply?.did_user_vote === -1
                         ? "bg-primaryDark border border-primary"
                         : "bg-contentBg border border-zinc-700"
-                } flex focus:scale-75
+                } flex
             text-white w-[35px] px-0 h-[30px] items-center justify-center rounded-md
             transition-all duration-200 hover:bg-primaryDark hover:border-primary cursor-pointer text-[12px]`}
             >

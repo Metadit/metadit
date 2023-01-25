@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag, faReply, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useModal } from "../../../contexts/Modal";
 import { useUser } from "../../../contexts/User";
-import { IComment } from "../../../services/threads/types";
+import { IComment, IThread } from "../../../services/threads/types";
 import { useModalValues } from "../../../contexts/ModalValues";
 import { useInputForm } from "../../../hooks/useInputForm";
 import TextAreaBox from "../../global/TextAreaBox";
@@ -11,7 +11,7 @@ import CommentVote from "./CommentVote";
 import voteCountUpdater from "../../../helpers/vote";
 import { motion } from "framer-motion";
 import Button from "../../global/Button";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { postCommentReplyService } from "../../../services/threads";
 import toast from "react-hot-toast";
 import redirectWithError from "../../../helpers/redirectWithError";
@@ -32,6 +32,7 @@ const CommentActions = ({
     const { setActiveModal } = useModal();
     const { user } = useUser();
     const { setModalValues } = useModalValues();
+    const queryClient = useQueryClient();
     const { onChangeHandler, inputValues, setInputValues } = useInputForm({
         replyContent: "",
     });
@@ -59,38 +60,66 @@ const CommentActions = ({
         setInputValues({ replyContent: "" });
     };
 
-    const { isLoading, mutate: submitReply } = useMutation(async () => {
-        if (user && comment) {
-            const { data } = await postCommentReplyService({
-                userid: user?.id,
-                commentid: comment.id,
-                threadid: comment.threadid,
-                comment: inputValues.replyContent,
-                wallet_address: user?.wallet_address,
-                display_name: user?.display_name,
-            });
-            const newComment = {
-                ...data,
-                vote_count: 0,
-                did_user_vote: 0,
-                wallet_address: user?.wallet_address,
-                display_name: user?.display_name,
-                image_url: user?.image_url,
-            };
-            const updateComment = comments?.map(comment => {
-                if (comment.id === data.commentid) {
-                    return {
-                        ...comment,
-                        replies: [...comment.replies, newComment],
-                    };
-                }
-                return comment;
-            });
-            setComments(updateComment);
-            toggleHandler(false);
-            toast.success("Comment posted successfully");
+    const { isLoading, mutate: submitReply } = useMutation(
+        async () => {
+            if (user && comment) {
+                return await postCommentReplyService({
+                    userid: user?.id,
+                    commentid: comment.id,
+                    threadid: comment.threadid,
+                    comment: inputValues.replyContent,
+                    wallet_address: user?.wallet_address,
+                    display_name: user?.display_name,
+                });
+            }
+        },
+        {
+            onSuccess: ({ data }) => {
+                const newComment = {
+                    ...data,
+                    vote_count: 0,
+                    did_user_vote: 0,
+                    wallet_address: user?.wallet_address,
+                    display_name: user?.display_name,
+                    image_url: user?.image_url,
+                };
+
+                queryClient.setQueryData<IComment[] | undefined>(
+                    "threadComments",
+                    oldData => {
+                        if (oldData) {
+                            return oldData.map(comment => {
+                                if (comment.id === data.commentid) {
+                                    return {
+                                        ...comment,
+                                        replies: [
+                                            newComment,
+                                            ...comment.replies,
+                                        ],
+                                    };
+                                }
+                                return comment;
+                            });
+                        }
+                    }
+                );
+
+                queryClient.setQueryData<IThread | undefined>(
+                    "thread",
+                    oldData => {
+                        if (oldData) {
+                            return {
+                                ...oldData,
+                                comment_count: oldData.comment_count + 1,
+                            };
+                        }
+                    }
+                );
+                toggleHandler(false);
+                toast.success("Comment posted successfully");
+            },
         }
-    });
+    );
 
     const toggleReportModal = () => {
         if (!user) {
@@ -178,7 +207,7 @@ const CommentActions = ({
                                 isLoading
                             }
                             normal={false}
-                            className="bg-primary border-transparent"
+                            className="border bg-primaryDark border-primary"
                         >
                             Submit
                         </Button>

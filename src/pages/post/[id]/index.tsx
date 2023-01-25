@@ -20,14 +20,15 @@ import { useThreadService } from "../../../hooks/useThread";
 import Comment from "../../../components/pages/post/Comment";
 import { NextPageContext } from "next";
 import { useInputForm } from "../../../hooks/useInputForm";
+import { IComment, IThread } from "../../../services/threads/types";
 
 const Index = ({ id: threadId }: { id: number }) => {
     const { onChangeHandler, inputValues, setInputValues } = useInputForm({
         comment: "",
     });
     const { user } = useUser();
-    const { thread, comments } = useThreadService(Number(threadId));
     const queryClient = useQueryClient();
+    const { thread, comments } = useThreadService(Number(threadId));
     const [playAnimation, setPlayAnimation] = useState(false);
     const threadVoteUpdater = (vote: number) => {
         if (thread.data) {
@@ -48,31 +49,48 @@ const Index = ({ id: threadId }: { id: number }) => {
         useMutation(
             async () => {
                 if (inputValues.comment && comments.data && thread && user) {
-                    const data = await commentThreadService({
+                    return await commentThreadService({
                         threadid: Number(threadId),
                         userid: user.id,
                         comment: inputValues.comment,
+                        datepublished: new Date().toISOString(),
                     });
-                    comments.setCommentsData([
-                        {
-                            ...data,
-                            display_name: user.display_name,
-                            wallet_address: user.wallet_address,
-                            vote_count: 0,
-                            did_user_vote: 0,
-                            replies: [],
-                            image_url: user.image_url || "",
-                        },
-                        ...comments.data,
-                    ]);
-                } else {
-                    return Promise.reject("No comment input");
                 }
             },
             {
-                onSuccess: async () => {
+                onSuccess: data => {
                     toast.success("Comment posted!");
                     setInputValues({ comment: "" });
+                    queryClient.setQueryData<IThread | undefined>(
+                        "thread",
+                        oldData => {
+                            if (oldData) {
+                                return {
+                                    ...oldData,
+                                    comment_count: oldData.comment_count + 1,
+                                };
+                            }
+                        }
+                    );
+                    queryClient.setQueryData<IComment[] | undefined>(
+                        "threadComments",
+                        oldData => {
+                            if (user && oldData && data) {
+                                return [
+                                    {
+                                        ...data,
+                                        display_name: user.display_name,
+                                        wallet_address: user.wallet_address,
+                                        vote_count: 0,
+                                        did_user_vote: 0,
+                                        replies: [],
+                                        image_url: user.image_url || "",
+                                    },
+                                    ...oldData,
+                                ];
+                            }
+                        }
+                    );
                 },
                 onError: () => {
                     toast.error("Error while posting comment");

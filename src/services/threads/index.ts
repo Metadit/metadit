@@ -44,7 +44,6 @@ export const getThreadsService = async (
 export const commentThreadService = async (
     body: Omit<
         IComment,
-        | "datepublished"
         | "id"
         | "wallet_address"
         | "display_name"
