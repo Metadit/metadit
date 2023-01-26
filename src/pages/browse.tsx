@@ -9,18 +9,14 @@ import toast from "react-hot-toast";
 import Loading from "../components/global/Loading";
 import { useUser } from "../contexts/User";
 import { IThread } from "../services/threads/types";
-import { useVisibleElement } from "../hooks/useVisibleElement";
+import { NextPageContext } from "next";
 
-const Browse = () => {
+const Browse = ({ tabParams }: { tabParams: string }) => {
     const { user } = useUser();
-    const { isVisible, elementRef } = useVisibleElement();
-    const params = window.location.search;
-    const getTabParams = new URLSearchParams(params).get("tab") || "top";
-
     const { isLoading, isFetching, refetch, isRefetching } = useQuery(
         "threads",
         async () => {
-            return await getThreadsService(user?.id, getTabParams).catch(() => {
+            return await getThreadsService(user?.id, tabParams).catch(() => {
                 toast.error("Error fetching posts");
             });
         },
@@ -36,7 +32,7 @@ const Browse = () => {
             const { data } = await refetch();
             setThreads(data as IThread[]);
         })();
-    }, [getTabParams, refetch]);
+    }, [refetch, tabParams]);
 
     return (
         <PageContainer pageTitle="Browse Metadit">
@@ -51,7 +47,6 @@ const Browse = () => {
                         if (threads.length === index + 1) {
                             return (
                                 <Post
-                                    ref={elementRef}
                                     threads={threads}
                                     setThreads={setThreads}
                                     data={post}
@@ -76,5 +71,13 @@ const Browse = () => {
 };
 
 export default Browse;
+
+export const getServerSideProps = ({ query }: NextPageContext) => {
+    return {
+        props: {
+            tabParams: query.tab,
+        },
+    };
+};
 
 Browse.getLayout = (page: any) => <Layout>{page}</Layout>;

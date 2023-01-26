@@ -58,7 +58,10 @@ const HiddenMenu = ({ closeMenu }: Props) => {
                         </Button>
                     </Link>
                     <Link onClick={closeMenu} href="/src/pages/create">
-                        <Button className="bg-primary w-full" normal={false}>
+                        <Button
+                            className="bg-primaryDark border border-primary w-full"
+                            normal={false}
+                        >
                             + Create post
                         </Button>
                     </Link>

@@ -224,9 +224,8 @@ const Index = ({ id: threadId }: { id: number }) => {
 
 export default Index;
 
-Index.getInitialProps = (ctx: NextPageContext) => {
-    const {id} = ctx.query;
-    return {id: id};
-};
+export const getServerSideProps = ({query}: NextPageContext) => {
+    return {props: {id: query.id}};
+}
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

@@ -51,9 +51,12 @@ const Index = ({ id: userId }: { id: number }) => {
 
 export default Index;
 
-Index.getInitialProps = (ctx: NextPageContext) => {
+export const getServerSideProps = (ctx: NextPageContext) => {
     const { id } = ctx.query;
-    return { id: id };
+    return {
+        props: { id },
+    };
 };
+
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

@@ -1,7 +1,6 @@
 import React, { memo, useState } from "react";
 import logo from "../../../public/images/logo.svg";
 import Button from "./Button";
-import Hamburger from "hamburger-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe, faSignIn, faStar } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
@@ -10,8 +9,9 @@ import Image from "next/image";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
 import { useUser } from "../../contexts/User";
-import Notifications from "./Notifications/Notifications";
 import UserDropdown from "./UserDropdown";
+import Notifications from "./Notifications/Notifications";
+import Hamburger from "hamburger-react";
 
 const NavBar = memo(() => {
     const [isOpen, setOpen] = useState<boolean>(false);
@@ -44,54 +44,61 @@ const NavBar = memo(() => {
                     </Link>
                     <SearchBox className="hidden lg:block" />
                 </div>
-                <div className="lg:hidden">
-                    <Hamburger
-                        size={25}
-                        color="white"
-                        toggled={isOpen}
-                        toggle={setOpen}
-                    />
-                </div>
-                <div className="gap-4 hidden lg:flex">
-                    <Link
-                        target="_blank"
-                        href="https://github.com/Metadit/metadit"
-                    >
-                        <Button normal={true}>
-                            <FontAwesomeIcon icon={faStar} />
-                            Github
-                        </Button>
-                    </Link>
-                    <Link target="_blank" href="https://discord.gg/r6HjT4JD5p">
-                        <Button className="w-full" normal={true}>
-                            <FontAwesomeIcon icon={faDiscord} />
-                            Our Discord
-                        </Button>
-                    </Link>
-                    {user ? (
-                        <>
-                            <Link href="/create">
+                <div className="flex gap-4">
+                    <div className="gap-4 hidden lg:flex">
+                        <Link
+                            target="_blank"
+                            href="https://github.com/Metadit/metadit"
+                        >
+                            <Button normal={true}>
+                                <FontAwesomeIcon icon={faStar} />
+                                Github
+                            </Button>
+                        </Link>
+                        <Link
+                            target="_blank"
+                            href="https://discord.gg/r6HjT4JD5p"
+                        >
+                            <Button className="w-full" normal={true}>
+                                <FontAwesomeIcon icon={faDiscord} />
+                                Our Discord
+                            </Button>
+                        </Link>
+                        {user ? (
+                            <>
+                                <Link href="/create">
+                                    <Button
+                                        className="bg-primaryDark border border-primary"
+                                        normal={false}
+                                    >
+                                        + Create post
+                                    </Button>
+                                </Link>
+                                <UserDropdown />
+                            </>
+                        ) : (
+                            <Link href={"/login"}>
                                 <Button
                                     className="bg-primaryDark border border-primary"
                                     normal={false}
                                 >
-                                    + Create post
+                                    <FontAwesomeIcon icon={faSignIn} />
+                                    Login
                                 </Button>
                             </Link>
-                            <UserDropdown />
-                            <Notifications />
-                        </>
-                    ) : (
-                        <Link href={"/login"}>
-                            <Button
-                                className="bg-primaryDark border border-primary"
-                                normal={false}
-                            >
-                                <FontAwesomeIcon icon={faSignIn} />
-                                Login
-                            </Button>
-                        </Link>
-                    )}
+                        )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Notifications />
+                        <div className="lg:hidden">
+                            <Hamburger
+                                size={25}
+                                color="white"
+                                toggled={isOpen}
+                                toggle={setOpen}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
             {isOpen && <HiddenMenu closeMenu={() => setOpen(!isOpen)} />}
