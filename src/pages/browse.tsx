@@ -14,7 +14,6 @@ import { useVisibleElement } from "../hooks/useVisibleElement";
 
 const Browse = ({ tabParams }: { tabParams: string }) => {
     const { user } = useUser();
-    const [limit, setLimit] = useState(10);
     const [offset, setOffset] = useState(0);
     const [loadMore, setLoadMore] = useState(true);
     const [newTabLoading, setNewTabLoading] = useState(false);
@@ -25,7 +24,7 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
     const { isLoading, isFetching, refetch, isRefetching } = useQuery(
         "threads",
         async () => {
-            return await getThreadsService(user?.id, tab, offset, limit).catch(
+            return await getThreadsService(user?.id, tab, offset, 10).catch(
                 () => {
                     toast.error("Error fetching posts");
                 }
