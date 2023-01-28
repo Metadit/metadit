@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ContentTabs from "../components/pages/browse/ContentTabs";
 import Post from "../components/pages/browse/Post";
 import Layout from "../components/global/Layout";
@@ -10,35 +10,68 @@ import Loading from "../components/global/Loading";
 import { useUser } from "../contexts/User";
 import { IThread } from "../services/threads/types";
 import { NextPageContext } from "next";
+import { useVisibleElement } from "../hooks/useVisibleElement";
 
 const Browse = ({ tabParams }: { tabParams: string }) => {
     const { user } = useUser();
+    const [limit, setLimit] = useState(10);
+    const [offset, setOffset] = useState(0);
+    const [loadMore, setLoadMore] = useState(true);
+    const [newTabLoading, setNewTabLoading] = useState(false);
+    const { isVisible, elementRef: lastPostRef } = useVisibleElement();
+    const [threads, setThreads] = useState<IThread[] | null>(null);
+    const [tab, setTab] = useState<string>(tabParams);
+
     const { isLoading, isFetching, refetch, isRefetching } = useQuery(
         "threads",
         async () => {
-            return await getThreadsService(user?.id, tabParams).catch(() => {
-                toast.error("Error fetching posts");
-            });
+            return await getThreadsService(user?.id, tab, offset, limit).catch(
+                () => {
+                    toast.error("Error fetching posts");
+                }
+            );
         },
         {
+            onSuccess: (data: IThread[]) => {
+                setThreads(prev => [...(prev || []), ...data]);
+                setOffset(prev => prev + 10);
+                if (data.length < 10 && data.length > 0) {
+                    setLoadMore(false);
+                    setOffset(0);
+                }
+            },
             refetchOnWindowFocus: false,
             retry: 0,
         }
     );
-    const [threads, setThreads] = useState<IThread[] | null>(null);
+
+    const tabRefetchHandler = useCallback(async () => {
+        setThreads(null);
+        setNewTabLoading(true);
+        await refetch();
+        setNewTabLoading(false);
+    }, [refetch]);
 
     useEffect(() => {
-        (async () => {
-            const { data } = await refetch();
-            setThreads(data as IThread[]);
-        })();
-    }, [refetch, tabParams]);
+        if (isVisible && loadMore) {
+            refetch();
+        }
+    }, [isVisible, loadMore, refetch]);
+
+    useEffect(() => {
+        if (offset === 0) {
+            tabRefetchHandler();
+        }
+    }, [offset, tabRefetchHandler, tab]);
 
     return (
         <PageContainer pageTitle="Browse Metadit">
-            <ContentTabs />
+            <ContentTabs
+                setTab={(arg: string) => setTab(arg)}
+                setOffset={(arg: number) => setOffset(arg)}
+            />
             <div className="flex flex-col gap-5 relative">
-                {isLoading || isFetching || isRefetching ? (
+                {isLoading || (isFetching && !isRefetching) || newTabLoading ? (
                     <div className="mt-32">
                         <Loading size={30} />
                     </div>
@@ -47,6 +80,7 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                         if (threads.length === index + 1) {
                             return (
                                 <Post
+                                    ref={lastPostRef}
                                     threads={threads}
                                     setThreads={setThreads}
                                     data={post}

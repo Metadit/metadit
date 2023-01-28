@@ -26,14 +26,21 @@ enum Tabs {
     New = 2,
 }
 
-const ContentTabs = () => {
-    const params = useSearchParams();
+interface Props {
+    setOffset: (offset: number) => void;
+    setTab: (tab: string) => void;
+}
+
+const ContentTabs = ({ setOffset, setTab }: Props) => {
     const [activeTab, setActiveTab] = useState<number | null>(null);
     const navigate = useRouter();
+    const params = useSearchParams();
     const getTabParams = params.get("tab");
     const tabHandler = (tab: TabsKey, index: number) => {
         setActiveTab(index);
         navigate.replace("/browse?tab=" + tab.name.toLowerCase());
+        setTab(tab.name.toLowerCase());
+        setOffset(0);
     };
     const paramsHandler = useCallback(async () => {
         if (getTabParams === "hot") {

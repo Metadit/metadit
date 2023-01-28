@@ -33,11 +33,15 @@ export const postVoteService = async (
 };
 export const getThreadsService = async (
     userid?: number,
-    type?: "hot" | "new" | "top" | null | string
+    type?: "hot" | "new" | "top" | null | string,
+    offset?: number,
+    limit?: number
 ): Promise<IThread[]> => {
     return await getRequest("threads/threads", {
         userid,
         type,
+        offset,
+        limit,
     });
 };
 
