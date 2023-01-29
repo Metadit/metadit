@@ -53,7 +53,6 @@ const Index = ({ id: threadId }: { id: number }) => {
                         threadid: Number(threadId),
                         userid: user.id,
                         comment: inputValues.comment,
-                        datepublished: new Date().toISOString(),
                     });
                 }
             },

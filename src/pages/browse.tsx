@@ -3,9 +3,8 @@ import ContentTabs from "../components/pages/browse/ContentTabs";
 import Post from "../components/pages/browse/Post";
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { getThreadsService } from "../services/threads";
-import toast from "react-hot-toast";
 import Loading from "../components/global/Loading";
 import { useUser } from "../contexts/User";
 import { IThread } from "../services/threads/types";
@@ -21,53 +20,55 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
     const [threads, setThreads] = useState<IThread[] | null>(null);
     const [tab, setTab] = useState<string>(tabParams);
 
-    const { isLoading, isFetching, refetch, isRefetching } = useQuery(
+    const {
+        isLoading,
+        isFetching,
+        refetch,
+        fetchNextPage,
+        isRefetching,
+        data,
+    } = useInfiniteQuery(
         "threads",
-        async () => {
-            return await getThreadsService(user?.id, tab, offset, 10).catch(
-                () => {
-                    toast.error("Error fetching posts");
-                }
-            );
+        async ({ pageParam = offset }) => {
+            return await getThreadsService(user?.id, tab, pageParam, 10);
         },
         {
-            onSuccess: (data: IThread[]) => {
-                setThreads(prev => [...(prev || []), ...data]);
-                setOffset(prev => prev + 10);
-                if (data.length < 10 && data.length > 0) {
-                    setLoadMore(false);
-                    setOffset(0);
+            getNextPageParam: (lastPage, pages) => {
+                if (lastPage.length < 10) {
+                    return undefined;
+                } else {
+                    if (pages.length === 1) {
+                        return 10;
+                    }
+                    return pages.length * 10;
                 }
             },
-            refetchOnWindowFocus: false,
-            retry: 0,
         }
     );
 
-    const tabRefetchHandler = useCallback(async () => {
-        setThreads(null);
-        setNewTabLoading(true);
-        await refetch();
-        setNewTabLoading(false);
-    }, [refetch]);
+    const tabHandler = useCallback(async () => {
+        if (newTabLoading && tab !== tabParams) {
+            setOffset(0);
+            await refetch();
+            setNewTabLoading(false);
+        }
+    }, [newTabLoading, refetch, tab, tabParams]);
 
     useEffect(() => {
         if (isVisible && loadMore) {
-            refetch();
+            fetchNextPage();
         }
-    }, [isVisible, loadMore, refetch]);
+    }, [isVisible, loadMore, fetchNextPage]);
 
     useEffect(() => {
-        if (offset === 0) {
-            tabRefetchHandler();
-        }
-    }, [offset, tabRefetchHandler, tab]);
+        tabHandler();
+    }, [tabHandler, tab]);
 
     return (
         <PageContainer pageTitle="Browse Metadit">
             <ContentTabs
                 setTab={(arg: string) => setTab(arg)}
-                setOffset={(arg: number) => setOffset(arg)}
+                setNewTabLoading={setNewTabLoading}
             />
             <div className="flex flex-col gap-5 relative">
                 {isLoading || (isFetching && !isRefetching) || newTabLoading ? (
@@ -75,27 +76,29 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                         <Loading size={30} />
                     </div>
                 ) : (
-                    threads?.map((post: IThread, index: number) => {
-                        if (threads.length === index + 1) {
-                            return (
-                                <Post
-                                    ref={lastPostRef}
-                                    threads={threads}
-                                    setThreads={setThreads}
-                                    data={post}
-                                    key={post.threadid}
-                                />
-                            );
-                        } else {
-                            return (
-                                <Post
-                                    threads={threads}
-                                    setThreads={setThreads}
-                                    data={post}
-                                    key={post.threadid}
-                                />
-                            );
-                        }
+                    data?.pages.map(page => {
+                        return page.map((post: IThread, index: number) => {
+                            if (page.length === index + 1) {
+                                return (
+                                    <Post
+                                        ref={lastPostRef}
+                                        threads={page}
+                                        setThreads={setThreads}
+                                        data={post}
+                                        key={post.threadid}
+                                    />
+                                );
+                            } else {
+                                return (
+                                    <Post
+                                        threads={page}
+                                        setThreads={setThreads}
+                                        data={post}
+                                        key={post.threadid}
+                                    />
+                                );
+                            }
+                        });
                     })
                 )}
             </div>

@@ -55,9 +55,9 @@ const Comment = memo(
                                         </h2>
                                     </Link>
                                     <p className="text-content text-sm">
-                                        {moment(
-                                            comment.datepublished
-                                        ).fromNow()}
+                                        {moment(comment.datepublished)
+                                            .local()
+                                            .fromNow()}
                                     </p>
                                 </div>
                                 <p className="text-white text-[14px] mt-1 w-full text-left">

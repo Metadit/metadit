@@ -49,6 +49,7 @@ export const commentThreadService = async (
     body: Omit<
         IComment,
         | "id"
+        | "datepublished"
         | "wallet_address"
         | "display_name"
         | "did_user_vote"

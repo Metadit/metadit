@@ -30,6 +30,8 @@ const Create = () => {
         await router.push(`/post/${threadId}`);
     };
 
+    console.log(content);
+
     return (
         <PageContainer pageTitle="Create Post">
             <h1 className="text-white text-[30px] font-bold">Create post</h1>

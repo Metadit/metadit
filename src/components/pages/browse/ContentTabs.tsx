@@ -27,20 +27,21 @@ enum Tabs {
 }
 
 interface Props {
-    setOffset: (offset: number) => void;
+    setNewTabLoading: (loading: boolean) => void;
     setTab: (tab: string) => void;
 }
 
-const ContentTabs = ({ setOffset, setTab }: Props) => {
+const ContentTabs = ({ setNewTabLoading, setTab }: Props) => {
     const [activeTab, setActiveTab] = useState<number | null>(null);
     const navigate = useRouter();
     const params = useSearchParams();
     const getTabParams = params.get("tab");
-    const tabHandler = (tab: TabsKey, index: number) => {
+    const tabHandler = async (tab: TabsKey, index: number) => {
+        if (activeTab === index) return;
         setActiveTab(index);
         navigate.replace("/browse?tab=" + tab.name.toLowerCase());
         setTab(tab.name.toLowerCase());
-        setOffset(0);
+        setNewTabLoading(true);
     };
     const paramsHandler = useCallback(async () => {
         if (getTabParams === "hot") {
