@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faFire,
     faRocket,
     faWandSparkles,
 } from "@fortawesome/free-solid-svg-icons";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { useQueryClient } from "react-query";
 
 const tabOptions = [
     { name: "Top", icon: faRocket },
@@ -20,41 +20,19 @@ interface TabsKey {
     icon: IconDefinition;
 }
 
-enum Tabs {
-    Top = 0,
-    Hot = 1,
-    New = 2,
-}
-
 interface Props {
-    setOffset: (offset: number) => void;
-    setTab: (tab: string) => void;
+    setActiveTab: (tab: string) => void;
+    activeTab: string;
 }
 
-const ContentTabs = ({ setOffset, setTab }: Props) => {
-    const [activeTab, setActiveTab] = useState<number | null>(null);
+const ContentTabs = ({ activeTab, setActiveTab }: Props) => {
     const navigate = useRouter();
-    const params = useSearchParams();
-    const getTabParams = params.get("tab");
-    const tabHandler = (tab: TabsKey, index: number) => {
-        setActiveTab(index);
+    const queryClient = useQueryClient();
+    const tabHandler = (tab: TabsKey) => {
+        queryClient.removeQueries("threads");
+        setActiveTab(tab.name.toLowerCase());
         navigate.replace("/browse?tab=" + tab.name.toLowerCase());
-        setTab(tab.name.toLowerCase());
-        setOffset(0);
     };
-    const paramsHandler = useCallback(async () => {
-        if (getTabParams === "hot") {
-            setActiveTab(Tabs.Hot);
-        } else if (getTabParams === "new") {
-            setActiveTab(Tabs.New);
-        } else {
-            setActiveTab(Tabs.Top);
-        }
-    }, [getTabParams]);
-    useEffect(() => {
-        paramsHandler();
-    }, [getTabParams, paramsHandler]);
-
     return (
         <div
             className="w-full
@@ -68,14 +46,16 @@ const ContentTabs = ({ setOffset, setTab }: Props) => {
                 return (
                     <p
                         key={i}
-                        onClick={() => tabHandler(tab, i)}
+                        onClick={() => tabHandler(tab)}
                         className={`text-md text-content font-bold cursor-pointer transition-all duration-200 ${
-                            activeTab === i ? "text-primary" : "text-zinc-500"
+                            activeTab === tab.name.toLowerCase()
+                                ? "text-primary"
+                                : "text-zinc-500"
                         }`}
                     >
                         <FontAwesomeIcon
                             className={`text-md text-content mr-1 transition-all duration-200 ${
-                                activeTab === i
+                                activeTab === tab.name.toLowerCase()
                                     ? "text-primary"
                                     : "text-zinc-500"
                             }`}

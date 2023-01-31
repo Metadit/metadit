@@ -1,11 +1,4 @@
-import React, {
-    ForwardedRef,
-    forwardRef,
-    useState,
-    Dispatch,
-    SetStateAction,
-    memo,
-} from "react";
+import React, { ForwardedRef, forwardRef, memo, useState } from "react";
 import parse from "html-react-parser";
 import CommentCount from "./CommentCount";
 import Vote from "./Vote";
@@ -16,13 +9,12 @@ import { IThread } from "../../../services/threads/types";
 
 interface Props {
     data: IThread;
-    setThreads: Dispatch<SetStateAction<IThread[] | null>>;
     threads: IThread[];
 }
 
 const Post = memo(
     forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
-        const { threads, setThreads, data } = props;
+        const { threads, data } = props;
         const [playAnimation, setPlayAnimation] = useState(false);
         const [threadVoteClick, setThreadVoteClick] = useState<IThread | null>(
             null
@@ -43,7 +35,6 @@ const Post = memo(
                 }
                 return thread;
             });
-            setThreads(newThreads);
             setPlayAnimation(true);
         };
 

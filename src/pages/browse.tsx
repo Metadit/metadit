@@ -1,102 +1,91 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentTabs from "../components/pages/browse/ContentTabs";
 import Post from "../components/pages/browse/Post";
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import { useQuery } from "react-query";
-import { getThreadsService } from "../services/threads";
-import toast from "react-hot-toast";
 import Loading from "../components/global/Loading";
 import { useUser } from "../contexts/User";
 import { IThread } from "../services/threads/types";
 import { NextPageContext } from "next";
 import { useVisibleElement } from "../hooks/useVisibleElement";
+import { useInfiniteQuery } from "react-query";
+import { getThreadsService } from "../services/threads";
 
 const Browse = ({ tabParams }: { tabParams: string }) => {
     const { user } = useUser();
-    const [offset, setOffset] = useState(0);
-    const [loadMore, setLoadMore] = useState(true);
-    const [newTabLoading, setNewTabLoading] = useState(false);
     const { isVisible, elementRef: lastPostRef } = useVisibleElement();
-    const [threads, setThreads] = useState<IThread[] | null>(null);
-    const [tab, setTab] = useState<string>(tabParams);
+    const [tab, setTab] = useState<string>(tabParams.toLowerCase());
 
-    const { isLoading, isFetching, refetch, isRefetching } = useQuery(
-        "threads",
-        async () => {
-            return await getThreadsService(user?.id, tab, offset, 10).catch(
-                () => {
-                    toast.error("Error fetching posts");
-                }
-            );
+    const {
+        isLoading,
+        isFetching,
+        isRefetching,
+        hasNextPage,
+        data,
+        fetchNextPage,
+    } = useInfiniteQuery(
+        ["threads"],
+        async ({ pageParam = 0 }) => {
+            return await getThreadsService(user?.id, tab, pageParam, 10);
         },
         {
-            onSuccess: (data: IThread[]) => {
-                setThreads(prev => [...(prev || []), ...data]);
-                setOffset(prev => prev + 10);
-                if (data.length < 10 && data.length > 0) {
-                    setLoadMore(false);
-                    setOffset(0);
+            cacheTime: 0,
+            getNextPageParam: (lastPage, pages) => {
+                if (lastPage.length === 0) {
+                    return undefined;
+                } else {
+                    return pages.length * 10;
                 }
             },
             refetchOnWindowFocus: false,
-            retry: 0,
         }
     );
 
-    const tabRefetchHandler = useCallback(async () => {
-        setThreads(null);
-        setNewTabLoading(true);
-        await refetch();
-        setNewTabLoading(false);
-    }, [refetch]);
-
     useEffect(() => {
-        if (isVisible && loadMore) {
-            refetch();
+        if (isVisible && hasNextPage) {
+            fetchNextPage();
         }
-    }, [isVisible, loadMore, refetch]);
-
-    useEffect(() => {
-        if (offset === 0) {
-            tabRefetchHandler();
-        }
-    }, [offset, tabRefetchHandler, tab]);
+    }, [fetchNextPage, hasNextPage, isVisible]);
 
     return (
         <PageContainer pageTitle="Browse Metadit">
             <ContentTabs
-                setTab={(arg: string) => setTab(arg)}
-                setOffset={(arg: number) => setOffset(arg)}
+                setActiveTab={(arg: string) => setTab(arg)}
+                activeTab={tab}
             />
             <div className="flex flex-col gap-5 relative">
-                {isLoading || (isFetching && !isRefetching) || newTabLoading ? (
+                {isLoading || (isFetching && !isRefetching) ? (
                     <div className="mt-32">
                         <Loading size={30} />
                     </div>
                 ) : (
-                    threads?.map((post: IThread, index: number) => {
-                        if (threads.length === index + 1) {
-                            return (
-                                <Post
-                                    ref={lastPostRef}
-                                    threads={threads}
-                                    setThreads={setThreads}
-                                    data={post}
-                                    key={post.threadid}
-                                />
-                            );
-                        } else {
-                            return (
-                                <Post
-                                    threads={threads}
-                                    setThreads={setThreads}
-                                    data={post}
-                                    key={post.threadid}
-                                />
-                            );
-                        }
+                    data?.pages.map((page, index) => {
+                        return page.map((post: IThread) => {
+                            if (data?.pages.length === index + 1) {
+                                return (
+                                    <Post
+                                        ref={lastPostRef}
+                                        threads={page}
+                                        data={post}
+                                        key={post.threadid}
+                                    />
+                                );
+                            } else {
+                                return (
+                                    <Post
+                                        threads={page}
+                                        data={post}
+                                        key={post.threadid}
+                                    />
+                                );
+                            }
+                        });
                     })
+                )}
+                {!hasNextPage && !isLoading && (
+                    <p className="w-full text-center mt-5 text-zinc-700">
+                        No more posts to load
+                    </p>
                 )}
             </div>
         </PageContainer>
