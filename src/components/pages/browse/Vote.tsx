@@ -1,20 +1,20 @@
 import React, { Dispatch, SetStateAction, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { useThread } from "../../../hooks/useThread";
 import { useUser } from "../../../contexts/User";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
-import { IThread } from "../../../services/threads/types";
-import { useMutation } from "react-query";
+import { IThread, IThreadVoteResponse } from "../../../services/threads/types";
+import { useMutation, useQueryClient } from "react-query";
 import Button from "../../global/Button";
 import Lottie from "lottie-react";
 import foam from "../../../lottieJsons/confetti.json";
+import { toast } from "react-hot-toast/headless";
+import redirectWithError from "../../../helpers/redirectWithError";
+import voteCountUpdater from "../../../helpers/vote";
+import { postVoteService } from "../../../services/threads";
 
 interface Props {
     count: number;
     thread?: IThread | null;
-    onVoteUpdate: (vote: number) => void;
     threadVoteClick?: IThread | null;
     setPlayAnimation: Dispatch<SetStateAction<boolean>>;
     playAnimation: boolean;
@@ -24,16 +24,14 @@ interface Props {
 const Vote = ({
     count,
     thread,
-    onVoteUpdate,
     threadVoteClick,
     playAnimation,
     individualThread,
     setPlayAnimation,
 }: Props) => {
-    const { voteHandler } = useThread();
     const { user } = useUser();
-    const router = useRouter();
     const lottieRef = useRef<any>(null);
+    const queryClient = useQueryClient();
     const individualThreadCheck =
         individualThread && thread?.did_user_vote === 1 && playAnimation;
     const threadsBrowsingCheck =
@@ -41,26 +39,91 @@ const Vote = ({
         playAnimation &&
         thread?.did_user_vote === 1;
 
-    const { isLoading: voteSubmitLoading, mutate: voteSubmit } = useMutation(
+    const { isLoading: voteSubmitLoading, mutate: voteSubmit } = useMutation<
+        IThreadVoteResponse | undefined,
+        Error,
+        string
+    >(
         async (direction: string) => {
             if (user && thread) {
-                await voteHandler(
-                    {
-                        threadId: thread.threadid,
-                        userId: user.id,
-                        currentUserVote: thread.did_user_vote,
-                        vote: direction === "up" ? 1 : -1,
-                    },
-                    direction
-                );
-                onVoteUpdate(direction === "up" ? 1 : -1);
+                return await postVoteService({
+                    threadId: thread.threadid,
+                    userId: user.id,
+                    currentUserVote: thread.did_user_vote,
+                    vote: direction === "up" ? 1 : -1,
+                    direction,
+                });
             } else {
-                if (!user) {
-                    return router.push("/login").then(() => {
-                        toast.error("You must be logged in to vote");
-                    });
-                }
+                return Promise.reject("User not logged in");
             }
+        },
+        {
+            onSuccess: data => {
+                if (individualThread) {
+                    queryClient.setQueryData<IThread | undefined>(
+                        "thread",
+                        oldData => {
+                            if (data && oldData) {
+                                return {
+                                    ...oldData,
+                                    vote_count: voteCountUpdater(
+                                        oldData.vote_count,
+                                        data.vote,
+                                        oldData.did_user_vote
+                                    ),
+                                    did_user_vote:
+                                        oldData.did_user_vote === data.vote
+                                            ? 0
+                                            : data.vote,
+                                };
+                            }
+                        }
+                    );
+                } else {
+                    queryClient.setQueryData<any>(
+                        "threads",
+                        (oldData: { pages: IThread[][] }) => {
+                            if (data && oldData) {
+                                const updateThread = oldData.pages[0].map(
+                                    (page: IThread) => {
+                                        if (data.threadid === page.threadid) {
+                                            return {
+                                                ...page,
+                                                vote_count: voteCountUpdater(
+                                                    page.vote_count,
+                                                    data.vote,
+                                                    page.did_user_vote
+                                                ),
+                                                did_user_vote:
+                                                    page.did_user_vote ===
+                                                    data.vote
+                                                        ? 0
+                                                        : data.vote,
+                                            };
+                                        }
+                                        return page;
+                                    }
+                                );
+                                return {
+                                    ...oldData,
+                                    pages: [updateThread],
+                                };
+                            }
+                        }
+                    );
+                }
+                setPlayAnimation(true);
+            },
+            onError: async (error: Error | string) => {
+                if (error === "User not logged in") {
+                    return await redirectWithError(
+                        "You must be logged in to vote",
+                        "/login"
+                    );
+                } else {
+                    toast.error("Something went wrong");
+                }
+            },
         }
     );
 

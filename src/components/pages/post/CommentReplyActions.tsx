@@ -8,7 +8,6 @@ import { useModalValues } from "../../../contexts/ModalValues";
 import { useInputForm } from "../../../hooks/useInputForm";
 import TextAreaBox from "../../global/TextAreaBox";
 import CommentVote from "./CommentVote";
-import voteCountUpdater from "../../../helpers/vote";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import redirectWithError from "../../../helpers/redirectWithError";
@@ -19,12 +18,12 @@ interface Props {
     setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
     hideReply?: boolean;
     threadCreator: number | undefined;
+    parentComment: IComment;
 }
 
 const CommentReplyActions = ({
     comment,
-    comments,
-    setComments,
+    parentComment,
     hideReply,
     threadCreator,
 }: Props) => {
@@ -37,32 +36,6 @@ const CommentReplyActions = ({
     const router = useRouter();
     const threadIdParam = router.query.id as string;
     const [toggleReply, setToggleReply] = useState(false);
-    const commentVoteUpdater = (vote: number, commentData: ICommentReply) => {
-        const newComments = comments?.map(comment => {
-            if (commentData.commentid === comment.id) {
-                return {
-                    ...comment,
-                    replies: comment.replies?.map(reply => {
-                        if (reply.id === commentData.id) {
-                            return {
-                                ...reply,
-                                vote_count: voteCountUpdater(
-                                    reply.vote_count,
-                                    vote,
-                                    reply.did_user_vote
-                                ),
-                                did_user_vote:
-                                    reply.did_user_vote === vote ? 0 : vote,
-                            };
-                        }
-                        return reply;
-                    }),
-                };
-            }
-            return comment;
-        });
-        setComments(newComments);
-    };
 
     const toggleReportModal = () => {
         if (!user) {
@@ -84,10 +57,8 @@ const CommentReplyActions = ({
         <div className="w-full">
             <div className="w-full flex gap-4 items-center">
                 <CommentVote
+                    commentId={parentComment.id}
                     commentReply={comment}
-                    onVoteUpdate={(vote: number, comment: ICommentReply) => {
-                        commentVoteUpdater(vote, comment);
-                    }}
                     count={comment.vote_count}
                 />
                 {hideReply ? null : (

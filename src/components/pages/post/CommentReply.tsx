@@ -10,12 +10,14 @@ interface Props {
     comment: ICommentReply;
     comments: IComment[] | undefined;
     setComments: Dispatch<SetStateAction<IComment[] | undefined>>;
+    parentComment: IComment;
     threadCreator: number | undefined;
 }
 
 const CommentReply = ({
     comment,
     comments,
+    parentComment,
     setComments,
     threadCreator,
 }: Props) => {
@@ -60,6 +62,7 @@ const CommentReply = ({
                 <div className="justify-start mt-3 w-full flex gap-4 items-center">
                     <CommentReplyActions
                         comment={comment}
+                        parentComment={parentComment}
                         threadCreator={threadCreator}
                         hideReply={true}
                         comments={comments}

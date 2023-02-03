@@ -8,8 +8,10 @@ import {
     ICommentReply,
     ICommentReport,
     ICommentVote,
+    ICommentVoteResponse,
     IThread,
     IThreadCreate,
+    IThreadVoteResponse,
     IVote,
 } from "./types";
 
@@ -28,7 +30,7 @@ export const getThreadService = async (
 
 export const postVoteService = async (
     args: IVote
-): Promise<Omit<IVote, "user_wallet" | "voteid">> => {
+): Promise<IThreadVoteResponse> => {
     return await postAuthenticatedRequest("threads/thread/vote", args);
 };
 export const getThreadsService = async (
@@ -74,8 +76,14 @@ export const getThreadCommentsService = async (
     });
 };
 
-export const postCommentVoteService = async (args: ICommentVote) => {
-    return await postAuthenticatedRequest("threads/comment/vote", args);
+export const postCommentVoteService = async (
+    args: ICommentVote,
+    direction: "up" | "down"
+): Promise<ICommentVoteResponse> => {
+    return await postAuthenticatedRequest("threads/comment/vote", {
+        ...args,
+        direction,
+    });
 };
 
 export const postCommentReplyService = async (

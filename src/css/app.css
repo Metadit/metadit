@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --primary: #ea580c;
+}
+
+
 html {
     background: #151515;
 }
@@ -46,11 +51,11 @@ body {
     font-family: "Poppins", sans-serif;
 }
 button.ql-underline.ql-active .ql-fill {
-    stroke: #0284c7 !important;
-    fill: #0284c7 !important;
+    stroke: var(--primary) !important;
+    fill: var(--primary) !important;
 }
 button.ql-underline.ql-active .ql-stroke {
-    stroke: #0284c7 !important;
+    stroke: var(--primary) !important;
 }
 .ql-toolbar.ql-snow .ql-stroke {
     stroke: #5b5b5b !important;
@@ -83,7 +88,7 @@ button.ql-underline.ql-active .ql-stroke {
 .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
-    stroke: #0284c7 !important;
+    stroke: var(--primary) !important;
 }
 .ql-snow.ql-toolbar button:hover .ql-fill,
 .ql-snow .ql-toolbar button:hover .ql-fill,
@@ -113,25 +118,25 @@ button.ql-underline.ql-active .ql-stroke {
 .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
-    fill: #0284c7 !important;
+    fill: var(--primary) !important;
 }
 .ql-snow .ql-picker {
     color: black;
 }
 .ql-snow .ql-picker-options .ql-picker-item:hover {
-    color: #0284c7 !important;
+    color: var(--primary) !important;
 }
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected {
-    color: #0284c7 !important;
+    color: var(--primary) !important;
 }
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     border: 0 !important;
 }
 .ql-snow.ql-toolbar .ql-picker-label.ql-active {
-    color: #0284c7 !important;
+    color: var(--primary) !important;
 }
 .ql-snow.ql-toolbar .ql-picker-label:hover {
-    color: #0284c7 !important;
+    color: var(--primary) !important;
 }
 .ql-container.ql-snow {
     border: 1px solid #2f2f2f !important;

@@ -10,7 +10,6 @@ import parse from "html-react-parser";
 import Loading from "../../../components/global/Loading";
 import moment from "moment";
 import Link from "next/link";
-import voteCountUpdater from "../../../helpers/vote";
 import { useUser } from "../../../contexts/User";
 import Button from "../../../components/global/Button";
 import TextAreaBox from "../../../components/global/TextAreaBox";
@@ -30,20 +29,6 @@ const Index = ({ id: threadId }: { id: number }) => {
     const queryClient = useQueryClient();
     const { thread, comments } = useThreadService(Number(threadId));
     const [playAnimation, setPlayAnimation] = useState(false);
-    const threadVoteUpdater = (vote: number) => {
-        if (thread.data) {
-            thread.setThread({
-                ...thread.data,
-                vote_count: voteCountUpdater(
-                    thread.data.vote_count,
-                    vote,
-                    thread.data.did_user_vote
-                ),
-                did_user_vote: thread.data.did_user_vote === vote ? 0 : vote,
-            });
-            setPlayAnimation(true);
-        }
-    };
 
     const { isLoading: commentSubmitLoading, mutate: commentSubmit } =
         useMutation(
@@ -123,9 +108,6 @@ const Index = ({ id: threadId }: { id: number }) => {
                             setPlayAnimation={setPlayAnimation}
                             individualThread={true}
                             thread={thread.data}
-                            onVoteUpdate={(vote: number) => {
-                                threadVoteUpdater(vote);
-                            }}
                             count={thread.data?.vote_count as number}
                         />
                         <p className="text-sm text-content">
@@ -224,8 +206,8 @@ const Index = ({ id: threadId }: { id: number }) => {
 
 export default Index;
 
-export const getServerSideProps = ({query}: NextPageContext) => {
-    return {props: {id: query.id}};
-}
+export const getServerSideProps = ({ query }: NextPageContext) => {
+    return { props: { id: query.id } };
+};
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

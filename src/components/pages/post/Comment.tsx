@@ -1,4 +1,4 @@
-import React, { Ref, memo } from "react";
+import React, { Dispatch, memo, Ref } from "react";
 import Avatar from "react-avatar";
 import moment from "moment";
 import Link from "next/link";
@@ -9,7 +9,7 @@ import Image from "next/image";
 
 interface Props {
     comment: IComment;
-    setComments: React.Dispatch<React.SetStateAction<IComment[] | undefined>>;
+    setComments: Dispatch<React.SetStateAction<IComment[] | undefined>>;
     comments: IComment[] | undefined;
     threadCreator: number | undefined;
     lastElement?: Ref<HTMLDivElement>;
@@ -78,6 +78,7 @@ const Comment = memo(
                                 return (
                                     <CommentReply
                                         key={reply.id}
+                                        parentComment={comment}
                                         setComments={setComments}
                                         threadCreator={threadCreator}
                                         comments={comments}

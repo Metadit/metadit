@@ -17,6 +17,14 @@ export interface IThread {
     datepublished: string;
 }
 
+export interface IThreadVoteResponse {
+    created_at: string;
+    id: string;
+    threadid: number;
+    userid: number;
+    vote: number;
+}
+
 export interface IVote {
     threadId: number;
     userId: number;
@@ -52,6 +60,14 @@ export interface ICommentReply {
     image_url: string;
     wallet_address: string;
     display_name: string | null;
+}
+
+export interface ICommentVoteResponse {
+    threadid: number;
+    voteid: number;
+    vote: number;
+    commentid: number | null;
+    replyid: number | null;
 }
 
 export interface ICommentVote {

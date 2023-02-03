@@ -135,13 +135,7 @@ const CommentActions = ({
     return (
         <div className="w-full">
             <div className="w-full flex gap-4 items-center">
-                <CommentVote
-                    comment={comment}
-                    onVoteUpdate={(vote: number, comment: IComment) => {
-                        commentVoteUpdater(vote, comment);
-                    }}
-                    count={comment.vote_count}
-                />
+                <CommentVote comment={comment} count={comment.vote_count} />
                 <p
                     onClick={() => toggleHandler(!toggleReply)}
                     className="text-content text-[13px]

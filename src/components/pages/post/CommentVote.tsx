@@ -6,23 +6,46 @@ import { IComment, ICommentReply } from "../../../services/threads/types";
 import Button from "../../global/Button";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import foam from "../../../lottieJsons/confetti.json";
+import { useUser } from "../../../contexts/User";
 
 interface Props {
     count: number;
-    onVoteUpdate: (vote: number, comment: any) => void;
     comment?: IComment;
+    commentId?: number;
     commentReply?: ICommentReply;
 }
 
-const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
+const CommentVote = ({ count, comment, commentReply, commentId }: Props) => {
     const lottieRef = useRef<LottieRefCurrentProps>(null);
-    const {
-        commentOnVote,
-        replyOnVote,
-        voteLoading,
-        setCommentPlayAnimation,
-        commentPlayAnimation,
-    } = useThread();
+    const { commentMutate, setCommentPlayAnimation, commentPlayAnimation } =
+        useThread();
+    const { user } = useUser();
+    const voteHandler = (
+        direction: "up" | "down",
+        type: "comment" | "reply"
+    ) => {
+        commentMutate.commentVoteMutate({
+            type: type,
+            direction: direction,
+            comment: {
+                [type === "comment" ? "commentid" : "replyid"]: comment
+                    ? comment.id
+                    : commentReply?.id,
+                userid: user?.id,
+                threadid:
+                    type === "comment"
+                        ? comment?.threadid
+                        : commentReply?.threadid,
+                currentUserVote:
+                    type === "comment"
+                        ? comment?.did_user_vote
+                        : commentReply?.did_user_vote,
+                vote: direction === "up" ? 1 : -1,
+            },
+            commentId: commentId,
+        });
+        setCommentPlayAnimation(true);
+    };
     return (
         <div className="flex gap-2 relative z-10">
             {commentPlayAnimation &&
@@ -40,14 +63,14 @@ const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
                         />
                     </div>
                 )}
+            {/* commentOnVote("up", onVoteUpdate, comment)*/}
             <Button
                 normal={false}
-                disabled={voteLoading}
+                disabled={commentMutate.commentVoteLoading}
                 onClick={() =>
                     comment
-                        ? commentOnVote("up", onVoteUpdate, comment)
-                        : commentReply &&
-                          replyOnVote("up", onVoteUpdate, commentReply)
+                        ? voteHandler("up", "comment")
+                        : commentReply && voteHandler("up", "reply")
                 }
                 className={`${
                     comment?.did_user_vote === 1 ||
@@ -72,12 +95,11 @@ const CommentVote = ({ count, onVoteUpdate, comment, commentReply }: Props) => {
             </div>
             <Button
                 normal={false}
-                disabled={voteLoading}
+                disabled={commentMutate.commentVoteLoading}
                 onClick={() =>
                     comment
-                        ? commentOnVote("down", onVoteUpdate, comment)
-                        : commentReply &&
-                          replyOnVote("down", onVoteUpdate, commentReply)
+                        ? voteHandler("down", "comment")
+                        : commentReply && voteHandler("down", "reply")
                 }
                 className={`${
                     comment?.did_user_vote === -1 ||

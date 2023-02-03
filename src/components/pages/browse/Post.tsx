@@ -4,7 +4,6 @@ import CommentCount from "./CommentCount";
 import Vote from "./Vote";
 import Link from "next/link";
 import moment from "moment";
-import voteCountUpdater from "../../../helpers/vote";
 import { IThread } from "../../../services/threads/types";
 
 interface Props {
@@ -20,23 +19,23 @@ const Post = memo(
             null
         );
 
-        const threadVoteUpdater = (vote: number) => {
-            const newThreads = threads.map(thread => {
-                if (thread.threadid === data.threadid) {
-                    return {
-                        ...thread,
-                        vote_count: voteCountUpdater(
-                            thread.vote_count,
-                            vote,
-                            thread.did_user_vote
-                        ),
-                        did_user_vote: thread.did_user_vote === vote ? 0 : vote,
-                    };
-                }
-                return thread;
-            });
-            setPlayAnimation(true);
-        };
+        // const threadVoteUpdater = (vote: number) => {
+        //     const newThreads = threads.map(thread => {
+        //         if (thread.threadid === data.threadid) {
+        //             return {
+        //                 ...thread,
+        //                 vote_count: voteCountUpdater(
+        //                     thread.vote_count,
+        //                     vote,
+        //                     thread.did_user_vote
+        //                 ),
+        //                 did_user_vote: thread.did_user_vote === vote ? 0 : vote,
+        //             };
+        //         }
+        //         return thread;
+        //     });
+        //     setPlayAnimation(true);
+        // };
 
         return (
             <div
@@ -47,9 +46,6 @@ const Post = memo(
       rounded-xl h-auto px-10 py-5 relative"
             >
                 <Vote
-                    onVoteUpdate={(vote: number) => {
-                        threadVoteUpdater(vote);
-                    }}
                     thread={data}
                     playAnimation={playAnimation}
                     setPlayAnimation={setPlayAnimation}
