@@ -185,7 +185,7 @@ const Index = ({ id: threadId }: { id: number }) => {
                             </div>
                         )}
                         <div className="flex flex-col gap-5">
-                            {comments.data?.map((comment, index) => {
+                            {comments.data?.map(comment => {
                                 return (
                                     <Comment
                                         threadCreator={thread.data?.userid}

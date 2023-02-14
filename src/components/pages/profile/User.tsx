@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faClock,
     faCopy,
+    faPencil,
     faUsers,
     faWallet,
-    faPencil,
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import Button from "../../global/Button";
@@ -146,7 +146,11 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                 setImageUploading(true);
                 await supabase.storage
                     .from("useravatars")
-                    .remove([`${user?.id}.png`, `${user?.id}.jpg`]);
+                    .remove([
+                        `${user?.id}.png`,
+                        `${user?.id}.jpg`,
+                        `${user?.id}.jpeg`,
+                    ]);
                 await supabase.storage
                     .from("useravatars")
                     .upload(filePath, userImageFile.file);

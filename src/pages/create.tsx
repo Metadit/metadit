@@ -6,6 +6,7 @@ import Button from "../components/global/Button";
 import { useThread } from "../hooks/useThread";
 import Loading from "../components/global/Loading";
 import { useRouter } from "next/router";
+import { supabase } from "../supabase";
 
 const Create = () => {
     const ReactQuill =
@@ -25,7 +26,28 @@ const Create = () => {
             matchVisual: false,
         },
     };
+
+    const handleImageUpload = async (
+        image: any,
+        callback: (arg: any) => void,
+        threadId: number
+    ) => {
+        // Your image upload code here
+        const formData = new FormData();
+        formData.append("file", image, image.name);
+        const getImageExtension = image.name.split(".").pop();
+        await supabase.storage
+            .from(`threads/${threadId}`)
+            .upload(`image.${getImageExtension}`, image);
+        const { data } = supabase.storage
+            .from(`threads/${threadId}`)
+            .getPublicUrl(`image.${getImageExtension}`);
+        const imageUrl = data.publicUrl;
+        callback(imageUrl);
+    };
+
     const submitHandler = async () => {
+        await handleImageUpload(content, setContent, 1);
         const threadId = await createThread(postTitle, content);
         await router.push(`/post/${threadId}`);
     };

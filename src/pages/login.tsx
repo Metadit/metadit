@@ -55,7 +55,10 @@ const Login = () => {
                                 <div className="w-full flex flex-wrap gap-3">
                                     <Metamask />
                                     <OtherWallets />
-                                    <Link className="w-full" href="/browse">
+                                    <Link
+                                        className="w-full"
+                                        href="/browse/?tab=top"
+                                    >
                                         <Button
                                             className="!h-[55px] w-full
                       text-[12px] md:text-[15px]

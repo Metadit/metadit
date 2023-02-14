@@ -10,11 +10,25 @@ import { NextPageContext } from "next";
 import { useVisibleElement } from "../hooks/useVisibleElement";
 import { useInfiniteQuery } from "react-query";
 import { getThreadsService } from "../services/threads";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Browse = ({ tabParams }: { tabParams: string }) => {
     const { user } = useUser();
     const { isVisible, elementRef: lastPostRef } = useVisibleElement();
     const [tab, setTab] = useState<string>(tabParams.toLowerCase());
+    const [scrollToTop, setScrollToTop] = useState<boolean>(false);
+
+    const scrollTopHandler = () => {
+        window.addEventListener("scroll", () => {
+            if (window.pageYOffset > 300) {
+                setScrollToTop(true);
+            } else {
+                setScrollToTop(false);
+            }
+        });
+    };
 
     const {
         isLoading,
@@ -45,10 +59,27 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
         if (isVisible && hasNextPage) {
             fetchNextPage();
         }
+        scrollTopHandler();
     }, [fetchNextPage, hasNextPage, isVisible]);
 
     return (
         <PageContainer pageTitle="Browse Metadit">
+            <AnimatePresence>
+                {scrollToTop && (
+                    <motion.div
+                        onClick={() => window.scrollTo(0, 0)}
+                        initial={{ opacity: 0 }}
+                        exit={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="bg-primary
+            w-fit font-bold px-5 h-10 rounded-full flex z-50
+             items-center justify-center text-[13px] fixed right-10 bottom-10 hover:bg-primaryDark cursor-pointer"
+                    >
+                        Back to Top
+                        <FontAwesomeIcon className="ml-2" icon={faArrowUp} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <ContentTabs
                 setActiveTab={(arg: string) => setTab(arg)}
                 activeTab={tab}
