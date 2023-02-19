@@ -33,6 +33,16 @@ export const postAuthenticatedRequest = async (path: string, body: {}) => {
     return data;
 };
 
+export const putAuthenticatedRequest = async (path: string, body: {}) => {
+    const { token } = JSON.parse(localStorage.getItem("metadit") as string);
+    const { data } = await axios.put(`${API_URL}/${path}`, body, {
+        headers: {
+            Authorization: token,
+        },
+    });
+    return data;
+};
+
 export const deleteAuthenticatedRequest = async (path: string, params: {}) => {
     const { token } = JSON.parse(localStorage.getItem("metadit") as string);
     const { data } = await axios.delete(`${API_URL}/${path}`, {

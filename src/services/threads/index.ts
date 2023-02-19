@@ -2,6 +2,7 @@ import {
     deleteAuthenticatedRequest,
     getRequest,
     postAuthenticatedRequest,
+    putAuthenticatedRequest,
 } from "../requests";
 import {
     IComment,
@@ -19,6 +20,18 @@ export const createThreadService = async (
     body: IThreadCreate
 ): Promise<{ id: number }> => {
     return await postAuthenticatedRequest("threads/create", body);
+};
+
+export const editThreadService = async (
+    threadId: number,
+    threadTitle: string,
+    threadContent: string
+): Promise<{ id: number }> => {
+    return await putAuthenticatedRequest("threads/thread", {
+        threadId,
+        threadTitle,
+        threadContent,
+    });
 };
 
 export const getThreadService = async (
@@ -99,6 +112,14 @@ export const reportCommentService = async (
     args: ICommentReport
 ): Promise<{ message: string }> => {
     return await postAuthenticatedRequest("threads/comment/report", args);
+};
+
+export const deleteThreadService = async (
+    thread_id: number
+): Promise<{ id: number }> => {
+    return await deleteAuthenticatedRequest("threads/thread", {
+        threadid: thread_id,
+    });
 };
 export const deleteCommentService = async (
     comment_id: number,

@@ -57,7 +57,7 @@ const HiddenMenu = ({ closeMenu }: Props) => {
                             Profile
                         </Button>
                     </Link>
-                    <Link onClick={closeMenu} href="/src/pages/create">
+                    <Link onClick={closeMenu} href="/create">
                         <Button
                             className="bg-primaryDark border border-primary w-full"
                             normal={false}

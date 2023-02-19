@@ -13,29 +13,11 @@ interface Props {
 
 const Post = memo(
     forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
-        const { threads, data } = props;
+        const { data } = props;
         const [playAnimation, setPlayAnimation] = useState(false);
         const [threadVoteClick, setThreadVoteClick] = useState<IThread | null>(
             null
         );
-
-        // const threadVoteUpdater = (vote: number) => {
-        //     const newThreads = threads.map(thread => {
-        //         if (thread.threadid === data.threadid) {
-        //             return {
-        //                 ...thread,
-        //                 vote_count: voteCountUpdater(
-        //                     thread.vote_count,
-        //                     vote,
-        //                     thread.did_user_vote
-        //                 ),
-        //                 did_user_vote: thread.did_user_vote === vote ? 0 : vote,
-        //             };
-        //         }
-        //         return thread;
-        //     });
-        //     setPlayAnimation(true);
-        // };
 
         return (
             <div
@@ -69,7 +51,7 @@ const Post = memo(
                         <p className="text-white text-[20px] mt-2">
                             {data.threadtitle}
                         </p>
-                        <div className="text-white text-[14px] opacity-60 mt-2 my-10">
+                        <div className="text-zinc-400 text-[14px] mt-2 my-10">
                             {parse(data.threadcontent)}
                         </div>
                     </Link>

@@ -1,13 +1,14 @@
-import Layout from "../components/global/Layout";
-import PageContainer from "../components/global/PageContainer";
-import React, { useMemo, useState } from "react";
-import Input from "../components/global/Input";
-import Button from "../components/global/Button";
-import { useThread } from "../hooks/useThread";
+import Layout from "../../../components/global/Layout";
+import PageContainer from "../../../components/global/PageContainer";
+import React, { useEffect, useMemo, useState } from "react";
+import Input from "../../../components/global/Input";
+import Button from "../../../components/global/Button";
 import { useRouter } from "next/router";
-import { supabase } from "../supabase";
+import { supabase } from "../../../supabase";
 import dynamic from "next/dynamic";
 import short from "short-uuid";
+import { NextPageContext } from "next";
+import { useThread } from "../../../hooks/useThread";
 
 const ReactQuill = dynamic(
     async () => {
@@ -20,8 +21,13 @@ const ReactQuill = dynamic(
     { ssr: false }
 );
 
-const Create = () => {
-    const { createLoading, createThread } = useThread();
+interface Props {
+    data: any;
+}
+
+const Edit = ({ data }: Props) => {
+    const { threadcontent, threadtitle, id } = data;
+    const { editThread, editLoading } = useThread();
     const router = useRouter();
     const quillRef = React.useRef<any>(null);
     const [postTitle, setPostTitle] = useState("");
@@ -83,15 +89,19 @@ const Create = () => {
             },
         };
     }, []);
+    useEffect(() => {
+        setPostTitle(threadtitle);
+        setContent(threadcontent);
+    }, [threadcontent, threadtitle]);
 
     const submitHandler = async () => {
-        const threadId = await createThread(postTitle, content, fileImageUrls);
-        await router.push(`/post/${threadId}`);
+        await editThread(postTitle, content, fileImageUrls, id);
+        await router.push(`/post/${id}`);
     };
 
     return (
-        <PageContainer pageTitle="Create Post">
-            <h1 className="text-white text-[30px] font-bold">Create post</h1>
+        <PageContainer pageTitle="Edit Post">
+            <h1 className="text-white text-[30px] font-bold">Edit post</h1>
             <div
                 className="mt-10 border border-zinc-800 bg-contentBg
       rounded-xl h-auto px-10 py-10"
@@ -114,27 +124,49 @@ const Create = () => {
                             setContent(e);
                         }
                     }}
+                    value={content}
                     style={{ marginTop: 20 }}
                     theme="snow"
                 />
                 <Button
                     onClick={submitHandler}
                     normal={false}
-                    loading={createLoading}
+                    loading={editLoading}
                     disabled={
-                        postTitle === "" || content === "" || createLoading
+                        postTitle === "" ||
+                        content === "" ||
+                        editLoading ||
+                        (content === threadcontent && postTitle === threadtitle)
                     }
-                    className={`mt-10 bg-primary w-full max-w-[100px] mx-auto ${
+                    className={`mt-10 bg-primaryDark border border-primary w-full max-w-[100px] mx-auto ${
                         content.length < 1 && "bg-content cursor-not-allowed"
                     }`}
                 >
-                    Create
+                    Submit
                 </Button>
             </div>
         </PageContainer>
     );
 };
 
-export default Create;
+export default Edit;
 
-Create.getLayout = (page: any) => <Layout>{page}</Layout>;
+export const getServerSideProps = async ({ query }: NextPageContext) => {
+    const { id } = query;
+    const { data, error } = await supabase
+        .from("threads")
+        .select("*")
+        .eq("id", id)
+        .single();
+    if (error) {
+        console.log(error);
+    } else {
+        return {
+            props: {
+                data,
+            },
+        };
+    }
+};
+
+Edit.getLayout = (page: any) => <Layout>{page}</Layout>;

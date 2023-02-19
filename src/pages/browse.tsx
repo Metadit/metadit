@@ -128,7 +128,7 @@ export default Browse;
 export const getServerSideProps = ({ query }: NextPageContext) => {
     return {
         props: {
-            tabParams: query.tab,
+            tabParams: query.tab || "hot",
         },
     };
 };

@@ -14,12 +14,20 @@ import { useUser } from "../../../contexts/User";
 import Button from "../../../components/global/Button";
 import TextAreaBox from "../../../components/global/TextAreaBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignIn } from "@fortawesome/free-solid-svg-icons";
+import {
+    faSignIn,
+    faPencilAlt,
+    faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useThreadService } from "../../../hooks/useThread";
 import Comment from "../../../components/pages/post/Comment";
 import { NextPageContext } from "next";
 import { useInputForm } from "../../../hooks/useInputForm";
 import { IComment, IThread } from "../../../services/threads/types";
+import Tippy from "@tippyjs/react";
+import { useModal } from "../../../contexts/Modal";
+import { useModalValues } from "../../../contexts/ModalValues";
+import { useRouter } from "next/router";
 
 const Index = ({ id: threadId }: { id: number }) => {
     const { onChangeHandler, inputValues, setInputValues } = useInputForm({
@@ -29,6 +37,9 @@ const Index = ({ id: threadId }: { id: number }) => {
     const queryClient = useQueryClient();
     const { thread, comments } = useThreadService(Number(threadId));
     const [playAnimation, setPlayAnimation] = useState(false);
+    const { setActiveModal } = useModal();
+    const router = useRouter();
+    const { setModalValues } = useModalValues();
 
     const { isLoading: commentSubmitLoading, mutate: commentSubmit } =
         useMutation(
@@ -110,24 +121,70 @@ const Index = ({ id: threadId }: { id: number }) => {
                             thread={thread.data}
                             count={thread.data?.vote_count as number}
                         />
-                        <p className="text-sm text-content">
-                            Posted by{" "}
-                            <Link
-                                className="transition-all duration-200 hover:opacity-80"
-                                href={`/profile/${thread.data?.userid}`}
-                            >
-                                <span className="text-primary font-bold">
-                                    {thread.data?.user_wallet.substring(0, 10) +
-                                        "..."}
-                                </span>{" "}
-                            </Link>
-                            {moment(thread.data?.datepublished).fromNow()}
-                        </p>
+                        <div className="flex justify-between flex-wrap">
+                            <p className="text-sm text-content">
+                                Posted by{" "}
+                                <Link
+                                    className="transition-all duration-200 hover:opacity-80"
+                                    href={`/profile/${thread.data?.userid}`}
+                                >
+                                    <span className="text-primary font-bold">
+                                        {thread.data?.user_wallet.substring(
+                                            0,
+                                            10
+                                        ) + "..."}
+                                    </span>{" "}
+                                </Link>
+                                {moment(thread.data?.datepublished).fromNow()}
+                            </p>
+                            {user?.wallet_address ===
+                                thread.data?.user_wallet && (
+                                <div className="flex gap-3">
+                                    <Tippy content="Edit">
+                                        <div
+                                            onClick={() =>
+                                                router.push(`/edit/${threadId}`)
+                                            }
+                                            className="bg-dark-content w-9 h-9 cursor-pointer transition-all duration-200 hover:border-primary
+                                rounded-full border border-zinc-800 flex items-center justify-center"
+                                        >
+                                            <FontAwesomeIcon
+                                                className="text-zinc-400 text-sm"
+                                                icon={faPencilAlt}
+                                            />
+                                        </div>
+                                    </Tippy>
+                                    <Tippy content="Delete">
+                                        <div
+                                            onClick={() => {
+                                                setActiveModal(
+                                                    "DELETE_THREAD_MODAL"
+                                                );
+                                                setModalValues({
+                                                    threadId:
+                                                        thread.data?.threadid,
+                                                    threadContent:
+                                                        thread.data
+                                                            ?.threadcontent,
+                                                });
+                                            }}
+                                            className="bg-dark-content w-9 h-9 cursor-pointer transition-all duration-200 hover:border-primary
+                                rounded-full border border-zinc-800 flex items-center justify-center"
+                                        >
+                                            <FontAwesomeIcon
+                                                className="text-zinc-400 text-sm"
+                                                icon={faTrash}
+                                            />
+                                        </div>
+                                    </Tippy>
+                                </div>
+                            )}
+                        </div>
                         <h1 className="text-[20px] md:text-[30px] text-white mt-2">
                             {thread.data?.threadtitle}
                         </h1>
                         {thread.data && (
-                            <div className="text-white text-[14px] opacity-60 mt-2 my-5">
+                            <div className="text-zinc-400 text-[14px] mt-2 my-5">
                                 {parse(thread.data.threadcontent)}
                             </div>
                         )}
@@ -206,8 +263,8 @@ const Index = ({ id: threadId }: { id: number }) => {
 
 export default Index;
 
-export const getServerSideProps = ({ query }: NextPageContext) => {
-    return { props: { id: query.id } };
+export const getServerSideProps = ({query}: NextPageContext) => {
+    return {props: {id: query.id}};
 };
 
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

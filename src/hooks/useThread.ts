@@ -1,5 +1,6 @@
 import {
     createThreadService,
+    editThreadService,
     getThreadCommentsService,
     getThreadService,
     postCommentVoteService,
@@ -16,13 +17,48 @@ import {
 } from "../services/threads/types";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import voteCountUpdater from "../helpers/vote";
+import { supabase } from "../supabase";
 
 export const useThread = () => {
     const { user } = useContext(UserContext);
+    const [editLoading, setEditLoading] = useState(false);
     const [createLoading, setCreateLoading] = useState(false);
     const [commentPlayAnimation, setCommentPlayAnimation] = useState(false);
     const queryClient = useQueryClient();
 
+    const deleteImage = async (
+        fileImageUrls: { fileName: string; fileUrl: string }[],
+        content: string
+    ) => {
+        if (fileImageUrls.length === 0) return;
+        if (fileImageUrls.length > 0) {
+            const checkContentForFile = content.match(/<img src="(.+?)"/g);
+            const fileNames = fileImageUrls.map(file => file.fileName);
+            if (!checkContentForFile) {
+                await supabase.storage.from("threads").remove(fileNames);
+            } else {
+                return;
+            }
+        }
+    };
+
+    const editThread = async (
+        threadTitle: IThreadCreate["threadTitle"],
+        threadContent: IThreadCreate["threadContent"],
+        fileImageUrls: { fileName: string; fileUrl: string }[],
+        threadId: number
+    ) => {
+        try {
+            setEditLoading(true);
+            await deleteImage(fileImageUrls, threadContent);
+            await editThreadService(threadId, threadTitle, threadContent);
+            toast.success("Thread edited successfully");
+        } catch {
+            toast.error("Error editing thread");
+        } finally {
+            setEditLoading(false);
+        }
+    };
     const { isLoading: commentVoteLoading, mutate: commentVoteMutate } =
         useMutation<ICommentVoteResponse, Error, any>(
             async (data: {
@@ -114,10 +150,12 @@ export const useThread = () => {
 
     const createThread = async (
         threadTitle: IThreadCreate["threadTitle"],
-        threadContent: IThreadCreate["threadContent"]
+        threadContent: IThreadCreate["threadContent"],
+        fileImageUrls: { fileName: string; fileUrl: string }[]
     ) => {
         try {
             setCreateLoading(true);
+            await deleteImage(fileImageUrls, threadContent);
             if (user) {
                 const { id } = await createThreadService({
                     userId: user.id,
@@ -136,6 +174,8 @@ export const useThread = () => {
     return {
         createThread,
         createLoading,
+        editThread,
+        editLoading,
         setCommentPlayAnimation,
         commentPlayAnimation,
         commentMutate: {
