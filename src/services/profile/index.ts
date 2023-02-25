@@ -1,14 +1,24 @@
 import {
     deleteAuthenticatedRequest,
+    getAuthenticatedRequest,
     getRequest,
     postAuthenticatedRequest,
 } from "../requests";
 import { IUserActivity, IUserProfile, IUserThreads } from "./types";
+import { IUserNotifications } from "../../types/user";
 
 export const userActivityService = async (
     userId: number
 ): Promise<IUserActivity[]> => {
     return await getRequest("user/activity", {
+        userId,
+    });
+};
+
+export const userNotificationsService = async (
+    userId: number
+): Promise<IUserNotifications[]> => {
+    return await getAuthenticatedRequest("user/notifications", {
         userId,
     });
 };

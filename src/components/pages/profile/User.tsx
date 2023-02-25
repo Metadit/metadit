@@ -8,6 +8,7 @@ import {
     faPencil,
     faUsers,
     faWallet,
+    faComments,
 } from "@fortawesome/free-solid-svg-icons";
 import Tippy from "@tippyjs/react";
 import Button from "../../global/Button";
@@ -291,6 +292,11 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                             icon={faUsers}
                             info={`${data?.follower_count} followers`}
                             name="Followers"
+                        />
+                        <UserInfo
+                            icon={faComments}
+                            info={`${data?.post_count} posts`}
+                            name="Posts"
                         />
                         {user?.wallet_address === data?.wallet_address ? (
                             ""

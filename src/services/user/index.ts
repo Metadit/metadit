@@ -10,3 +10,9 @@ export const uploadImageService = async (userId: number, imageUrl: string) => {
         imageUrl,
     });
 };
+
+export const markNotificationAsReadService = async (userId: number) => {
+    return await postAuthenticatedRequest("user/notifications/read", {
+        userId,
+    });
+};

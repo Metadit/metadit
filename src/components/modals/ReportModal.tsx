@@ -25,6 +25,8 @@ const ReportModal = () => {
         { text: "Harassment", value: "harassment" },
         { text: "Scam", value: "scam" },
     ];
+
+
     const selectOption = (optionValue: Option["value"]) => {
         setOptionSelected(
             optionValue.charAt(0).toUpperCase() + optionValue.slice(1)
@@ -38,6 +40,8 @@ const ReportModal = () => {
                 commentid:
                     modalValues.type === "commentReply"
                         ? modalValues.commentid
+                        : modalValues.type === "thread"
+                        ? null
                         : modalValues.id,
                 replyid:
                     modalValues.type === "commentReply" ? modalValues.id : null,
@@ -68,7 +72,7 @@ const ReportModal = () => {
                         onClick={() => selectOption(option.value)}
                         className={`${
                             optionSelected === option.text
-                                ? "bg-content bg-opacity-10 text-white"
+                                ? "bg-zinc-800 border border-zinc-700 text-white"
                                 : "bg-darkContent text-content hover:text-primary"
                         } flex-grow text-sm text-center transition-all duration-200
                            cursor-pointer

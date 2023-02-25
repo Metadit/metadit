@@ -18,6 +18,7 @@ import {
     faSignIn,
     faPencilAlt,
     faTrash,
+    faFlag,
 } from "@fortawesome/free-solid-svg-icons";
 import { useThreadService } from "../../../hooks/useThread";
 import Comment from "../../../components/pages/post/Comment";
@@ -44,9 +45,15 @@ const Index = ({ id: threadId }: { id: number }) => {
     const { isLoading: commentSubmitLoading, mutate: commentSubmit } =
         useMutation(
             async () => {
-                if (inputValues.comment && comments.data && thread && user) {
+                if (
+                    inputValues.comment &&
+                    comments.data &&
+                    thread.data &&
+                    user
+                ) {
                     return await commentThreadService({
                         threadid: Number(threadId),
+                        threadCreatorId: thread.data?.userid,
                         userid: user.id,
                         comment: inputValues.comment,
                         datepublished: new Date().toISOString(),
@@ -184,13 +191,32 @@ const Index = ({ id: threadId }: { id: number }) => {
                             {thread.data?.threadtitle}
                         </h1>
                         {thread.data && (
-                            <div className="text-zinc-400 text-[14px] mt-2 my-5">
+                            <div className="text-zinc-400 text-[14px] mt-2 my-10">
                                 {parse(thread.data.threadcontent)}
                             </div>
                         )}
-                        <CommentCount
-                            count={thread.data?.comment_count as number}
-                        />
+                        <div className="flex gap-6 items-center">
+                            <CommentCount
+                                count={thread.data?.comment_count as number}
+                            />
+                            <p
+                                onClick={() => {
+                                    setActiveModal("REPORT_MODAL");
+                                    setModalValues({
+                                        ...thread.data,
+                                        type: "thread",
+                                    });
+                                }}
+                                className="bg-transparent text-[14px]
+                                text-content hover:text-primary duration-200 transition-all cursor-pointer"
+                            >
+                                <FontAwesomeIcon
+                                    className="mr-2"
+                                    icon={faFlag}
+                                />
+                                Report
+                            </p>
+                        </div>
                         {!user ? (
                             <div
                                 className="w-full bg-darkContent p-5 my-10

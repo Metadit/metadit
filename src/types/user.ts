@@ -14,3 +14,16 @@ export interface IUserAuthTokenDecoded {
     wallet_address: string;
     signature: string;
 }
+
+export interface IUserNotifications {
+    id: number;
+    created_at: string;
+    message: string;
+    reply_id: number | null;
+    read: boolean;
+    comment_id: number | null;
+    thread_id: number | null;
+    user_id: number;
+    user_id_trigger: number;
+    type: string;
+}

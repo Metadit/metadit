@@ -16,6 +16,7 @@ import Hamburger from "hamburger-react";
 const NavBar = memo(() => {
     const [isOpen, setOpen] = useState<boolean>(false);
     const { user } = useUser();
+
     return (
         <nav
             className="h-[75px] border-b border-b-zinc-800 sticky top-0 z-50
@@ -89,7 +90,7 @@ const NavBar = memo(() => {
                         )}
                     </div>
                     <div className="flex items-center gap-2">
-                        <Notifications />
+                        {!user ? "" : <Notifications />}
                         <div className="lg:hidden">
                             <Hamburger
                                 size={25}

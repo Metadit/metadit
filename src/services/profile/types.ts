@@ -11,6 +11,7 @@ export interface IUserThreads {
 export interface IUserProfile {
     id: number;
     date_registered: string;
+    post_count: number;
     display_name: string | null;
     follower_count: number;
     did_user_follow: boolean;
