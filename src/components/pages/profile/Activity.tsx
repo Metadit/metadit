@@ -4,7 +4,7 @@ import Loading from "../../global/Loading";
 import { IUserActivity } from "../../../services/profile/types";
 
 interface Props {
-    data: IUserActivity[] | undefined;
+    data: IUserActivity | undefined;
     activityLoading: boolean;
     isFetching: boolean;
 }
@@ -19,7 +19,10 @@ const Activity = ({ data, activityLoading, isFetching }: Props) => {
             <h2 className="text-white font-bold text-lg mb-5">Activity</h2>
             {activityLoading || isFetching ? (
                 <Loading size={30} />
-            ) : !activityLoading && !isFetching && data?.length === 0 ? (
+            ) : !activityLoading &&
+              !isFetching &&
+              data?.comments.length === 0 &&
+              data?.commentReplies.length === 0 ? (
                 <p
                     className="text-zinc-500 w-full h-full top-0 left-0
         absolute flex justify-center items-center"
@@ -31,7 +34,13 @@ const Activity = ({ data, activityLoading, isFetching }: Props) => {
                     className="overflow-hidden h-[300px]
         overflow-y-scroll pr-2 relative"
                 >
-                    {data?.map((activity, index) => (
+                    {data?.comments.map((activity, index) => (
+                        <ActivityRecord
+                            data={activity}
+                            key={index.toString()}
+                        />
+                    ))}
+                    {data?.commentReplies.map((activity, index) => (
                         <ActivityRecord
                             data={activity}
                             key={index.toString()}

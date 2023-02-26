@@ -9,7 +9,7 @@ import { IUserNotifications } from "../../types/user";
 
 export const userActivityService = async (
     userId: number
-): Promise<IUserActivity[]> => {
+): Promise<IUserActivity> => {
     return await getRequest("user/activity", {
         userId,
     });

@@ -158,7 +158,7 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
                 const { data } = supabase.storage
                     .from("useravatars")
                     .getPublicUrl(filePath);
-                await uploadImageHandler(data.publicUrl);
+                uploadImageHandler(data.publicUrl);
                 setUser({ ...user, image_url: data.publicUrl });
                 setUserImageFile({ ...userImageFile, imageUploaded: true });
             } catch (e) {

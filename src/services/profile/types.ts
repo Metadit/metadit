@@ -20,9 +20,14 @@ export interface IUserProfile {
     wallet_address: string;
 }
 
-export interface IUserActivity {
+export interface IUserComments {
     userid: number;
     threadid: number;
     comment: string;
     threadtitle: string;
+}
+
+export interface IUserActivity {
+    comments: IUserComments[];
+    commentReplies: IUserComments[];
 }

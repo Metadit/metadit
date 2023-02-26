@@ -6,6 +6,7 @@ import {
 } from "../services/profile";
 import toast from "react-hot-toast";
 import { useUser } from "../contexts/User";
+import { useEffect } from "react";
 
 export const useProfile = (userId: number) => {
     const { user } = useUser();
@@ -13,6 +14,7 @@ export const useProfile = (userId: number) => {
         data: activity,
         isLoading: activityLoading,
         isFetching: activityIsFetching,
+        refetch: activityRefetch,
     } = useQuery({
         queryKey: ["userActivity"],
         queryFn: () => userActivityService(userId),
@@ -26,6 +28,7 @@ export const useProfile = (userId: number) => {
         data: profile,
         isLoading: userProfileLoading,
         isFetching: userProfileIsFetching,
+        refetch: userProfileRefetch,
     } = useQuery({
         queryKey: ["userProfile"],
         queryFn: () => userProfileService(userId, user?.id),
@@ -39,6 +42,7 @@ export const useProfile = (userId: number) => {
         data: threads,
         isLoading: threadsLoading,
         isFetching: threadsIsFetching,
+        refetch: threadsRefetch,
     } = useQuery({
         queryKey: ["userThreads"],
         queryFn: () => userThreadsService(userId),
@@ -48,6 +52,13 @@ export const useProfile = (userId: number) => {
         refetchOnWindowFocus: false,
         retry: false,
     });
+    useEffect(() => {
+        if (userId) {
+            activityRefetch();
+            userProfileRefetch();
+            threadsRefetch();
+        }
+    }, [userId]);
     return {
         activity: {
             data: activity,
