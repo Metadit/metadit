@@ -73,7 +73,7 @@ const Notifications = () => {
                 normal={true}
             >
                 <FontAwesomeIcon icon={faBell} />
-                {areAllRead ? null : (
+                {isLoading || isRefetching ? null : areAllRead ? null : (
                     <span
                         className="w-[6px] h-[6px] bg-red-500 rounded-xl
                  absolute top-[9px] left-[11px]"

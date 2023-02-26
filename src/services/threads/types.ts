@@ -55,6 +55,8 @@ export interface ICommentReply {
     did_user_vote: number;
     commentid: number;
     threadid: number;
+    threadCreatorId: number;
+    commentCreatorId: number;
     comment: string;
     userid: number;
     datepublished: string;

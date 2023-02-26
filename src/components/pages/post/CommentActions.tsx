@@ -62,10 +62,12 @@ const CommentActions = ({
 
     const { isLoading, mutate: submitReply } = useMutation(
         async () => {
-            if (user && comment) {
+            if (user && comment && threadCreator) {
                 return await postCommentReplyService({
                     userid: user?.id,
                     commentid: comment.id,
+                    threadCreatorId: threadCreator,
+                    commentCreatorId: comment.userid,
                     threadid: comment.threadid,
                     comment: inputValues.replyContent,
                     wallet_address: user?.wallet_address,

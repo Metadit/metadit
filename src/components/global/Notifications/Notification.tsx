@@ -11,6 +11,13 @@ interface Props {
 const Notification = ({ data, closeMenu }: Props) => {
     const commentNotification = () => {
         const userWalletAddress = data.message.split(" ")[0];
+        
+        const notifMessage = data.type === 'commentReply' ? data.message.split(" ")
+        .slice(1).filter((text) => text !== 'comment').join(" ") : data.type === 'comment' ?
+        data.message.split(" ").slice(1).join(" ") : null;
+
+        const commentWord = data.type === 'commentReply' ? data.message.split(" ")[4] : data.type === 'comment' ?
+        data.message.split(" ")[2] : null;
         return (
             <p className="text-white">
                 <Link
@@ -20,14 +27,14 @@ const Notification = ({ data, closeMenu }: Props) => {
                 >
                     {userWalletAddress}
                 </Link>{" "}
-                commented on your
+                {notifMessage}
                 <Link
                     onClick={closeMenu}
                     className="text-primary transition-all duration-200 hover:opacity-80"
                     href={`/post/${data.thread_id}`}
                 >
                     {" "}
-                    thread
+                    {commentWord}
                 </Link>
             </p>
         );
@@ -41,7 +48,7 @@ const Notification = ({ data, closeMenu }: Props) => {
                     {moment(data.created_at).format("LLL")}
                 </p>
             </div>
-            {data.type === "comment" && commentNotification()}
+            {commentNotification()}
         </div>
     );
 };
