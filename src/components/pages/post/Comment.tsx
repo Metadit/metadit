@@ -6,7 +6,6 @@ import { IComment, ICommentReply } from "../../../services/threads/types";
 import CommentActions from "./CommentActions";
 import CommentReply from "./CommentReply";
 import Image from "next/image";
-import { useUser } from "../../../contexts/User";
 
 interface Props {
     comment: IComment;
@@ -18,7 +17,6 @@ interface Props {
 
 const Comment = memo(
     ({ comment, setComments, comments, threadCreator, lastElement }: Props) => {
-        const { user } = useUser();
         return (
             <div ref={lastElement} className="w-full">
                 <div className="w-full flex flex-wrap gap-2">
