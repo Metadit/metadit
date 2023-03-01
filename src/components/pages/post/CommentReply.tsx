@@ -22,7 +22,7 @@ const CommentReply = ({
     threadCreator,
 }: Props) => {
     return (
-        <div className="flex w-full mb-8">
+        <div id={String(comment.id)} className="flex w-full mb-8">
             <div className="flex flex-wrap gap-2">
                 {comment.image_url ? (
                     <Image

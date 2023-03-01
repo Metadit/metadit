@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import ModalManager from "../components/global/ModalManager";
 import { ModalProvider } from "../contexts/Modal";
 import { ModalValuesProvider } from "../contexts/ModalValues";
+import { useAuthToken } from "../hooks/useAuthToken";
 
 type Props = AppProps & {
     Component: Page;
@@ -19,6 +20,7 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: Props) {
     const getLayout = Component.getLayout ?? ((page: any) => page);
+    useAuthToken ();
     return (
         <QueryClientProvider client={queryClient}>
             <UserProvider>

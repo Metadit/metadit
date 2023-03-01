@@ -62,7 +62,7 @@ const ReportModal = () => {
         <Modal
             submitHandler={reportSubmitHandler}
             disabledButton={optionSelected === ""}
-            title="Report comment"
+            title={`Report ${modalValues.type}`}
             buttonLoading={reportLoading}
         >
             <div className="flex w-full my-5 items-center justify-center gap-3 flex-wrap">

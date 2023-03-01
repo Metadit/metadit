@@ -17,6 +17,21 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
+@keyframes CommentBorderGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgb(255, 94, 8);
+        border-radius: 20px;
+    }
+    100% {
+        box-shadow: 0 0 0 3px rgba(234, 88, 12, 0);
+        border-radius: 20px;
+    }
+}
+
+.commentAnimation {
+    animation: CommentBorderGlow 1s ease-out;
+}
+
 /*custom scrollbar*/
 
 ::-webkit-scrollbar {

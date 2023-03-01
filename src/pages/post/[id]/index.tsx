@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import Vote from "../../../components/pages/browse/Vote";
@@ -267,7 +267,7 @@ const Index = ({ id: threadId }: { id: number }) => {
                                 </Button>
                             </div>
                         )}
-                        <div className="flex flex-col gap-5">
+                        <div className="flex flex-col gap-3">
                             {comments.data?.map(comment => {
                                 return (
                                     <Comment

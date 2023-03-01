@@ -28,14 +28,14 @@ const Notification = ({ data, closeMenu }: Props) => {
                     {userWalletAddress}
                 </Link>{" "}
                 {notifMessage}
-                <Link
+                {data.type === 'commentReply' ? <Link
                     onClick={closeMenu}
                     className="text-primary transition-all duration-200 hover:opacity-80"
-                    href={`/post/${data.thread_id}`}
+                    href={`/post/${data.thread_id}/?comment=${data.comment_id}`}
                 >
                     {" "}
                     {commentWord}
-                </Link>
+                </Link> : ''}
             </p>
         );
     };

@@ -1,4 +1,4 @@
-import React, { Dispatch, memo, Ref } from "react";
+import React, { Dispatch, memo, Ref, useEffect } from "react";
 import Avatar from "react-avatar";
 import moment from "moment";
 import Link from "next/link";
@@ -6,6 +6,7 @@ import { IComment, ICommentReply } from "../../../services/threads/types";
 import CommentActions from "./CommentActions";
 import CommentReply from "./CommentReply";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface Props {
     comment: IComment;
@@ -17,8 +18,19 @@ interface Props {
 
 const Comment = memo(
     ({ comment, setComments, comments, threadCreator, lastElement }: Props) => {
+        const router = useRouter();
+        const commentId = router.query.comment as string;
+        useEffect(() => {
+            const commentDom = document.getElementById(String(comment.id));
+            if (commentId) {
+                if (commentDom && comment) {
+                    commentDom.scrollIntoView();
+                }
+            }
+        }, [commentId]);
         return (
-            <div ref={lastElement} className="w-full">
+            <div id={String(comment.id)} ref={lastElement} 
+            className={`w-full pt-5 ${String(comment.id) === commentId && 'commentAnimation'}`}>
                 <div className="w-full flex flex-wrap gap-2">
                     <div className="w-full flex flex-wrap items-center flex-col">
                         <div className="w-full flex gap-2 items-center">
