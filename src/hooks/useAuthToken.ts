@@ -1,11 +1,12 @@
-import axios from "axios";
+import {useMemo } from "react";
 import jwt_decode from "jwt-decode";
 import { refreshTokensService } from "../services/authentication";
 
 export const useAuthToken = async () => {
+    const userStore = typeof window !== 'undefined' && JSON.parse(localStorage.getItem("metadit") || "{}");
+    const userData = useMemo(() => userStore, [userStore]);
     //if token is going to expire in 5 minutes, refresh it
-    const userData = JSON.parse(localStorage.getItem("metadit") || "{}");
-    if (userData.token) {
+    if (!userData.token) return;
         const oldToken = userData.token;
         const decodedToken: {exp: number} = jwt_decode(oldToken);
         const currentTime = Date.now() / 1000;
@@ -19,9 +20,5 @@ export const useAuthToken = async () => {
             } catch (error) {
                 console.log(error);
             }
-    } else {
-        //if token is not going to expire in 5 minutes, just return
-        return;
     }
-}
 };
