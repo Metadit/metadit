@@ -12,6 +12,7 @@ import Loading from "../Loading";
 import { IUserNotifications } from "../../../types/user";
 import { markNotificationAsReadService } from "../../../services/user";
 import toast from "react-hot-toast";
+import { supabase } from "../../../supabase";
 
 const Notifications = () => {
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -21,6 +22,28 @@ const Notifications = () => {
     );
     const { user } = useUser();
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        const channel = supabase
+            .channel("changes")
+            .on(
+                "postgres_changes",
+                {
+                    event: "INSERT",
+                    schema: "public",
+                    table: "notifications",
+                    filter: "user_id=eq." + user?.id,
+                },
+                payload => {
+                    const { new: data } = payload;
+                    toast.success(`${data.message}`);
+                }
+            )
+            .subscribe();
+        return () => {
+            channel.unsubscribe();
+        };
+    }, [user?.id]);
 
     const {
         data: notifications,

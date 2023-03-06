@@ -11,13 +11,24 @@ interface Props {
 const Notification = ({ data, closeMenu }: Props) => {
     const commentNotification = () => {
         const userWalletAddress = data.message.split(" ")[0];
-        
-        const notifMessage = data.type === 'commentReply' ? data.message.split(" ")
-        .slice(1).filter((text) => text !== 'comment').join(" ") : data.type === 'comment' ?
-        data.message.split(" ").slice(1).join(" ") : null;
 
-        const commentWord = data.type === 'commentReply' ? data.message.split(" ")[4] : data.type === 'comment' ?
-        data.message.split(" ")[2] : null;
+        const notifMessage =
+            data.type === "commentReply"
+                ? data.message
+                      .split(" ")
+                      .slice(1)
+                      .filter(text => text !== "comment")
+                      .join(" ")
+                : data.type === "comment"
+                ? data.message.split(" ").slice(1).join(" ")
+                : null;
+
+        const commentWord =
+            data.type === "commentReply"
+                ? data.message.split(" ")[4]
+                : data.type === "comment"
+                ? data.message.split(" ")[2]
+                : null;
         return (
             <p className="text-white">
                 <Link
@@ -28,14 +39,18 @@ const Notification = ({ data, closeMenu }: Props) => {
                     {userWalletAddress}
                 </Link>{" "}
                 {notifMessage}
-                {data.type === 'commentReply' ? <Link
-                    onClick={closeMenu}
-                    className="text-primary transition-all duration-200 hover:opacity-80"
-                    href={`/post/${data.thread_id}/?comment=${data.comment_id}`}
-                >
-                    {" "}
-                    {commentWord}
-                </Link> : ''}
+                {data.type === "commentReply" ? (
+                    <Link
+                        onClick={closeMenu}
+                        className="text-primary transition-all duration-200 hover:opacity-80"
+                        href={`/post/${data.thread_id}/?comment=${data.comment_id}`}
+                    >
+                        {" "}
+                        {commentWord}
+                    </Link>
+                ) : (
+                    ""
+                )}
             </p>
         );
     };

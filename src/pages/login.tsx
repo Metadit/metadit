@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import art from "../../public/images/loginart.png";
 import Metamask from "../components/pages/login/Metamask";
-import OtherWallets from "../components/pages/login/OtherWallets";
 import BePart from "../components/pages/login/BePart";
 import { motion } from "framer-motion";
 import logo from "../../public/images/logo.svg";
@@ -12,10 +11,25 @@ import { UserContext } from "../contexts/User";
 import Button from "../components/global/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
+import Coinbase from "../components/pages/login/Coinbase";
 
 const Login = () => {
     const { user, loading } = useContext(UserContext);
+    const [isInstalled, setIsInstalled] = useState(false);
+    const isCoinbaseInstalled = () => {
+        if (
+            typeof window.web3 !== "undefined" &&
+            window.web3.currentProvider.isCoinbaseWallet
+        ) {
+            // Coinbase wallet is installed
+            setIsInstalled(true);
+        } else {
+            // Coinbase wallet is not installed
+            setIsInstalled(false);
+        }
+    };
     useEffect(() => {
+        isCoinbaseInstalled();
         if (user?.wallet_address) {
             window.location.href = "/browse/?tab=top";
         }
@@ -54,7 +68,8 @@ const Login = () => {
                                 </h1>
                                 <div className="w-full flex flex-wrap gap-3">
                                     <Metamask />
-                                    <OtherWallets />
+                                    <Coinbase isInstalled={isInstalled} />
+                                    {/* <OtherWallets /> */}
                                     <Link
                                         className="w-full"
                                         href="/browse/?tab=top"

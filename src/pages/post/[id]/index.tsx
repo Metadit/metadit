@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import Vote from "../../../components/pages/browse/Vote";

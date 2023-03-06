@@ -20,7 +20,7 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: Props) {
     const getLayout = Component.getLayout ?? ((page: any) => page);
-    useAuthToken ();
+    useAuthToken();
     return (
         <QueryClientProvider client={queryClient}>
             <UserProvider>

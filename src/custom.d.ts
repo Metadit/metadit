@@ -16,5 +16,10 @@ declare module "*.svg" {
 declare global {
     interface Window {
         ethereum?: MetaMaskInpageProvider;
+        web3?: {
+            currentProvider: {
+                isCoinbaseWallet: boolean;
+            };
+        };
     }
 }

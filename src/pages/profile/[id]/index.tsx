@@ -58,5 +58,4 @@ export const getServerSideProps = (ctx: NextPageContext) => {
     };
 };
 
-
 Index.getLayout = (page: any) => <Layout>{page}</Layout>;

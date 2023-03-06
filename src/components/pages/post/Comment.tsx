@@ -27,10 +27,15 @@ const Comment = memo(
                     commentDom.scrollIntoView();
                 }
             }
-        }, [commentId]);
+        }, [comment, commentId]);
         return (
-            <div id={String(comment.id)} ref={lastElement} 
-            className={`w-full pt-5 ${String(comment.id) === commentId && 'commentAnimation'}`}>
+            <div
+                id={String(comment.id)}
+                ref={lastElement}
+                className={`w-full pt-5 ${
+                    String(comment.id) === commentId && "commentAnimation"
+                }`}
+            >
                 <div className="w-full flex flex-wrap gap-2">
                     <div className="w-full flex flex-wrap items-center flex-col">
                         <div className="w-full flex gap-2 items-center">

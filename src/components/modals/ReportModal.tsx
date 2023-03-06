@@ -26,7 +26,6 @@ const ReportModal = () => {
         { text: "Scam", value: "scam" },
     ];
 
-
     const selectOption = (optionValue: Option["value"]) => {
         setOptionSelected(
             optionValue.charAt(0).toUpperCase() + optionValue.slice(1)

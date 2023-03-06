@@ -12,11 +12,7 @@ import Dropdown from "./Dropdown";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDetectOutsideClick } from "../../hooks/useDetectOutsideClick";
 import Image from "next/image";
-
-const logoutHandler = () => {
-    localStorage.removeItem("metadit");
-    window.location.replace("/");
-};
+import { useLogin } from "../../hooks/useLogin";
 
 interface Props {
     toggleDropDown?: React.Dispatch<SetStateAction<boolean>>;
@@ -26,6 +22,7 @@ interface Props {
 
 const UserDropdown = ({ className }: Props) => {
     const { user } = useUser();
+    const { logout } = useLogin();
     const dropDownRef = useRef<HTMLDivElement>(null);
     const [dropDown, toggleDropDown] = useDetectOutsideClick(
         dropDownRef,
@@ -34,7 +31,7 @@ const UserDropdown = ({ className }: Props) => {
     const dropDownLinks = [
         { icon: faUser, text: "Profile", href: `/profile/${user?.id}` },
         { icon: faCog, text: "Settings", href: "/settings" },
-        { icon: faSignOut, text: "Logout", href: "/", onClick: logoutHandler },
+        { icon: faSignOut, text: "Logout", href: "/", onClick: logout },
     ];
     return (
         <div
