@@ -84,7 +84,7 @@ export const useLogin = () => {
         setLoading(false);
     };
 
-    const logout = async () => {
+    const logout = () => {
         setUser(null);
         localStorage.removeItem("metadit");
     };
