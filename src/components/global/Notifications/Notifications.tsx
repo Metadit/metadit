@@ -13,6 +13,7 @@ import { IUserNotifications } from "../../../types/user";
 import { markNotificationAsReadService } from "../../../services/user";
 import toast from "react-hot-toast";
 import { supabase } from "../../../supabase";
+import parse from "html-react-parser";
 
 const Notifications = () => {
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -34,9 +35,22 @@ const Notifications = () => {
                     table: "notifications",
                     filter: "user_id=eq." + user?.id,
                 },
-                payload => {
-                    const { new: data } = payload;
-                    toast.success(`${data.message}`);
+                (payload: { new: IUserNotifications }) => {
+                    const data = payload.new;
+                    queryClient.setQueryData<IUserNotifications[]>(
+                        "notifications",
+                        old => {
+                            if (old) {
+                                return [data, ...old];
+                            }
+                            return [data];
+                        }
+                    );
+                    toast.success(() => <div>{parse(data.message)}</div>, {
+                        position: "top-right",
+                        icon: "🔔",
+                        duration: 5000,
+                    });
                 }
             )
             .subscribe();

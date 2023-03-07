@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { IUserNotifications } from "../../../types/user";
-import Link from "next/link";
+import parse from "html-react-parser";
 
 interface Props {
     data: IUserNotifications;
@@ -9,52 +9,6 @@ interface Props {
 }
 
 const Notification = ({ data, closeMenu }: Props) => {
-    const commentNotification = () => {
-        const userWalletAddress = data.message.split(" ")[0];
-
-        const notifMessage =
-            data.type === "commentReply"
-                ? data.message
-                      .split(" ")
-                      .slice(1)
-                      .filter(text => text !== "comment")
-                      .join(" ")
-                : data.type === "comment"
-                ? data.message.split(" ").slice(1).join(" ")
-                : null;
-
-        const commentWord =
-            data.type === "commentReply"
-                ? data.message.split(" ")[4]
-                : data.type === "comment"
-                ? data.message.split(" ")[2]
-                : null;
-        return (
-            <p className="text-white">
-                <Link
-                    onClick={closeMenu}
-                    href={`/profile/${data.user_id}`}
-                    className="text-primary transition-all duration-200 hover:opacity-80"
-                >
-                    {userWalletAddress}
-                </Link>{" "}
-                {notifMessage}
-                {data.type === "commentReply" ? (
-                    <Link
-                        onClick={closeMenu}
-                        className="text-primary transition-all duration-200 hover:opacity-80"
-                        href={`/post/${data.thread_id}/?comment=${data.comment_id}`}
-                    >
-                        {" "}
-                        {commentWord}
-                    </Link>
-                ) : (
-                    ""
-                )}
-            </p>
-        );
-    };
-
     return (
         <div className="bg-darkContent p-2 text-left rounded-md border border-zinc-800">
             <div className="flex gap-2 items-center">
@@ -63,7 +17,7 @@ const Notification = ({ data, closeMenu }: Props) => {
                     {moment(data.created_at).format("LLL")}
                 </p>
             </div>
-            {commentNotification()}
+            <div onClick={closeMenu}>{parse(data.message)}</div>
         </div>
     );
 };
