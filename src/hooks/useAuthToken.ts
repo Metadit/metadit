@@ -37,7 +37,6 @@ export const useAuthToken = () => {
             }
         }, 5 * 60 * 1000);
         return () => {
-            if (!userData.token) return;
             if (timer) clearInterval(timer);
         };
     }, [jwt, userData]);
