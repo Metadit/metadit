@@ -9,11 +9,12 @@ import { IThread } from "../../../services/threads/types";
 interface Props {
     data: IThread;
     threads: IThread[];
+    tab: string;
 }
 
 const Post = memo(
     forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
-        const { data } = props;
+        const { data, tab } = props;
         const [playAnimation, setPlayAnimation] = useState(false);
         const [threadVoteClick, setThreadVoteClick] = useState<IThread | null>(
             null
@@ -29,6 +30,7 @@ const Post = memo(
             >
                 <Vote
                     thread={data}
+                    tab={tab}
                     playAnimation={playAnimation}
                     setPlayAnimation={setPlayAnimation}
                     threadVoteClick={threadVoteClick}

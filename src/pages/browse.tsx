@@ -98,6 +98,7 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                             if (data?.pages.length === index + 1) {
                                 return (
                                     <Post
+                                        tab={tab}
                                         ref={lastPostRef}
                                         threads={page}
                                         data={post}
@@ -107,6 +108,7 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                             } else {
                                 return (
                                     <Post
+                                        tab={tab}
                                         threads={page}
                                         data={post}
                                         key={post.threadid}

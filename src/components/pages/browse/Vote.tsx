@@ -19,6 +19,7 @@ interface Props {
     setPlayAnimation: Dispatch<SetStateAction<boolean>>;
     playAnimation: boolean;
     individualThread?: boolean;
+    tab?: string;
 }
 
 const Vote = ({
@@ -28,6 +29,7 @@ const Vote = ({
     playAnimation,
     individualThread,
     setPlayAnimation,
+    tab,
 }: Props) => {
     const { user } = useUser();
     const lottieRef = useRef<any>(null);
@@ -81,7 +83,7 @@ const Vote = ({
                     );
                 } else {
                     queryClient.setQueryData<any>(
-                        "threads",
+                        ["threads", tab],
                         (oldData: { pages: IThread[][] }) => {
                             if (data && oldData) {
                                 const updateThread = oldData.pages[0].map(
