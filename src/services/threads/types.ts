@@ -31,7 +31,7 @@ export interface IVote {
     voteid?: number;
     direction?: string;
     currentUserVote?: number;
-    vote: number;
+    vote: 1 | -1;
 }
 
 export interface IComment {
@@ -40,8 +40,9 @@ export interface IComment {
     id: number;
     comment: string;
     threadid: number;
+    vote: -1 | 1;
     threadCreatorId: number;
-    did_user_vote: number;
+    did_user_vote: -1 | 1 | 0;
     vote_count: number;
     image_url: string;
     userid: number;
@@ -52,7 +53,7 @@ export interface IComment {
 export interface ICommentReply {
     id: number;
     vote_count: number;
-    did_user_vote: number;
+    did_user_vote: -1 | 1 | 0;
     commentid: number;
     threadid: number;
     threadCreatorId: number;
@@ -68,7 +69,7 @@ export interface ICommentReply {
 export interface ICommentVoteResponse {
     threadid: number;
     voteid: number;
-    vote: number;
+    vote: -1 | 1;
     commentid: number | null;
     replyid: number | null;
 }
@@ -78,7 +79,7 @@ export interface ICommentVote {
     replyid?: number | undefined;
     userid: number;
     threadid: number;
-    vote: number;
+    vote: -1 | 1;
     currentUserVote: number;
     direction?: string;
 }
