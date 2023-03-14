@@ -19,6 +19,7 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
     const { isVisible, elementRef: lastPostRef } = useVisibleElement();
     const [tab, setTab] = useState<string>(tabParams.toLowerCase());
     const [scrollToTop, setScrollToTop] = useState<boolean>(false);
+    const limit = 10;
 
     const scrollTopHandler = () => {
         window.addEventListener("scroll", () => {
@@ -38,9 +39,9 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
         data,
         fetchNextPage,
     } = useInfiniteQuery(
-        ["threads"],
+        ["threads", tab],
         async ({ pageParam = 0 }) => {
-            return await getThreadsService(user?.id, tab, pageParam, 10);
+            return await getThreadsService(user?.id, tab, pageParam, limit);
         },
         {
             cacheTime: 0,
@@ -85,7 +86,9 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                 activeTab={tab}
             />
             <div className="flex flex-col gap-5 relative">
-                {isLoading || (isFetching && !isRefetching) ? (
+                {isLoading ||
+                (isFetching && !isRefetching) ||
+                (isRefetching && !isFetching) ? (
                     <div className="mt-32">
                         <Loading size={30} />
                     </div>

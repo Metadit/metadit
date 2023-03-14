@@ -8,6 +8,7 @@ import React, {
 import { IUserAuthTokenDecoded, IUserLocalStorage } from "../types/user";
 import jwt_decode from "jwt-decode";
 import Loading from "../components/global/Loading";
+import { USER_TOKEN_KEY } from "../constants";
 
 interface Props {
     children: React.ReactNode;
@@ -30,7 +31,7 @@ export const UserProvider = ({ children }: Props) => {
     useEffect(() => {
         if (loading) {
             const userLocalStorage: IUserLocalStorage = JSON.parse(
-                localStorage.getItem("metadit") as string
+                localStorage.getItem(USER_TOKEN_KEY) as string
             );
             const userAuthToken: IUserAuthTokenDecoded =
                 userLocalStorage && jwt_decode(userLocalStorage.token);
@@ -39,7 +40,7 @@ export const UserProvider = ({ children }: Props) => {
                 const exp = userAuthToken.exp * 1000;
                 const didTokenExpire = now > exp;
                 if (didTokenExpire) {
-                    localStorage.removeItem("metadit");
+                    localStorage.removeItem(USER_TOKEN_KEY);
                     setUser(null);
                 }
             }

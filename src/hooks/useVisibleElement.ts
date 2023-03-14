@@ -26,7 +26,7 @@ export const useVisibleElement = () => {
         return () => {
             elementTarget && observer.unobserve(elementTarget);
         };
-    }, [observer, observerOptions]);
+    }, [observer]);
     return {
         isVisible,
         elementRef,

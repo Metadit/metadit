@@ -57,7 +57,7 @@ const Notifications = () => {
         return () => {
             channel.unsubscribe();
         };
-    }, [user?.id]);
+    }, [queryClient, user?.id]);
 
     const {
         data: notifications,

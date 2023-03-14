@@ -7,13 +7,19 @@ import {
 } from "../services/authentication";
 import { getUserService } from "../services/user";
 import toast from "react-hot-toast";
+import { USER_TOKEN_KEY } from "../constants";
+
+const threadIdParamOptions = {
+    post: "post",
+    user: "user",
+};
 
 export const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const { setUser } = useContext(UserContext);
     const threadIdParams = new URLSearchParams(window.location.search);
-    const threadId = threadIdParams.get("post");
-    const userId = threadIdParams.get("user");
+    const threadId = threadIdParams.get(threadIdParamOptions.post);
+    const userId = threadIdParams.get(threadIdParamOptions.user);
 
     const loginRedirectHandler = () => {
         if (threadId) {
@@ -32,7 +38,7 @@ export const useLogin = () => {
                 signature
             );
             localStorage.setItem(
-                "metadit",
+                USER_TOKEN_KEY,
                 JSON.stringify({
                     token,
                     wallet_address,
@@ -48,7 +54,7 @@ export const useLogin = () => {
             const token = await walletAuthHandler(wallet_address);
             const userData = await getUserService();
             localStorage.setItem(
-                "metadit",
+                USER_TOKEN_KEY,
                 JSON.stringify({
                     token,
                     ...userData,
@@ -86,7 +92,7 @@ export const useLogin = () => {
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem("metadit");
+        localStorage.removeItem(USER_TOKEN_KEY);
     };
 
     return {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { USER_TOKEN_KEY } from "../constants";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const getRequest = async (path: string, params?: {}): Promise<any> => {
@@ -11,7 +12,9 @@ export const getRequest = async (path: string, params?: {}): Promise<any> => {
 };
 
 export const getAuthenticatedRequest = async (path: string, params?: {}) => {
-    const { token } = JSON.parse(localStorage.getItem("metadit") as string);
+    const { token } = JSON.parse(
+        localStorage.getItem(USER_TOKEN_KEY) as string
+    );
     const { data } = await axios.get(`${API_URL}/${path}`, {
         headers: {
             Authorization: token,
@@ -24,7 +27,9 @@ export const getAuthenticatedRequest = async (path: string, params?: {}) => {
 };
 
 export const postAuthenticatedRequest = async (path: string, body: {}) => {
-    const { token } = JSON.parse(localStorage.getItem("metadit") as string);
+    const { token } = JSON.parse(
+        localStorage.getItem(USER_TOKEN_KEY) as string
+    );
     const { data } = await axios.post(`${API_URL}/${path}`, body, {
         headers: {
             Authorization: token,
@@ -34,7 +39,9 @@ export const postAuthenticatedRequest = async (path: string, body: {}) => {
 };
 
 export const putAuthenticatedRequest = async (path: string, body: {}) => {
-    const { token } = JSON.parse(localStorage.getItem("metadit") as string);
+    const { token } = JSON.parse(
+        localStorage.getItem(USER_TOKEN_KEY) as string
+    );
     const { data } = await axios.put(`${API_URL}/${path}`, body, {
         headers: {
             Authorization: token,
@@ -44,7 +51,9 @@ export const putAuthenticatedRequest = async (path: string, body: {}) => {
 };
 
 export const deleteAuthenticatedRequest = async (path: string, params: {}) => {
-    const { token } = JSON.parse(localStorage.getItem("metadit") as string);
+    const { token } = JSON.parse(
+        localStorage.getItem(USER_TOKEN_KEY) as string
+    );
     const { data } = await axios.delete(`${API_URL}/${path}`, {
         headers: {
             Authorization: token,

@@ -7,7 +7,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { useQueryClient } from "react-query";
 
 const tabOptions = [
     { name: "Top", icon: faRocket },
@@ -27,9 +26,7 @@ interface Props {
 
 const ContentTabs = ({ activeTab, setActiveTab }: Props) => {
     const navigate = useRouter();
-    const queryClient = useQueryClient();
-    const tabHandler = (tab: TabsKey) => {
-        queryClient.removeQueries("threads");
+    const tabHandler = async (tab: TabsKey) => {
         setActiveTab(tab.name.toLowerCase());
         navigate.replace("/browse?tab=" + tab.name.toLowerCase());
     };

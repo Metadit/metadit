@@ -1,43 +1,52 @@
-import {useEffect, useState} from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
-import {refreshTokensService} from "../services/authentication";
+import { refreshTokensService } from "../services/authentication";
+import { IUserLocalStorage } from "../types/user";
+import { USER_TOKEN_KEY } from "../constants";
 
-/* A hook that checks the JWT token every 5 minutes
-* and refreshes it when expiry is 5 minutes away*/
+const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 export const useAuthToken = () => {
     const [jwt, setJwt] = useState<string>("");
     const userData =
         typeof window !== "undefined" &&
-        JSON.parse(localStorage.getItem("metadit") || "{}");
+        JSON.parse(localStorage.getItem(USER_TOKEN_KEY) || "{}");
+
     useEffect(() => {
-        if (!userData.token) return;
+        if (!userData?.token) return;
+
         setJwt(userData.token);
-        const timer = setInterval(async () => {
-            try {
-                const decodedToken: {
-                    exp: number;
-                    iat: number;
-                    token: string;
-                } = jwt_decode(jwt);
-                const expirationTime = decodedToken.exp * 1000;
-                if (expirationTime - Date.now() < 10 * 1000) {
-                    const {token} = await refreshTokensService(
-                        userData.wallet_address
-                    );
-                    setJwt(token);
-                    const updatedUser = {...userData, token: token};
-                    localStorage.setItem(
-                        "metadit",
-                        JSON.stringify(updatedUser)
-                    );
-                }
-            } catch (error) {
+
+        const interval = setInterval(() => {
+            refreshTokenIfExpiringSoon(userData, jwt, setJwt).catch(error => {
                 console.log(error);
-            }
-        }, 5 * 60 * 1000);
+            });
+        }, REFRESH_INTERVAL);
+
         return () => {
-            if (timer) clearInterval(timer);
+            clearInterval(interval);
         };
     }, [jwt, userData]);
+
+    return jwt;
 };
+
+async function refreshTokenIfExpiringSoon(
+    userData: IUserLocalStorage,
+    jwt: string,
+    setJwt: Dispatch<SetStateAction<string>>
+) {
+    const decodedToken: {
+        exp: number;
+        iat: number;
+        token: string;
+    } = jwt_decode(jwt);
+    const expirationTime = decodedToken.exp * 1000;
+
+    if (expirationTime - Date.now() < 20 * 1000) {
+        const { token } = await refreshTokensService(userData.wallet_address);
+        setJwt(token);
+        const updatedUser = { ...userData, token };
+        localStorage.setItem(USER_TOKEN_KEY, JSON.stringify(updatedUser));
+    }
+}
