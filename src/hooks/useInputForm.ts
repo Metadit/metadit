@@ -1,10 +1,23 @@
 import { ChangeEvent, useState } from "react";
 
-export const useInputForm = (inputNames: { [name: string]: string }) => {
-    const [inputValues, setInputValues] = useState(inputNames);
+interface InputValues {
+    [name: string]: string;
+}
+
+interface InputFormResult {
+    inputValues: InputValues;
+    onChangeHandler: (e: ChangeEvent<HTMLInputElement>) => void;
+    setInputValues: (values: InputValues) => void;
+}
+
+export const useInputForm = (inputNames: InputValues = {}): InputFormResult => {
+    const [inputValues, setInputValues] = useState<InputValues>(inputNames);
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+        setInputValues({
+            ...inputValues,
+            [e.target.name]: e.target.value,
+        });
     };
 
     return {

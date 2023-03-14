@@ -4,9 +4,8 @@ import { refreshTokensService } from "../services/authentication";
 import { IUserLocalStorage } from "../types/user";
 import { USER_TOKEN_KEY } from "../constants";
 
-const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
-
-export const useAuthToken = () => {
+export const useAuthToken = (): string => {
+    const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
     const [jwt, setJwt] = useState<string>("");
     const userData =
         typeof window !== "undefined" &&
@@ -26,7 +25,7 @@ export const useAuthToken = () => {
         return () => {
             clearInterval(interval);
         };
-    }, [jwt, userData]);
+    }, [REFRESH_INTERVAL, jwt, userData]);
 
     return jwt;
 };

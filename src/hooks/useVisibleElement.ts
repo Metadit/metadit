@@ -1,6 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 
-export const useVisibleElement = () => {
+interface IUseVisibleElement {
+    isVisible: boolean;
+    elementRef: RefObject<HTMLDivElement>;
+}
+
+export const useVisibleElement = (): IUseVisibleElement => {
     const elementRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState<boolean>(false);
 

@@ -7,8 +7,31 @@ import {
 import toast from "react-hot-toast";
 import { useUser } from "../contexts/User";
 import { useEffect } from "react";
+import {
+    IUserActivity,
+    IUserProfile,
+    IUserThreads,
+} from "../services/profile/types";
 
-export const useProfile = (userId: number) => {
+interface IUseProfile {
+    activity: {
+        data?: IUserActivity;
+        isLoading: boolean;
+        isFetching: boolean;
+    };
+    userProfile: {
+        data?: IUserProfile;
+        isLoading: boolean;
+        isFetching: boolean;
+    };
+    threads: {
+        data?: IUserThreads[];
+        isLoading: boolean;
+        isFetching: boolean;
+    };
+}
+
+export const useProfile = (userId: number): IUseProfile => {
     const { user } = useUser();
     const {
         data: activity,
@@ -58,7 +81,7 @@ export const useProfile = (userId: number) => {
             userProfileRefetch();
             threadsRefetch();
         }
-    }, [userId]);
+    }, [activityRefetch, threadsRefetch, userId, userProfileRefetch]);
     return {
         activity: {
             data: activity,

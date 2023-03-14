@@ -7,21 +7,16 @@ import {
 } from "../services/authentication";
 import { getUserService } from "../services/user";
 import toast from "react-hot-toast";
-import { USER_TOKEN_KEY } from "../constants";
-
-const threadIdParamOptions = {
-    post: "post",
-    user: "user",
-};
+import { THREAD_ID_PARAM_OPTIONS, USER_TOKEN_KEY } from "../constants";
 
 export const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const { setUser } = useContext(UserContext);
-    const threadIdParams = new URLSearchParams(window.location.search);
-    const threadId = threadIdParams.get(threadIdParamOptions.post);
-    const userId = threadIdParams.get(threadIdParamOptions.user);
+    const searchParams = new URLSearchParams(window.location.search);
 
     const loginRedirectHandler = () => {
+        const threadId = searchParams.get(THREAD_ID_PARAM_OPTIONS.post);
+        const userId = searchParams.get(THREAD_ID_PARAM_OPTIONS.user);
         if (threadId) {
             window.location.replace(`/post/${threadId}`);
         } else if (userId) {
@@ -63,8 +58,6 @@ export const useLogin = () => {
             loginRedirectHandler();
         } catch (e) {
             toast.error("Error authenticating user");
-        } finally {
-            setLoading(false);
         }
     };
     const login = async () => {
@@ -86,8 +79,9 @@ export const useLogin = () => {
                 method: "wallet_requestPermissions",
                 params: [{ eth_accounts: {} }],
             });
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const logout = () => {
