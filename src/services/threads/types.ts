@@ -6,7 +6,7 @@ export interface IThreadCreate {
 
 export interface IThread {
     threadid: number;
-    did_user_vote: number;
+    did_user_vote: 1 | -1 | 0;
     userid: number;
     voteid: number;
     comment_count: number;
@@ -22,7 +22,7 @@ export interface IThreadVoteResponse {
     id: string;
     threadid: number;
     userid: number;
-    vote: number;
+    vote: 1 | -1;
 }
 
 export interface IVote {
