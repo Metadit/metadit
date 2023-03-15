@@ -5,13 +5,13 @@ import Tippy from "@tippyjs/react";
 
 interface Props {
     icon: IconDefinition;
-    info: string | undefined;
+    info: string;
     children?: React.ReactNode;
     name: string;
     onClick?: () => void;
 }
 
-const UserInfo = ({ icon, info, children, name, onClick }: Props) => {
+const UserInfo = ({ icon, info = "", children, name, onClick }: Props) => {
     return (
         <div
             onClick={onClick}
