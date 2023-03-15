@@ -6,18 +6,19 @@ import PageContainer from "../components/global/PageContainer";
 import Loading from "../components/global/Loading";
 import { useUser } from "../contexts/User";
 import { IThread } from "../services/threads/types";
-import { NextPageContext } from "next";
 import { useVisibleElement } from "../hooks/useVisibleElement";
 import { useInfiniteQuery } from "react-query";
 import { getThreadsService } from "../services/threads";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 
-const Browse = ({ tabParams }: { tabParams: string }) => {
+const Browse = () => {
     const { user } = useUser();
+    const navigate = useRouter();
+    const tab = navigate.query.tab as string;
     const { isVisible, elementRef: lastPostRef } = useVisibleElement();
-    const [tab, setTab] = useState<string>(tabParams.toLowerCase());
     const [scrollToTop, setScrollToTop] = useState<boolean>(false);
     const limit = 10;
 
@@ -81,10 +82,7 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <ContentTabs
-                setActiveTab={(arg: string) => setTab(arg)}
-                activeTab={tab}
-            />
+            <ContentTabs />
             <div className="flex flex-col gap-5 relative">
                 {isLoading ||
                 (isFetching && !isRefetching) ||
@@ -98,7 +96,6 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                             if (data?.pages.length === index + 1) {
                                 return (
                                     <Post
-                                        tab={tab}
                                         ref={lastPostRef}
                                         threads={page}
                                         data={post}
@@ -108,7 +105,6 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
                             } else {
                                 return (
                                     <Post
-                                        tab={tab}
                                         threads={page}
                                         data={post}
                                         key={post.threadid}
@@ -129,13 +125,5 @@ const Browse = ({ tabParams }: { tabParams: string }) => {
 };
 
 export default Browse;
-
-export const getServerSideProps = ({ query }: NextPageContext) => {
-    return {
-        props: {
-            tabParams: query.tab || "hot",
-        },
-    };
-};
 
 Browse.getLayout = (page: any) => <Layout>{page}</Layout>;

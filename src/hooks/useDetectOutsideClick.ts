@@ -12,18 +12,11 @@ import {
  * @param {boolean} initialState
  */
 
-interface UseDetectOutsideClick {
-    (el: RefObject<HTMLDivElement>, initialState: any): [
-        boolean,
-        Dispatch<SetStateAction<boolean>>
-    ];
-}
-
 export const useDetectOutsideClick = (
     el: RefObject<HTMLDivElement>,
-    initialState: any
-): UseDetectOutsideClick[] => {
-    const [isActive, setIsActive] = useState(initialState);
+    initialState: boolean
+): [boolean, Dispatch<SetStateAction<boolean>>] => {
+    const [isActive, setIsActive] = useState<boolean>(initialState);
 
     useEffect(() => {
         const onClick = (e: any) => {

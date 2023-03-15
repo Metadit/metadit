@@ -19,15 +19,10 @@ interface TabsKey {
     icon: IconDefinition;
 }
 
-interface Props {
-    setActiveTab: (tab: string) => void;
-    activeTab: string;
-}
-
-const ContentTabs = ({ activeTab, setActiveTab }: Props) => {
+const ContentTabs = () => {
     const navigate = useRouter();
-    const tabHandler = async (tab: TabsKey) => {
-        setActiveTab(tab.name.toLowerCase());
+    const activeTab = navigate.query.tab as string;
+    const tabHandler = (tab: TabsKey) => {
         navigate.replace("/browse?tab=" + tab.name.toLowerCase());
     };
     return (

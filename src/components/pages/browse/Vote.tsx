@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast/headless";
 import redirectWithError from "../../../helpers/redirectWithError";
 import voteCountUpdater from "../../../helpers/vote";
 import { postVoteService } from "../../../services/threads";
+import { useRouter } from "next/router";
 
 interface Props {
     count: number;
@@ -19,7 +20,6 @@ interface Props {
     setPlayAnimation: Dispatch<SetStateAction<boolean>>;
     playAnimation: boolean;
     individualThread?: boolean;
-    tab?: string;
 }
 
 const Vote = ({
@@ -29,7 +29,6 @@ const Vote = ({
     playAnimation,
     individualThread,
     setPlayAnimation,
-    tab,
 }: Props) => {
     const { user } = useUser();
     const lottieRef = useRef<any>(null);
@@ -40,6 +39,8 @@ const Vote = ({
         threadVoteClick?.threadid === thread?.threadid &&
         playAnimation &&
         thread?.did_user_vote === 1;
+    const navigate = useRouter();
+    const tab = navigate.query.tab as string;
 
     const { isLoading: voteSubmitLoading, mutate: voteSubmit } = useMutation<
         IThreadVoteResponse | undefined,
