@@ -5,7 +5,7 @@ import { IUserLocalStorage } from "../types/user";
 import { USER_TOKEN_KEY } from "../constants";
 
 export const useAuthToken = (): string => {
-    const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
+    const REFRESH_INTERVAL = 60 * 1000;
     const [jwt, setJwt] = useState<string>("");
     const userData =
         typeof window !== "undefined" &&
@@ -13,15 +13,12 @@ export const useAuthToken = (): string => {
 
     useEffect(() => {
         if (!userData?.token) return;
-
         setJwt(userData.token);
-
         const interval = setInterval(() => {
             refreshTokenIfExpiringSoon(userData, jwt, setJwt).catch(error => {
                 console.log(error);
             });
         }, REFRESH_INTERVAL);
-
         return () => {
             clearInterval(interval);
         };
@@ -47,5 +44,7 @@ async function refreshTokenIfExpiringSoon(
         setJwt(token);
         const updatedUser = { ...userData, token };
         localStorage.setItem(USER_TOKEN_KEY, JSON.stringify(updatedUser));
+    } else {
+        return;
     }
 }

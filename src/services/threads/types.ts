@@ -40,7 +40,6 @@ export interface IComment {
     id: number;
     comment: string;
     threadid: number;
-    vote: -1 | 1;
     threadCreatorId: number;
     did_user_vote: -1 | 1 | 0;
     vote_count: number;
