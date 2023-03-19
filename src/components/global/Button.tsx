@@ -31,7 +31,7 @@ const Button = ({
             } text-white text-[12px] px-5 rounded-md
       hover:brightness-125 `}
         >
-            {loading ? <Loading noAbsolute={true} size={20} /> : children}
+            {loading ? <Loading noAbsolute={true} /> : children}
         </button>
     );
 };

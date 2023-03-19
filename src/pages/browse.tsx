@@ -88,7 +88,7 @@ const Browse = () => {
                 (isFetching && !isRefetching) ||
                 (isRefetching && !isFetching) ? (
                     <div className="mt-32">
-                        <Loading size={30} />
+                        <Loading />
                     </div>
                 ) : (
                     data?.pages.map((page, index) => {

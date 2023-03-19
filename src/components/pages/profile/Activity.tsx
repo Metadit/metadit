@@ -18,7 +18,7 @@ const Activity = ({ data, activityLoading, isFetching }: Props) => {
         >
             <h2 className="text-white font-bold text-lg mb-5">Activity</h2>
             {activityLoading || isFetching ? (
-                <Loading size={30} />
+                <Loading />
             ) : !activityLoading &&
               !isFetching &&
               data?.comments.length === 0 &&

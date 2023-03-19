@@ -41,7 +41,7 @@ const Coinbase = ({ isInstalled }: Props) => {
         hover:brightness-110 cursor-pointer focus:outline-none focus:scale-90`}
             >
                 {loading ? (
-                    <Loading size={25} />
+                    <Loading />
                 ) : (
                     <>
                         <FontAwesomeIcon

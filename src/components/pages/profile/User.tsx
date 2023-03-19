@@ -184,7 +184,7 @@ const User = ({ className, data, profileLoading, isFetching }: Props) => {
       ${className}`}
             >
                 {profileLoading || isFetching ? (
-                    <Loading size={30} />
+                    <Loading />
                 ) : (
                     <>
                         <div className="relative w-[100px] h-[100px] mb-7 mx-auto">

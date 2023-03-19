@@ -5,7 +5,7 @@ import Tippy from "@tippyjs/react";
 
 interface Props {
     icon: IconDefinition;
-    info: string;
+    info?: string;
     children?: React.ReactNode;
     name: string;
     onClick?: () => void;

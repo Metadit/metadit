@@ -12,7 +12,7 @@ const LoadingPage = () => {
         h-full absolute z-[900] bg-contentBg
         flex items-center"
                 >
-                    <Loading size={60} />
+                    <Loading />
                 </div>
             )}
         </>

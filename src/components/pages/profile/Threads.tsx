@@ -29,7 +29,7 @@ const Threads = ({ data, threadsLoading, isFetching }: Props) => {
       gap-4 h-[400px] overflow-y-scroll pr-2 pb-5 relative mt-5"
                 >
                     {threadsLoading || isFetching ? (
-                        <Loading size={30} />
+                        <Loading />
                     ) : (
                         data?.map(thread => (
                             <ThreadCard thread={thread} key={thread.threadid} />

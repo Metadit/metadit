@@ -137,7 +137,7 @@ const Notifications = () => {
                             Mark all as read
                         </Button>
                         {isLoading || isRefetching ? (
-                            <Loading color="white" size={30} />
+                            <Loading />
                         ) : notifications?.length === 0 ? (
                             <p className="text-content mt-[100px]">
                                 No Notifications

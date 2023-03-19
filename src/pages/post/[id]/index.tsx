@@ -118,7 +118,7 @@ const Index = ({ id: threadId }: { id: number }) => {
                 thread.isFetching ||
                 comments.isLoading ||
                 comments.isFetching ? (
-                    <Loading size={30} />
+                    <Loading />
                 ) : (
                     <>
                         <Vote
@@ -260,7 +260,7 @@ const Index = ({ id: threadId }: { id: number }) => {
                 max-w-[100px] mx-auto`}
                                 >
                                     {commentSubmitLoading ? (
-                                        <Loading noAbsolute={true} size={20} />
+                                        <Loading noAbsolute={true} />
                                     ) : (
                                         "Submit"
                                     )}

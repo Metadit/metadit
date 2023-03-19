@@ -68,6 +68,7 @@ const Edit = ({ data }: Props) => {
                 }
             };
         };
+
         return {
             toolbar: {
                 container: [

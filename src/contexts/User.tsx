@@ -53,7 +53,7 @@ export const UserProvider = ({ children }: Props) => {
         <UserContext.Provider value={{ user, setUser, loading }}>
             {loading ? (
                 <div className="w-full h-full absolute flex items-center justify-center">
-                    <Loading size={45} />
+                    <Loading />
                 </div>
             ) : (
                 children
