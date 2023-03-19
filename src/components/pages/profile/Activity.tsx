@@ -14,7 +14,7 @@ const Activity = ({ data, activityLoading, isFetching }: Props) => {
         <div
             className="rounded bg-darkContent border
       border-zinc-800 p-6 basis-7/12
-    grow relative h-[400px]"
+    grow relative h-[full]"
         >
             <h2 className="text-white font-bold text-lg mb-5">Activity</h2>
             {activityLoading || isFetching ? (

@@ -8,7 +8,6 @@ import { useModalValues } from "../../../contexts/ModalValues";
 import { useInputForm } from "../../../hooks/useInputForm";
 import TextAreaBox from "../../global/TextAreaBox";
 import CommentVote from "./CommentVote";
-import voteCountUpdater from "../../../helpers/vote";
 import { motion } from "framer-motion";
 import Button from "../../global/Button";
 import { useMutation, useQueryClient } from "react-query";
@@ -37,24 +36,6 @@ const CommentActions = ({
         replyContent: "",
     });
     const [toggleReply, setToggleReply] = useState(false);
-    const commentVoteUpdater = (vote: number, commentData: IComment) => {
-        const newComments = comments?.map(comment => {
-            if (commentData.id === comment.id) {
-                return {
-                    ...comment,
-                    vote_count: voteCountUpdater(
-                        comment.vote_count,
-                        vote,
-                        comment.did_user_vote
-                    ),
-                    did_user_vote: comment.did_user_vote === vote ? 0 : vote,
-                };
-            }
-            return comment;
-        });
-        setComments(newComments);
-    };
-
     const toggleHandler = (active?: boolean) => {
         setToggleReply(active || false);
         setInputValues({ replyContent: "" });
