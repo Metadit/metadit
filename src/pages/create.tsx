@@ -1,6 +1,6 @@
 import Layout from "../components/global/Layout";
 import PageContainer from "../components/global/PageContainer";
-import React, { useMemo, useState } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 import Input from "../components/global/Input";
 import Button from "../components/global/Button";
 import { useThread } from "../hooks/useThread";
@@ -137,4 +137,4 @@ const Create = () => {
 
 export default Create;
 
-Create.getLayout = (page: any) => <Layout>{page}</Layout>;
+Create.getLayout = (page: ReactNode) => <Layout>{page}</Layout>;

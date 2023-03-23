@@ -1,5 +1,6 @@
 import Context from "../components/pages/home/Context";
 import Layout from "../components/global/Layout";
+import { ReactNode } from "react";
 
 const Home = () => {
     return (
@@ -11,4 +12,4 @@ const Home = () => {
 
 export default Home;
 
-Home.getLayout = (page: any) => <Layout>{page}</Layout>;
+Home.getLayout = (page: ReactNode) => <Layout>{page}</Layout>;

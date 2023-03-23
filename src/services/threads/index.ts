@@ -1,5 +1,6 @@
 import {
     deleteAuthenticatedRequest,
+    getAuthenticatedRequest,
     getRequest,
     postAuthenticatedRequest,
     putAuthenticatedRequest,
@@ -32,6 +33,12 @@ export const editThreadService = async (
         threadTitle,
         threadContent,
     });
+};
+
+export const getEditThreadService = async (
+    threadId: number
+): Promise<IThread> => {
+    return await getAuthenticatedRequest("threads/thread/edit", { threadId });
 };
 
 export const getThreadService = async (

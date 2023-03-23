@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import User from "../../../components/pages/profile/User";
@@ -58,4 +58,4 @@ export const getServerSideProps = (ctx: NextPageContext) => {
     };
 };
 
-Index.getLayout = (page: any) => <Layout>{page}</Layout>;
+Index.getLayout = (page: ReactNode) => <Layout>{page}</Layout>;

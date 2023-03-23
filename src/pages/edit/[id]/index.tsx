@@ -1,14 +1,17 @@
 import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import Input from "../../../components/global/Input";
 import Button from "../../../components/global/Button";
 import { useRouter } from "next/router";
 import { supabase } from "../../../supabase";
 import dynamic from "next/dynamic";
 import short from "short-uuid";
-import { NextPageContext } from "next";
 import { useThread } from "../../../hooks/useThread";
+import { getEditThreadService } from "../../../services/threads";
+import { useQuery } from "react-query";
+import { NextPageContext } from "next";
+import Loading from "../../../components/global/Loading";
 
 const ReactQuill = dynamic(
     async () => {
@@ -20,21 +23,29 @@ const ReactQuill = dynamic(
     },
     { ssr: false }
 );
-
-interface Props {
-    data: any;
-}
-
-const Edit = ({ data }: Props) => {
-    const { threadcontent, threadtitle, id } = data;
-    const { editThread, editLoading } = useThread();
+const Edit = ({ threadId }: { threadId: string }) => {
     const router = useRouter();
+    const { data, isLoading, error } = useQuery({
+        refetchOnWindowFocus: false,
+        refetchIntervalInBackground: false,
+        retry: false,
+        queryKey: ["editThread", threadId],
+        queryFn: () => getEditThreadService(Number(threadId)),
+        onError: (err: any) => {
+            if (err.response.status === 403) {
+                return router.push("/browse?tab=top");
+            }
+        },
+    });
+
+    const { editThread, editLoading } = useThread();
     const quillRef = React.useRef<any>(null);
     const [postTitle, setPostTitle] = useState("");
     const [content, setContent] = useState("");
     const [fileImageUrls, setFileImageUrls] = useState<
         { fileName: string; fileUrl: string }[]
     >([]);
+
     const modules = useMemo(() => {
         const handleImageUpload = async () => {
             const id = short.generate();
@@ -91,61 +102,79 @@ const Edit = ({ data }: Props) => {
         };
     }, []);
     useEffect(() => {
-        setPostTitle(threadtitle);
-        setContent(threadcontent);
-    }, [threadcontent, threadtitle]);
+        data &&
+            (setPostTitle(data.threadtitle), setContent(data.threadcontent));
+    }, [data]);
 
     const submitHandler = async () => {
-        await editThread(postTitle, content, fileImageUrls, id);
-        await router.push(`/post/${id}`);
+        data &&
+            (await editThread(
+                postTitle,
+                content,
+                fileImageUrls,
+                data.threadid
+            ));
+        await router.push(`/post/${threadId}`);
     };
 
     return (
         <PageContainer pageTitle="Edit Post">
-            <h1 className="text-white text-[30px] font-bold">Edit post</h1>
-            <div
-                className="mt-10 border border-zinc-800 bg-contentBg
+            {isLoading || error ? (
+                <div className="w-full h-[500px] flex justify-center items-center">
+                    <Loading noAbsolute={true} />
+                </div>
+            ) : (
+                <>
+                    <h1 className="text-white text-[30px] font-bold">
+                        Edit post
+                    </h1>
+                    <div
+                        className="mt-10 border border-zinc-800 bg-contentBg
       rounded-xl h-auto px-10 py-10"
-            >
-                <Input
-                    className="h-12 px-5"
-                    type="text"
-                    name="title"
-                    placeholder={"Title"}
-                    onChange={e => setPostTitle(e.target.value)}
-                    value={postTitle}
-                />
-                <ReactQuill
-                    forwardedRef={quillRef}
-                    modules={modules}
-                    onChange={(e: React.SetStateAction<string>) => {
-                        if (e === "<p><br></p>") {
-                            setContent("");
-                        } else {
-                            setContent(e);
-                        }
-                    }}
-                    value={content}
-                    style={{ marginTop: 20 }}
-                    theme="snow"
-                />
-                <Button
-                    onClick={submitHandler}
-                    normal={false}
-                    loading={editLoading}
-                    disabled={
-                        postTitle === "" ||
-                        content === "" ||
-                        editLoading ||
-                        (content === threadcontent && postTitle === threadtitle)
-                    }
-                    className={`mt-10 bg-primaryDark border border-primary w-full max-w-[100px] mx-auto ${
-                        content.length < 1 && "bg-content cursor-not-allowed"
-                    }`}
-                >
-                    Submit
-                </Button>
-            </div>
+                    >
+                        <Input
+                            className="h-12 px-5"
+                            type="text"
+                            name="title"
+                            placeholder={"Title"}
+                            onChange={e => setPostTitle(e.target.value)}
+                            value={postTitle}
+                        />
+                        <ReactQuill
+                            forwardedRef={quillRef}
+                            modules={modules}
+                            onChange={(e: React.SetStateAction<string>) => {
+                                if (e === "<p><br></p>") {
+                                    setContent("");
+                                } else {
+                                    setContent(e);
+                                }
+                            }}
+                            value={content}
+                            style={{ marginTop: 20 }}
+                            theme="snow"
+                        />
+                        <Button
+                            onClick={submitHandler}
+                            normal={false}
+                            loading={editLoading}
+                            disabled={
+                                postTitle === "" ||
+                                content === "" ||
+                                editLoading ||
+                                (content === data?.threadcontent &&
+                                    postTitle === data?.threadtitle)
+                            }
+                            className={`mt-10 bg-primaryDark border border-primary w-full max-w-[100px] mx-auto ${
+                                content.length < 1 &&
+                                "bg-content cursor-not-allowed"
+                            }`}
+                        >
+                            Submit
+                        </Button>
+                    </div>
+                </>
+            )}
         </PageContainer>
     );
 };
@@ -154,20 +183,11 @@ export default Edit;
 
 export const getServerSideProps = async ({ query }: NextPageContext) => {
     const { id } = query;
-    const { data, error } = await supabase
-        .from("threads")
-        .select("*")
-        .eq("id", id)
-        .single();
-    if (error) {
-        console.log(error);
-    } else {
-        return {
-            props: {
-                data,
-            },
-        };
-    }
+    return {
+        props: {
+            threadId: id,
+        },
+    };
 };
 
-Edit.getLayout = (page: any) => <Layout>{page}</Layout>;
+Edit.getLayout = (page: ReactNode) => <Layout>{page}</Layout>;

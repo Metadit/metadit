@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import Layout from "../../../components/global/Layout";
 import PageContainer from "../../../components/global/PageContainer";
 import Vote from "../../../components/pages/browse/Vote";
@@ -293,4 +293,4 @@ export const getServerSideProps = ({query}: NextPageContext) => {
     return {props: {id: query.id}};
 };
 
-Index.getLayout = (page: any) => <Layout>{page}</Layout>;
+Index.getLayout = (page: ReactNode) => <Layout>{page}</Layout>;

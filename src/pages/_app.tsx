@@ -3,7 +3,7 @@ import "tippy.js/dist/tippy.css";
 import "react-quill/dist/quill.snow.css";
 import type { AppProps } from "next/app";
 import type { Page } from "../custom";
-import React from "react";
+import React, { ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "../contexts/User";
 import { Toaster } from "react-hot-toast";
@@ -19,7 +19,7 @@ type Props = AppProps & {
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: Props) {
-    const getLayout = Component.getLayout ?? ((page: any) => page);
+    const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
     useAuthToken();
     return (
         <QueryClientProvider client={queryClient}>

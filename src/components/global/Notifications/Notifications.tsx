@@ -3,92 +3,22 @@ import Button from "../Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import Notification from "./Notification";
-import { useDetectOutsideClick } from "../../../hooks/useDetectOutsideClick";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { userNotificationsService } from "../../../services/profile";
 import { useUser } from "../../../contexts/User";
 import Loading from "../Loading";
 import { IUserNotifications } from "../../../types/user";
-import { markNotificationAsReadService } from "../../../services/user";
-import toast from "react-hot-toast";
-import { supabase } from "../../../supabase";
-import parse from "html-react-parser";
+import { useNotifications } from "../../../hooks/useNotifications";
 
 const Notifications = () => {
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const [toggleDropdown, setToggleDropdown] = useDetectOutsideClick(
-        dropdownRef,
-        false
-    );
     const { user } = useUser();
-    const queryClient = useQueryClient();
-
-    useEffect(() => {
-        const channel = supabase
-            .channel("changes")
-            .on(
-                "postgres_changes",
-                {
-                    event: "INSERT",
-                    schema: "public",
-                    table: "notifications",
-                    filter: "user_id=eq." + user?.id,
-                },
-                (payload: { new: IUserNotifications }) => {
-                    const data = payload.new;
-                    queryClient.setQueryData<IUserNotifications[]>(
-                        "notifications",
-                        old => {
-                            if (old) {
-                                return [data, ...old];
-                            }
-                            return [data];
-                        }
-                    );
-                    toast.success(() => <div>{parse(data.message)}</div>, {
-                        position: "top-right",
-                        icon: "🔔",
-                        duration: 5000,
-                    });
-                }
-            )
-            .subscribe();
-        return () => {
-            channel.unsubscribe();
-        };
-    }, [queryClient, user?.id]);
-
     const {
-        data: notifications,
-        isRefetching,
-        isLoading,
-        refetch,
-    } = useQuery(
-        "notifications",
-        async () => {
-            return user && (await userNotificationsService(user?.id));
-        },
-        {
-            refetchOnWindowFocus: false,
-        }
-    );
-
-    const { mutate: markAsReadHandler } = useMutation(
-        async () => {
-            return user && (await markNotificationAsReadService(user?.id));
-        },
-        {
-            onSuccess: async () => {
-                await queryClient.invalidateQueries("notifications");
-                toast.success("All notifications marked as read");
-                setToggleDropdown(false);
-            },
-            onError: () => {
-                toast.error("Something went wrong");
-            },
-        }
-    );
+        toggleDropdown,
+        setToggleDropdown,
+        markAsReadHandler,
+        notifications,
+    } = useNotifications(dropdownRef);
+    const { refetch, isLoading, isRefetching, data } = notifications;
 
     useEffect(() => {
         if (toggleDropdown && user) {
@@ -98,7 +28,7 @@ const Notifications = () => {
         }
     }, [toggleDropdown, refetch, user]);
 
-    const areAllRead = notifications?.every(
+    const areAllRead = data?.every(
         (notification: IUserNotifications) => notification.read
     );
 
@@ -138,12 +68,12 @@ const Notifications = () => {
                         </Button>
                         {isLoading || isRefetching ? (
                             <Loading />
-                        ) : notifications?.length === 0 ? (
+                        ) : data?.length === 0 ? (
                             <p className="text-content mt-[100px]">
                                 No Notifications
                             </p>
                         ) : (
-                            notifications?.map((data: IUserNotifications) => (
+                            data?.map((data: IUserNotifications) => (
                                 <Notification
                                     closeMenu={() => setToggleDropdown(false)}
                                     data={data}

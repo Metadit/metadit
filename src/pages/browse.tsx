@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import ContentTabs from "../components/pages/browse/ContentTabs";
 import Post from "../components/pages/browse/Post";
 import Layout from "../components/global/Layout";
@@ -126,4 +126,4 @@ const Browse = () => {
 
 export default Browse;
 
-Browse.getLayout = (page: any) => <Layout>{page}</Layout>;
+Browse.getLayout = (page: ReactNode) => <Layout>{page}</Layout>;
