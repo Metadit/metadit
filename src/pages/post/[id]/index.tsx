@@ -45,20 +45,12 @@ const Index = ({ id: threadId }: { id: number }) => {
     const { isLoading: commentSubmitLoading, mutate: commentSubmit } =
         useMutation(
             async () => {
-                if (
-                    inputValues.comment &&
-                    comments.data &&
-                    thread.data &&
-                    user
-                ) {
-                    return await commentThreadService({
-                        threadid: Number(threadId),
-                        threadCreatorId: thread.data?.userid,
-                        userid: user.id,
-                        comment: inputValues.comment,
-                        datepublished: new Date().toISOString(),
-                    });
-                }
+                return await commentThreadService({
+                    threadid: Number(threadId),
+                    threadCreatorId: thread.data?.userid as number,
+                    userid: user?.id as number,
+                    comment: inputValues.comment,
+                });
             },
             {
                 onSuccess: data => {

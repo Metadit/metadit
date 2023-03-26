@@ -5,7 +5,7 @@ import { useModalValues } from "../../contexts/ModalValues";
 import toast from "react-hot-toast";
 import { useModal } from "../../contexts/Modal";
 import { useMutation, useQueryClient } from "react-query";
-import { IComment } from "../../services/threads/types";
+import { IComment, ICommentReply } from "../../services/threads/types";
 
 const DeleteCommentModal = () => {
     const { setActiveModal } = useModal();
@@ -20,7 +20,7 @@ const DeleteCommentModal = () => {
     const { mutate: deleteComment, isLoading: deleteLoading } = useMutation(
         async () => {
             await deleteCommentService(
-                modalValues.commentId,
+                modalValues.commentReplyId || modalValues.commentId,
                 !!modalValues.isReply
             );
         },
@@ -46,10 +46,27 @@ const DeleteCommentModal = () => {
                 queryClient.setQueryData<IComment[] | undefined>(
                     "threadComments",
                     prev => {
-                        return prev?.filter(
-                            (comment: IComment) =>
-                                comment.id !== modalValues.commentId
-                        );
+                        if (!modalValues.isReply) {
+                            return prev?.filter(
+                                (comment: IComment) =>
+                                    comment.id !== modalValues.commentId
+                            );
+                        } else {
+                            return prev?.map((comment: IComment) => {
+                                if (comment.id === modalValues.commentId) {
+                                    return {
+                                        ...comment,
+                                        replies: comment.replies.filter(
+                                            (reply: ICommentReply) =>
+                                                reply.id !==
+                                                modalValues.commentReplyId
+                                        ),
+                                    };
+                                } else {
+                                    return comment;
+                                }
+                            });
+                        }
                     }
                 );
             },
@@ -66,7 +83,7 @@ const DeleteCommentModal = () => {
             title="Delete comment"
         >
             <p className="text-content text-center text-[14px] mt-2">
-                Are you sure you want to remove your comment?
+                Are you sure you want to remove this comment?
             </p>
         </Modal>
     );

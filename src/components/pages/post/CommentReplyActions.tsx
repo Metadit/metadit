@@ -93,7 +93,8 @@ const CommentReplyActions = ({
                         onClick={() => {
                             setActiveModal("DELETE_COMMENT_MODAL");
                             setModalValues({
-                                commentId: comment.id,
+                                commentId: comment.commentid,
+                                commentReplyId: comment.id,
                                 isReply: true,
                             });
                         }}

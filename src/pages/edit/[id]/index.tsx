@@ -32,7 +32,7 @@ const Edit = ({ threadId }: { threadId: string }) => {
         queryKey: ["editThread", threadId],
         queryFn: () => getEditThreadService(Number(threadId)),
         onError: (err: any) => {
-            if (err.response.status === 403) {
+            if (err.response.data.error === "Unauthorized") {
                 return router.push("/browse?tab=top");
             }
         },

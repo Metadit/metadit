@@ -77,6 +77,7 @@ export const commentThreadService = async (
         | "vote_count"
         | "image_url"
         | "replies"
+        | "datepublished"
     >
 ): Promise<IComment> => {
     return await postAuthenticatedRequest("threads/comment", body);
